@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "koa": "^2.5.2",
+    "koa-router": "^7.4.0",
+    "mysql2": "^1.5.3",
     "sequelize": "^4.38.0"
   },
   "devDependencies": {
@@ -18,9 +21,10 @@
     "eslint-import-resolver-babel-module": "^4.0.0",
     "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-jsx-a11y": "^6.1.0",
-    "eslint-plugin-react": "^7.7.0"
+    "eslint-plugin-react": "^7.7.0",
+    "nodemon": "^1.18.3"
   },
   "scripts": {
-    "dev": "babel-node src/index.js"
+    "dev": "nodemon --exec babel-node src/index.js"
   }
 }
