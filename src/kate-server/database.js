@@ -1,6 +1,8 @@
 import Sequelize from 'sequelize';
 import { Fields, SequelizeFields } from './fields';
 
+const capitalize = string => `${string.charAt(0).toUpperCase()}${string.slice(1)}`;
+
 const getModelParams = (entity) => {
   const modelParams = {
     uuid: {
@@ -9,26 +11,56 @@ const getModelParams = (entity) => {
       defaultValue: Sequelize.UUIDV4,
     },
   };
+  const modelOptions = {
+    getterMethods: {
+    },
+    setterMethods: {
+    },
+  };
+
+  // eslint-disable-next-line no-param-reassign
+  entity.modelGetOptions = { include: [], attributes: ['uuid', 'createdAt', 'updatedAt'] };
+
   entity.fields.forEach((field) => {
     switch (field.type) {
       case Fields.REFERENCE:
-        // do nothing
+        modelOptions.setterMethods[field.name] = function setter(value) {
+          if (value && !this.getDataValue('project')) {
+            this.setDataValue(`${field.name}Uuid`, value.uuid);
+          }
+        };
         break;
       default:
+        entity.modelGetOptions.attributes.push(field.name);
         modelParams[field.name] = {
           type: SequelizeFields[field.type],
         };
     }
   });
-  return modelParams;
+  return { params: modelParams, options: modelOptions };
 };
 
 const makeAssociations = (entities) => {
-  entities.forEach(entity => entity.fields.forEach((field) => {
-    if (field.type === Fields.REFERENCE) {
-      entity.model.belongsTo(field.entity.model, { as: field.name });
+  entities.forEach((entity) => {
+    entity.fields.forEach((field) => {
+      if (field.type === Fields.REFERENCE) {
+        entity.model.belongsTo(field.entity.model, { as: field.name });
+        entity.modelGetOptions.include.push({ model: field.entity.model, as: field.name, attributes: ['title', 'uuid'] });
+      }
+    });
+    if (entity.tables) {
+      entity.tables.forEach((table) => {
+        table.fields.forEach((field) => {
+          if (field.type === Fields.REFERENCE) {
+            table.model.belongsTo(field.entity.model, { as: field.name });
+            table.modelGetOptions.include.push({ model: field.entity.model, as: field.name, attributes: ['title', 'uuid'] });
+          }
+        });
+        entity.model.hasMany(table.model, { as: table.name });
+        entity.modelGetOptions.include.push({ model: table.model, as: table.name });
+      });
     }
-  }));
+  });
 };
 
 export default class Database {
@@ -55,10 +87,16 @@ export default class Database {
   }
   createModels() {
     this.entities.forEach((entity) => {
-      entity.model = this.sequelize.define(entity.name, getModelParams(entity));
-    });
-    this.entities.forEach((entity) => {
-      entity.model = this.sequelize.define(entity.name, getModelParams(entity));
+      const { params, options } = getModelParams(entity);
+      // eslint-disable-next-line no-param-reassign
+      entity.model = this.sequelize.define(entity.name, params, options);
+      if (entity.tables) {
+        entity.tables.forEach((table) => {
+          const { params: tableParams, options: tableOptions } = getModelParams(table);
+          // eslint-disable-next-line no-param-reassign
+          table.model = this.sequelize.define(`${entity.name}${capitalize(table.name)}`, tableParams, tableOptions);
+        });
+      }
     });
     makeAssociations(this.entities);
   }

@@ -1,7 +1,17 @@
 import KateServer, { Fields } from 'kate-server';
 
 const Project = {
-  name: 'projects',
+  name: 'project',
+  fields: [
+    {
+      name: 'title',
+      type: Fields.STRING,
+    },
+  ],
+};
+
+const User = {
+  name: 'user',
   fields: [
     {
       name: 'title',
@@ -11,7 +21,7 @@ const Project = {
 };
 
 const Task = {
-  name: 'tasks',
+  name: 'task',
   fields: [
     {
       name: 'title',
@@ -23,6 +33,22 @@ const Task = {
       entity: Project,
     },
   ],
+  tables: [
+    {
+      name: 'users',
+      fields: [
+        {
+          name: 'title',
+          type: Fields.STRING,
+        },
+        {
+          name: 'user',
+          type: Fields.REFERENCE,
+          entity: User,
+        },
+      ],
+    },
+  ],
 };
 
 
@@ -30,6 +56,7 @@ const App = {
   entities: [
     Project,
     Task,
+    User,
   ],
   databaseParams: {
     host: 'localhost',

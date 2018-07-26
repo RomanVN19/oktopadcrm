@@ -9,4 +9,5 @@ export const Fields = {
 export const SequelizeFields = {
   [Fields.STRING]: Sequelize.STRING,
   [Fields.INTEGER]: Sequelize.INTEGER,
+  [Fields.REFERENCE]: Sequelize.VIRTUAL,
 };

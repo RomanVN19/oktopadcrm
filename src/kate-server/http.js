@@ -14,6 +14,8 @@ const noItemResponse = (ctx) => {
   ctx.status = 404;
 };
 
+const capitalize = string => `${string.charAt(0).toUpperCase()}${string.slice(1)}`;
+
 export default class Http {
   constructor({ httpParams, logger, entities }) {
     this.app = new Koa();
@@ -32,6 +34,7 @@ export default class Http {
     this.router.get('/', async (ctx) => {
       ctx.body = '<body>Hello, world!</body>';
     });
+    this.router.get(`${apiUrl}/:entity`, this.query);
     this.router.post(`${apiUrl}/:entity/`, this.post);
     this.router.put(`${apiUrl}/:entity/:uuid`, this.put);
     this.router.get(`${apiUrl}/:entity/:uuid`, this.get);
@@ -42,6 +45,16 @@ export default class Http {
     this.app.listen(this.httpParams.port);
     this.logger.info('... http server started at', this.httpParams.port);
   }
+  query = async (ctx) => {
+    this.logger.debug('Query request', ctx.params, ctx.request.body);
+    const entity = this.entities.find(item => item.name === ctx.params.entity);
+    if (!entity) {
+      noEntityResponse(ctx);
+      return;
+    }
+    this.logger.debug('attributes', entity.modelGetOptions.attributes);
+    ctx.body = await entity.model.findAll({ ...entity.modelGetOptions });
+  }
   post = async (ctx) => {
     this.logger.debug('Create request', ctx.params, ctx.request.body);
     const entity = this.entities.find(item => item.name === ctx.params.entity);
@@ -49,7 +62,16 @@ export default class Http {
       noEntityResponse(ctx);
       return;
     }
-    ctx.body = await entity.model.create(ctx.request.body);
+    const data = ctx.request.body;
+
+    const item = await entity.model.create(ctx.request.body);
+    if (entity.tables) {
+      entity.tables.forEach(async (table) => {
+        const rows = await table.model.bulkCreate(data[table.name] || []);
+        item[`set${capitalize(table.name)}`](rows);
+      });
+    }
+    ctx.body = item.get();
   }
   put = async (ctx) => {
     this.logger.debug('Change request', ctx.params, ctx.request.body);
@@ -64,7 +86,17 @@ export default class Http {
       return;
     }
     this.logger.debug('item before changes', item.get());
-    ctx.body = await item.update(ctx.request.body);
+    const data = ctx.request.body;
+    await item.update(data);
+
+    if (entity.tables) {
+      entity.tables.forEach(async (table) => {
+        await table.model.destroy({ where: { [`${entity.name}Uuid`]: item.uuid } });
+        const rows = await table.model.bulkCreate(data[table.name] || []);
+        item[`set${capitalize(table.name)}`](rows);
+      });
+    }
+    ctx.body = item.get();
   }
   get = async (ctx) => {
     this.logger.debug('GET request', ctx.params, ctx.request.body);
@@ -73,7 +105,7 @@ export default class Http {
       noEntityResponse(ctx);
       return;
     }
-    const item = await entity.model.findById(ctx.params.uuid);
+    const item = await entity.model.findById(ctx.params.uuid, entity.modelGetOptions);
     if (!item) {
       noItemResponse(ctx);
       return;
