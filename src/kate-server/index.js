@@ -1,17 +1,12 @@
-
-// import { listen } from './koa';
-// import { sync } from './sequelize';
 import Database from './database';
 import Http from './http';
 
-const Fields = {
-  STRING: Symbol('string'),
-  INTEGER: Symbol('integer'),
-  REFERENCE: Symbol('reference'),
-};
+import { Fields } from './fields';
 
 const trivialLogger = {
   info: (...args) => console.log(...args),
+  debug: (...args) => console.log(...args),
+  error: (...args) => console.error(...args),
 };
 
 export default class KateServer {

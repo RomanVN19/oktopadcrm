@@ -1,7 +1,7 @@
 import KateServer, { Fields } from 'kate-server';
 
 const Project = {
-  name: 'project',
+  name: 'projects',
   fields: [
     {
       name: 'title',
@@ -10,9 +10,26 @@ const Project = {
   ],
 };
 
+const Task = {
+  name: 'tasks',
+  fields: [
+    {
+      name: 'title',
+      type: Fields.STRING,
+    },
+    {
+      name: 'project',
+      type: Fields.REFERENCE,
+      entity: Project,
+    },
+  ],
+};
+
+
 const App = {
   entities: [
     Project,
+    Task,
   ],
   databaseParams: {
     host: 'localhost',
