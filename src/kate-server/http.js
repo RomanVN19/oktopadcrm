@@ -1,6 +1,7 @@
 import Koa from 'koa';
 import Router from 'koa-router';
 import BodyParser from 'koa-bodyparser';
+import Static from 'koa-static';
 
 const apiUrl = '/api';
 
@@ -31,19 +32,20 @@ export default class Http {
     this.app.use(BodyParser());
 
     this.router = new Router();
-    this.router.get('/', async (ctx) => {
-      ctx.body = '<body>Hello, world!</body>';
-    });
+    // this.router.get('/', async (ctx) => {
+    //   ctx.body = '<body>Hello, world!</body>';
+    // });
     this.router.get(`${apiUrl}/:entity`, this.query);
     this.router.post(`${apiUrl}/:entity/`, this.post);
     this.router.put(`${apiUrl}/:entity/:uuid`, this.put);
     this.router.get(`${apiUrl}/:entity/:uuid`, this.get);
 
     this.app.use(this.router.routes());
+    this.app.use(Static(`${process.cwd()}/build`));
   }
   listen() {
     this.app.listen(this.httpParams.port);
-    this.logger.info('... http server started at', this.httpParams.port);
+    this.logger.info('... http server started at port', this.httpParams.port);
   }
   query = async (ctx) => {
     this.logger.debug('Query request', ctx.params, ctx.request.body);

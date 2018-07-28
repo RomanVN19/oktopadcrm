@@ -1,5 +1,11 @@
 import Sequelize from 'sequelize';
-import { Fields, SequelizeFields } from './fields';
+import Fields from './fields';
+
+export const SequelizeFields = {
+  [Fields.STRING]: Sequelize.STRING,
+  [Fields.INTEGER]: Sequelize.INTEGER,
+  [Fields.REFERENCE]: Sequelize.VIRTUAL,
+};
 
 const capitalize = string => `${string.charAt(0).toUpperCase()}${string.slice(1)}`;
 
@@ -25,7 +31,7 @@ const getModelParams = (entity) => {
     switch (field.type) {
       case Fields.REFERENCE:
         modelOptions.setterMethods[field.name] = function setter(value) {
-          if (value && !this.getDataValue('project')) {
+          if (value && !this.getDataValue(field.name)) {
             this.setDataValue(`${field.name}Uuid`, value.uuid);
           }
         };
@@ -57,7 +63,12 @@ const makeAssociations = (entities) => {
           }
         });
         entity.model.hasMany(table.model, { as: table.name });
-        entity.modelGetOptions.include.push({ model: table.model, as: table.name });
+        entity.modelGetOptions.include.push({
+          model: table.model,
+          as: table.name,
+          include: table.modelGetOptions.include,
+          attributes: table.modelGetOptions.attributes,
+        });
       });
     }
   });
@@ -74,7 +85,6 @@ export default class Database {
     this.entities = entities;
     this.init();
     this.createModels();
-    this.sync();
   }
   async init() {
     try {
