@@ -19,8 +19,11 @@ export default class KateServer {
   run() {
     this.logger.info('starting http server...');
     this.http.listen();
+    this.logger.info('... http server started at port', this.http.httpParams.port);
   }
-  syncDatabase() {
-    this.database.sync();
+  async syncDatabase() {
+    this.logger.info('synchronizing database structure...');
+    await this.database.sync();
+    this.logger.info('...database structure synchronized');
   }
 }

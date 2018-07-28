@@ -112,6 +112,5 @@ export default class Database {
   }
   async sync() {
     await this.sequelize.sync({ alter: true });
-    this.logger.info('...models synced');
   }
 }

@@ -49,7 +49,6 @@ export default class Http {
   }
   listen() {
     this.app.listen(this.httpParams.port);
-    this.logger.info('... http server started at port', this.httpParams.port);
   }
   query = async (ctx) => {
     this.logger.debug('Query request', ctx.params, ctx.request.body);

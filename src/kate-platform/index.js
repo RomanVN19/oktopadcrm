@@ -13,7 +13,7 @@ export default class KatePlatform {
   constructor({ app, logger }) {
     this.logger = logger || trivialLogger;
     this.app = app;
-    this.server = new KateServer({ app });
+    this.server = new KateServer({ app, logger: this.logger });
   }
   syncDatabase() {
     this.server.syncDatabase();
