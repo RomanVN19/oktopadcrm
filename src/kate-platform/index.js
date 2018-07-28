@@ -1,5 +1,6 @@
 import KateServer, { Fields } from 'kate-server';
 import webpack from 'webpack';
+import fs from 'fs';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 
 const trivialLogger = {
@@ -52,8 +53,13 @@ export default class KatePlatform {
         this.logger.info('Client compiling error!', info.errors);
       } else {
         this.logger.info('...client compiling done!');
+        this.makeIndex();
       }
     });
+  }
+  makeIndex() {
+    const index = fs.readFileSync(`${__dirname}/index.html`, { encoding: 'utf8' });
+    fs.writeFileSync(`${process.cwd()}/build/index.html`, index.replace('%app_title%', this.app.title), { encoding: 'utf8' });
   }
 }
 

@@ -2,6 +2,7 @@ import Koa from 'koa';
 import Router from 'koa-router';
 import BodyParser from 'koa-bodyparser';
 import Static from 'koa-static';
+import Send from 'koa-send';
 
 const apiUrl = '/api';
 
@@ -42,6 +43,9 @@ export default class Http {
 
     this.app.use(this.router.routes());
     this.app.use(Static(`${process.cwd()}/build`));
+    this.app.use(async (ctx) => {
+      await Send(ctx, '/build/index.html', process.cwd());
+    });
   }
   listen() {
     this.app.listen(this.httpParams.port);
