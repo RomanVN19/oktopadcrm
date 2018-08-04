@@ -51,23 +51,13 @@ const Task = {
   ],
 };
 
-
-const App = {
-  title: 'Assistant',
-  entities: [
-    Project,
-    Task,
-    User,
-  ],
-  databaseParams: {
-    host: 'localhost',
-    database: 'k_assistant',
-    username: 'root',
-    password: '',
-  },
-  httpParams: {
-    port: 2000,
-  },
-};
-
-export default App;
+export default class App {
+  constructor() {
+    this.title = 'Assistant';
+    this.entities = {
+      Project,
+      Task,
+      User,
+    };
+  }
+}

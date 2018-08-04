@@ -10,10 +10,9 @@ const trivialLogger = {
 };
 
 export default class KatePlatform {
-  constructor({ app, logger }) {
+  constructor({ AppServer, logger }) {
     this.logger = logger || trivialLogger;
-    this.app = app;
-    this.server = new KateServer({ app, logger: this.logger });
+    this.server = new KateServer({ App: AppServer, logger: this.logger });
   }
   syncDatabase() {
     this.server.syncDatabase();
@@ -59,7 +58,7 @@ export default class KatePlatform {
   }
   makeIndex() {
     const index = fs.readFileSync(`${__dirname}/index.html`, { encoding: 'utf8' });
-    fs.writeFileSync(`${process.cwd()}/build/index.html`, index.replace('%app_title%', this.app.title), { encoding: 'utf8' });
+    fs.writeFileSync(`${process.cwd()}/build/index.html`, index.replace('%app_title%', this.server.app.title), { encoding: 'utf8' });
   }
 }
 

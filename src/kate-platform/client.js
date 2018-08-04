@@ -1,5 +1,5 @@
 import KateClient, { Elements, Form, App } from 'kate-client';
-import Fields from './Fields';
+import Fields from './fields';
 
 const capitalize = string => `${string.charAt(0).toUpperCase()}${string.slice(1)}`;
 
@@ -7,7 +7,8 @@ const makeTitle = string => `${capitalize(string)}s`;
 
 const elementsByFields = {
   [Fields.STRING]: Elements.INPUT,
-}
+};
+
 
 const makeItemForm = entity =>
   class ItemForm extends Form {
@@ -133,7 +134,8 @@ const makeClientApp = (app) => {
       super(sys);
 
       this.forms = [];
-      app.entities.forEach((entity) => {
+      const entities = Object.keys(app.entities).map(entityName => app.entities[entityName]);
+      entities.forEach((entity) => {
         entity.forms = entity.forms || [];
         entity.formItem = makeItemForm(entity);
         entity.formList = makeListForm(entity);
@@ -142,7 +144,7 @@ const makeClientApp = (app) => {
         this.forms.push(entity.formItem); // !item first
         this.forms.push(entity.formList);
       });
-      this.menu = app.entities.map(entity => ({
+      this.menu = entities.map(entity => ({
         title: entity.formList.title,
         form: entity.formList,
       }));
@@ -152,8 +154,8 @@ const makeClientApp = (app) => {
   };
 };
 
-const KatePlatformClient = ({ app }) => {
-  KateClient({ app: makeClientApp(app) });
+const KatePlatformClient = ({ AppClient }) => {
+  KateClient({ app: makeClientApp(new AppClient()) });
 };
 
 export default KatePlatformClient;

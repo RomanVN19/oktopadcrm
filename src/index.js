@@ -1,8 +1,8 @@
 import KatePlatform from 'kate-platform';
 
-import App from './App';
+import AppServer from './AppServer';
 
-const platform = new KatePlatform({ app: App });
+const platform = new KatePlatform({ AppServer });
 platform.compileClient();
 // platform.syncDatabase();
 platform.startServer();

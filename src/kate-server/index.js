@@ -8,11 +8,13 @@ const trivialLogger = {
 };
 
 export default class KateServer {
-  constructor({ app, logger }) {
+  constructor({ App, logger }) {
     this.logger = logger || trivialLogger;
 
     this.logger.info('Creating KateServer...');
-    const { databaseParams, httpParams, entities } = app;
+    this.app = new App();
+    const { databaseParams, httpParams, entities: entitiesObject } = this.app;
+    const entities = Object.keys(entitiesObject).map(entityName => entitiesObject[entityName]);
     this.database = new Database({ databaseParams, entities, logger: this.logger });
     this.http = new Http({ httpParams, entities, logger: this.logger, database: this.database });
   }

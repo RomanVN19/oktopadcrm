@@ -1,5 +1,5 @@
 import KatePlatformClient from 'kate-platform/client';
 
-import App from './App';
+import AppClient from './AppClient';
 
-KatePlatformClient({ app: App });
+KatePlatformClient({ AppClient });
