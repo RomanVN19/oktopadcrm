@@ -7,8 +7,63 @@ const makeTitle = string => `${capitalize(string)}s`;
 
 const elementsByFields = {
   [Fields.STRING]: Elements.INPUT,
+  [Fields.REFERENCE]: Elements.SELECT,
 };
 
+const getElementByField = (field, form) => {
+  const element = {
+    id: field.name,
+    title: capitalize(field.name),
+    type: elementsByFields[field.type],
+  };
+  if (field.type === Fields.REFERENCE) {
+    const getFuncName = `getOptions${capitalize(field.entity.name)}`;
+    if (!form[getFuncName]) {
+      // eslint-disable-next-line no-param-reassign
+      form[getFuncName] = async () => {
+        const { response } = await form.app.request(`${form.app.baseUrl}/${field.entity.name}`);
+        return response;
+      };
+    }
+    element.getOptions = form[getFuncName];
+  }
+  return element;
+};
+
+const getTableElement = (table, form) => {
+  const tableElement = {
+    type: Elements.TABLE_EDITABLE,
+    id: table.name,
+    columns: [],
+  };
+  table.fields.forEach((field) => {
+    const element = getElementByField(field, form);
+    element.dataPath = element.id;
+    delete element.id;
+    tableElement.columns.push(element);
+  });
+  const addButton = {
+    type: Elements.BUTTON,
+    title: 'Add',
+    onClick: () => form.content[table.name].addRow({}),
+  };
+
+  const cardElement = {
+    type: Elements.CARD,
+    title: capitalize(table.name),
+    elements: [
+      {
+        type: Elements.CARD_ACTIONS,
+        elements: [
+          addButton,
+        ],
+      },
+      tableElement,
+    ],
+  };
+
+  return cardElement;
+};
 
 const makeItemForm = entity =>
   class ItemForm extends Form {
@@ -16,7 +71,8 @@ const makeItemForm = entity =>
     static path = `/${entity.name}/:id`;
     constructor(sys, params) {
       super(sys);
-
+      const elements = entity.fields.map(field => getElementByField(field, this));
+      entity.tables.forEach(table => elements.push(getTableElement(table, this)));
       this.init({
         actions: [
           {
@@ -44,12 +100,9 @@ const makeItemForm = entity =>
             onClick: this.close,
           },
         ],
-        elements: entity.fields.map(field => ({
-          id: field.name,
-          title: capitalize(field.name),
-          type: elementsByFields[field.type],
-        })),
+        elements,
       });
+
       if (params.id && params.id !== 'new') {
         this.uuid = params.id;
         this.load();
