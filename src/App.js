@@ -17,6 +17,12 @@ const User = {
       name: 'title',
       type: Fields.STRING,
     },
+    {
+      name: 'salary',
+      type: Fields.DECIMAL,
+      length: 5,
+      precision: 2,
+    },
   ],
 };
 
@@ -51,6 +57,11 @@ const Task = {
   ],
 };
 
+const Command = {
+  name: 'command',
+  noDatabase: true,
+};
+
 export default class App {
   constructor() {
     this.title = 'Assistant';
@@ -58,6 +69,7 @@ export default class App {
       Project,
       Task,
       User,
+      Command,
     };
   }
 }

@@ -8,6 +8,7 @@ const makeTitle = string => `${capitalize(string)}s`;
 const elementsByFields = {
   [Fields.STRING]: Elements.INPUT,
   [Fields.REFERENCE]: Elements.SELECT,
+  [Fields.DECIMAL]: Elements.INPUT,
 };
 
 const getElementByField = (field, form) => {
@@ -26,6 +27,14 @@ const getElementByField = (field, form) => {
       };
     }
     element.getOptions = form[getFuncName];
+  }
+  if (field.type === Fields.DECIMAL) {
+    const intLength = (field.length || 15) - (field.precision || 2);
+    const re = new RegExp(`\\d{0,${intLength}}(\\.\\d{0,${field.precision || 2}})?`);
+    element.format = (val) => {
+      const res = re.exec(val);
+      return res ? res[0] : 0;
+    };
   }
   return element;
 };
@@ -71,30 +80,36 @@ const makeItemForm = entity =>
     static path = `/${entity.name}/:id`;
     constructor(sys, params) {
       super(sys);
-      const elements = entity.fields.map(field => getElementByField(field, this));
-      entity.tables.forEach(table => elements.push(getTableElement(table, this)));
+      const elements = (entity.fields || []).map(field => getElementByField(field, this));
+      (entity.tables || []).forEach(table => elements.push(getTableElement(table, this)));
       this.init({
         actions: [
           {
-            id: '0',
+            id: '__OK',
             type: Elements.BUTTON,
             title: 'OK',
             onClick: this.ok,
           },
           {
-            id: '1',
+            id: '__Save',
             type: Elements.BUTTON,
             title: 'Save',
             onClick: this.save,
           },
           {
-            id: '2',
+            id: '__Load',
             type: Elements.BUTTON,
             title: 'Load',
             onClick: this.load,
           },
           {
-            id: '3',
+            id: '__Delete',
+            type: Elements.BUTTON,
+            title: 'Delete',
+            onClick: this.delete,
+          },
+          {
+            id: '__Close',
             type: Elements.BUTTON,
             title: 'Close',
             onClick: this.close,
@@ -128,6 +143,15 @@ const makeItemForm = entity =>
     }
     close = () => {
       this.app.open(entity.formList);
+    }
+    delete = async () => {
+      const result = await this.app.request(`${this.app.baseUrl}/${entity.name}/${this.uuid}`, {
+        method: 'delete',
+      });
+      if (result.response) {
+        this.close();
+        this.app.showAlert({ type: 'success', title: 'Deleted!' });
+      }
     }
     ok = async () => {
       await this.save();

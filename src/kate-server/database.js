@@ -5,6 +5,7 @@ export const SequelizeFields = {
   [Fields.STRING]: Sequelize.STRING,
   [Fields.INTEGER]: Sequelize.INTEGER,
   [Fields.REFERENCE]: Sequelize.VIRTUAL,
+  [Fields.DECIMAL]: Sequelize.DECIMAL,
 };
 
 const capitalize = string => `${string.charAt(0).toUpperCase()}${string.slice(1)}`;
@@ -34,6 +35,12 @@ const getModelParams = (entity) => {
           if (value && !this.getDataValue(field.name)) {
             this.setDataValue(`${field.name}Uuid`, value.uuid);
           }
+        };
+        break;
+      case Fields.DECIMAL:
+        entity.modelGetOptions.attributes.push(field.name);
+        modelParams[field.name] = {
+          type: SequelizeFields[field.type](field.length || 15, field.precision || 2),
         };
         break;
       default:

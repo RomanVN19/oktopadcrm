@@ -40,6 +40,7 @@ export default class Http {
     this.router.post(`${apiUrl}/:entity/`, this.post);
     this.router.put(`${apiUrl}/:entity/:uuid`, this.put);
     this.router.get(`${apiUrl}/:entity/:uuid`, this.get);
+    this.router.delete(`${apiUrl}/:entity/:uuid`, this.delete);
 
     this.app.use(this.router.routes());
     this.app.use(Static(`${process.cwd()}/build`));
@@ -116,5 +117,20 @@ export default class Http {
       return;
     }
     ctx.body = item;
+  }
+  delete = async (ctx) => {
+    this.logger.debug('DELETE request', ctx.params, ctx.request.body);
+    const entity = this.entities.find(item => item.name === ctx.params.entity);
+    if (!entity) {
+      noEntityResponse(ctx);
+      return;
+    }
+    const item = await entity.model.findById(ctx.params.uuid, entity.modelGetOptions);
+    if (!item) {
+      noItemResponse(ctx);
+      return;
+    }
+    await item.destroy();
+    ctx.body = { ok: true };
   }
 }
