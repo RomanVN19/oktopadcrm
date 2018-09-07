@@ -1,7 +1,11 @@
-import KateServer, { Fields } from 'kate-server';
 import webpack from 'webpack';
 import fs from 'fs';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import KateServer from './KateServer';
+
+import Fields from './fields';
+import { Entity, makeEntitiesFromStructures } from './server';
+
 
 const trivialLogger = {
   info: (...args) => console.log(...args),
@@ -64,4 +68,6 @@ export default class KatePlatform {
 
 export {
   Fields,
+  Entity,
+  makeEntitiesFromStructures,
 };

@@ -1,8 +1,10 @@
-import App from './App';
+import { makeEntitiesFromStructures } from 'kate-platform';
 
-export default class ServerApp extends App {
+import { structures } from './structure';
+
+export default class ServerApp {
   constructor() {
-    super();
+    this.entities = makeEntitiesFromStructures(structures);
     this.databaseParams = {
       host: 'localhost',
       database: 'k_assistant',

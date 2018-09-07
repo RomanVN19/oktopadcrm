@@ -62,14 +62,10 @@ const Command = {
   noDatabase: true,
 };
 
-export default class App {
-  constructor() {
-    this.title = 'Assistant';
-    this.entities = {
-      Project,
-      Task,
-      User,
-      Command,
-    };
-  }
-}
+export const title = 'Assistant';
+export const structures = {
+  Project,
+  Task,
+  User,
+  Command,
+};
