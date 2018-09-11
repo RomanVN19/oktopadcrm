@@ -4,7 +4,8 @@ import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import KateServer from './KateServer';
 
 import Fields from './fields';
-import { Entity, makeEntitiesFromStructures } from './server';
+import { makeEntitiesFromStructures } from './server';
+import { Entity } from './Entity';
 
 
 const trivialLogger = {

@@ -13,8 +13,13 @@ export default class KateServer {
 
     this.logger.info('Creating KateServer...');
     this.app = new App();
-    const { databaseParams, httpParams, entities } = this.app;
-    // this.database = new Database({ databaseParams, entities, logger: this.logger });
+    const { databaseParams, httpParams, entities: entitiesClasses } = this.app;
+    const entities = {};
+    Object.keys(entitiesClasses).forEach((name) => {
+      entities[name] = new entitiesClasses[name]({ logger: this.logger });
+    });
+
+    this.database = new Database({ databaseParams, entities, logger: this.logger });
     this.http = new Http({ httpParams, entities, logger: this.logger });
   }
   run() {

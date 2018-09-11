@@ -1,5 +1,6 @@
 import Sequelize from 'sequelize';
 import Fields from './fields';
+import { model, modelGetOptions, capitalize } from './Entity';
 
 export const SequelizeFields = {
   [Fields.STRING]: Sequelize.STRING,
@@ -7,8 +8,6 @@ export const SequelizeFields = {
   [Fields.REFERENCE]: Sequelize.VIRTUAL,
   [Fields.DECIMAL]: Sequelize.DECIMAL,
 };
-
-const capitalize = string => `${string.charAt(0).toUpperCase()}${string.slice(1)}`;
 
 const getModelParams = (entity) => {
   const modelParams = {
@@ -26,7 +25,7 @@ const getModelParams = (entity) => {
   };
 
   // eslint-disable-next-line no-param-reassign
-  entity.modelGetOptions = { include: [], attributes: ['uuid', 'createdAt', 'updatedAt'] };
+  entity[modelGetOptions] = { include: [], attributes: ['uuid', 'createdAt', 'updatedAt'] };
 
   entity.fields.forEach((field) => {
     switch (field.type) {
@@ -38,13 +37,13 @@ const getModelParams = (entity) => {
         };
         break;
       case Fields.DECIMAL:
-        entity.modelGetOptions.attributes.push(field.name);
+        entity[modelGetOptions].attributes.push(field.name);
         modelParams[field.name] = {
           type: SequelizeFields[field.type](field.length || 15, field.precision || 2),
         };
         break;
       default:
-        entity.modelGetOptions.attributes.push(field.name);
+        entity[modelGetOptions].attributes.push(field.name);
         modelParams[field.name] = {
           type: SequelizeFields[field.type],
         };
@@ -54,27 +53,29 @@ const getModelParams = (entity) => {
 };
 
 const makeAssociations = (entities) => {
-  entities.forEach((entity) => {
-    entity.fields.forEach((field) => {
-      if (field.type === Fields.REFERENCE) {
-        entity.model.belongsTo(field.entity.model, { as: field.name });
-        entity.modelGetOptions.include.push({ model: field.entity.model, as: field.name, attributes: ['title', 'uuid'] });
-      }
-    });
+  Object.values(entities).forEach((entity) => {
+    if (entity.fields) {
+      entity.fields.forEach((field) => {
+        if (field.type === Fields.REFERENCE) {
+          entity[model].belongsTo(entities[field.entity][model], { as: field.name });
+          entity[modelGetOptions].include.push({ model: entities[field.entity][model], as: field.name, attributes: ['title', 'uuid'] });
+        }
+      });
+    }
     if (entity.tables) {
       entity.tables.forEach((table) => {
         table.fields.forEach((field) => {
           if (field.type === Fields.REFERENCE) {
-            table.model.belongsTo(field.entity.model, { as: field.name });
-            table.modelGetOptions.include.push({ model: field.entity.model, as: field.name, attributes: ['title', 'uuid'] });
+            table[model].belongsTo(entities[field.entity][model], { as: field.name });
+            table[modelGetOptions].include.push({ model: entities[field.entity][model], as: field.name, attributes: ['title', 'uuid'] });
           }
         });
-        entity.model.hasMany(table.model, { as: table.name });
-        entity.modelGetOptions.include.push({
-          model: table.model,
+        entity[model].hasMany(table[model], { as: table.name });
+        entity[modelGetOptions].include.push({
+          model: table[model],
           as: table.name,
-          include: table.modelGetOptions.include,
-          attributes: table.modelGetOptions.attributes,
+          include: table[modelGetOptions].include,
+          attributes: table[modelGetOptions].attributes,
         });
       });
     }
@@ -103,15 +104,17 @@ export default class Database {
     }
   }
   createModels() {
-    this.entities.forEach((entity) => {
-      const { params, options } = getModelParams(entity);
-      // eslint-disable-next-line no-param-reassign
-      entity.model = this.sequelize.define(entity.name, params, options);
+    Object.values(this.entities).forEach((entity) => {
+      if (entity.fields) {
+        const { params, options } = getModelParams(entity);
+        // eslint-disable-next-line no-param-reassign
+        entity[model] = this.sequelize.define(entity.name, params, options);
+      }
       if (entity.tables) {
         entity.tables.forEach((table) => {
           const { params: tableParams, options: tableOptions } = getModelParams(table);
           // eslint-disable-next-line no-param-reassign
-          table.model = this.sequelize.define(`${entity.name}${capitalize(table.name)}`, tableParams, tableOptions);
+          table[model] = this.sequelize.define(`${entity.name}${capitalize(table.name)}`, tableParams, tableOptions);
         });
       }
     });

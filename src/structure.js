@@ -36,7 +36,7 @@ const Task = {
     {
       name: 'project',
       type: Fields.REFERENCE,
-      entity: Project,
+      entity: 'Project',
     },
   ],
   tables: [
@@ -50,7 +50,7 @@ const Task = {
         {
           name: 'user',
           type: Fields.REFERENCE,
-          entity: User,
+          entity: 'User',
         },
       ],
     },
@@ -59,7 +59,6 @@ const Task = {
 
 const Command = {
   name: 'command',
-  noDatabase: true,
 };
 
 export const title = 'Assistant';

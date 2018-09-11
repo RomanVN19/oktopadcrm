@@ -16,12 +16,6 @@ const noMethodResponse = (ctx) => {
   ctx.status = 404;
 };
 
-const noItemResponse = (ctx) => {
-  ctx.body = 'Can\'t find entity item';
-  ctx.status = 404;
-};
-
-const capitalize = string => `${string.charAt(0).toUpperCase()}${string.slice(1)}`;
 
 export default class Http {
   constructor({ httpParams, logger, entities }) {
@@ -59,7 +53,7 @@ export default class Http {
     this.app.listen(this.httpParams.port);
   }
   api = async (ctx) => {
-    this.logger.debug('Query request', ctx.params, ctx.request.body);
+    this.logger.debug('api request', ctx.params, ctx.request.body);
     const { entity, method, data } = ctx.request.body;
     const entityObject = this.entities[entity];
     if (!entityObject) {
@@ -71,7 +65,7 @@ export default class Http {
       return;
     }
 
-    entityObject[method]({ data, ctx });
+    await entityObject[method]({ data, ctx });
   }
   // query = async (ctx) => {
   //   this.logger.debug('Query request', ctx.params, ctx.request.body);

@@ -1,6 +1,6 @@
-import App from './App';
+// создание по структуре
 
-export default class AppClient extends App {
+export default class AppClient {
   constructor(){
     super();
   }
