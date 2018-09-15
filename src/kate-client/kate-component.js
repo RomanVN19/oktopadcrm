@@ -36,7 +36,9 @@ class KateComponent extends Component {
       title: item.title,
     }));
 
-    routes.push({ path: `${match.url}/`, redirect: menu[0].path });
+    if (menu[0]) {
+      routes.push({ path: `${match.url}/`, redirect: menu[0].path });
+    }
     this.setState({
       routes,
       menu,

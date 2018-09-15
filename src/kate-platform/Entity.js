@@ -21,34 +21,41 @@ export default class Entity {
     ctx.body = item;
   }
   async put({ data, ctx }) {
-    const item = await this[model].findById(data.uuid);
-    if (!item) {
-      noItemResponse(ctx);
-      return;
+    let item;
+    if (data.uuid) {
+      item = await this[model].findById(data.uuid);
+      if (!item) {
+        noItemResponse(ctx);
+        return;
+      }
+      this.logger.debug('item before changes', item.get());
+      await item.update(data.body);
+    } else {
+      item = await this[model].create(data.body);
     }
-    this.logger.debug('item before changes', item.get());
-    await item.update(data.body);
 
     if (this.tables) {
       this.tables.forEach(async (table) => {
-        await table[model].destroy({ where: { [`${this.name}Uuid`]: item.uuid } });
+        if (data.uuid) {
+          await table[model].destroy({ where: { [`${this.name}Uuid`]: item.uuid } });
+        }
         const rows = await table[model].bulkCreate(data.body[table.name] || []);
         item[`set${capitalize(table.name)}`](rows);
       });
     }
     ctx.body = item.get();
   }
-  async post({ data, ctx }) {
-    const item = await this[model].create(data.body);
-    if (this.tables) {
-      this.tables.forEach(async (table) => {
-        const rows = await table[model].bulkCreate(data.body[table.name] || []);
-        item[`set${capitalize(table.name)}`](rows);
-      });
-    }
-    ctx.body = item.get();
-
-  }
+  // async post({ data, ctx }) {
+  //   const item = await this[model].create(data.body);
+  //   if (this.tables) {
+  //     this.tables.forEach(async (table) => {
+  //       const rows = await table[model].bulkCreate(data.body[table.name] || []);
+  //       item[`set${capitalize(table.name)}`](rows);
+  //     });
+  //   }
+  //   ctx.body = item.get();
+  //
+  // }
   async delete({ data, ctx }) {
     const item = await this[model].findById(data.uuid, this[modelGetOptions]);
     if (!item) {
@@ -59,7 +66,6 @@ export default class Entity {
     ctx.body = { ok: true };
   }
   async query({ data, ctx }) {
-    this.logger.debug('attributes', this[modelGetOptions].attributes);
     ctx.body = await this[model].findAll({ ...this[modelGetOptions] });
   }
 }

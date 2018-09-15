@@ -62,6 +62,7 @@ const Command = {
 };
 
 export const title = 'Assistant';
+export const packageName = 'assistant';
 export const structures = {
   Project,
   Task,

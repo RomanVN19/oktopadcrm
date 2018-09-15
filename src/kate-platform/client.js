@@ -1,4 +1,5 @@
-import KateClient, { Elements, Form, App } from 'kate-client';
+import KateClient, { Elements, Form } from 'kate-client';
+import App from './App';
 import Fields from './fields';
 
 const capitalize = string => `${string.charAt(0).toUpperCase()}${string.slice(1)}`;
@@ -18,11 +19,11 @@ const getElementByField = (field, form) => {
     type: elementsByFields[field.type],
   };
   if (field.type === Fields.REFERENCE) {
-    const getFuncName = `getOptions${capitalize(field.entity.name)}`;
+    const getFuncName = `getOptions${capitalize(field.entity)}`;
     if (!form[getFuncName]) {
       // eslint-disable-next-line no-param-reassign
       form[getFuncName] = async () => {
-        const { response } = await form.app.request(`${form.app.baseUrl}/${field.entity.name}`);
+        const { response } = await form.app[field.entity].query();
         return response;
       };
     }
@@ -74,7 +75,7 @@ const getTableElement = (table, form) => {
   return cardElement;
 };
 
-const makeItemForm = entity =>
+const makeItemForm = ({ structure: entity, name }) =>
   class ItemForm extends Form {
     static title = capitalize(entity.name)
     static path = `/${entity.name}/:id`;
@@ -124,7 +125,7 @@ const makeItemForm = entity =>
       }
     }
     load = async () => {
-      const result = await this.app.request(`${this.app.baseUrl}/${entity.name}/${this.uuid}`);
+      const result = await this.app[name].get({ uuid: this.uuid });
       if (result.response) {
         this.setValues(result.response);
       }
@@ -132,22 +133,18 @@ const makeItemForm = entity =>
     save = async () => {
       const data = this.getValues();
 
-      const result = await this.app.request(`${this.app.baseUrl}/${entity.name}/${this.uuid ? this.uuid : ''}`, {
-        method: this.uuid ? 'PUT' : 'POST',
-        body: JSON.stringify(data),
-      });
+      const result = await this.app[name].put({ body: data, uuid: this.uuid });
+
       if (result.response) {
         this.uuid = result.response.uuid;
         this.app.showAlert({ type: 'success', title: 'Saved!' });
       }
     }
     close = () => {
-      this.app.open(entity.formList);
+      this.app.open(this.app.allForms[`${name}List`]);
     }
     delete = async () => {
-      const result = await this.app.request(`${this.app.baseUrl}/${entity.name}/${this.uuid}`, {
-        method: 'delete',
-      });
+      const result = this.app[name].delete({ uuid: this.uuid });
       if (result.response) {
         this.close();
         this.app.showAlert({ type: 'success', title: 'Deleted!' });
@@ -159,7 +156,7 @@ const makeItemForm = entity =>
     }
   };
 
-const makeListForm = entity =>
+const makeListForm = ({ structure: entity, name }) =>
   class ListForm extends Form {
     static title = makeTitle(entity.name)
     static path = `/${entity.name}`;
@@ -192,14 +189,14 @@ const makeListForm = entity =>
       this.load();
     }
     load = async () => {
-      const result = await this.app.request(`${this.app.baseUrl}/${this.entity}`);
+      const result = await this.app[name].query();
       this.content.list.value = result.response;
     }
     newItem = () => {
-      this.app.open(entity.formItem, { id: 'new' });
+      this.app.open(this.app.allForms[`${name}Item`], { id: 'new' });
     }
     editRow = (row) => {
-      this.app.open(entity.formItem, { id: row.uuid });
+      this.app.open(this.app.allForms[`${name}Item`], { id: row.uuid });
     }
   };
 
@@ -231,8 +228,30 @@ const makeClientApp = (app) => {
   };
 };
 
-const KatePlatformClient = ({ AppClient }) => {
-  KateClient({ app: makeClientApp(new AppClient()) });
+const use = (parent, ...classes) => {
+  let result = parent;
+  (classes || []).forEach((Package) => {
+    if (result.packages.indexOf(Package.package) === -1) {
+      result.packages.push(Package.package);
+      result = Package(result);
+    }
+  });
+  return result;
 };
+
+const KatePlatformClient = ({ AppClient }) => {
+  KateClient({ app: AppClient(App) });
+};
+
+
+export {
+  App,
+  Form,
+  Elements,
+  makeItemForm,
+  makeListForm,
+  use,
+};
+
 
 export default KatePlatformClient;

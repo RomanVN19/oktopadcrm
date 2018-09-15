@@ -7,12 +7,15 @@ const trivialLogger = {
   error: (...args) => console.error(...args),
 };
 
+class AppServer {
+}
+
 export default class KateServer {
   constructor({ App, logger }) {
     this.logger = logger || trivialLogger;
 
     this.logger.info('Creating KateServer...');
-    this.app = new App();
+    this.app = new (App(AppServer))();
     const { databaseParams, httpParams, entities: entitiesClasses } = this.app;
     const entities = {};
     Object.keys(entitiesClasses).forEach((name) => {

@@ -67,8 +67,21 @@ export default class KatePlatform {
   }
 }
 
+const use = (parent, ...classes) => {
+  let result = parent;
+  (classes || []).forEach((Package) => {
+    if (result.packages.indexOf(Package.package) === -1) {
+      result.packages.push(Package.package);
+      result = Package(result);
+    }
+  });
+  console.log('use res', result);
+  return result;
+};
+
 export {
   Fields,
   Entity,
   makeEntitiesFromStructures,
+  use,
 };
