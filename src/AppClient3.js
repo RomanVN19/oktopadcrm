@@ -1,4 +1,4 @@
-import { use } from 'kate-platform/client';
+import { use } from 'katejs/client';
 import App2 from './AppClient2';
 import App1 from './AppClient1';
 

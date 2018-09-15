@@ -1,5 +1,4 @@
-import KatePlatform from 'kate-platform';
-
+import KatePlatform from 'katejs';
 import AppServer from './AppServer';
 
 const platform = new KatePlatform({ AppServer });

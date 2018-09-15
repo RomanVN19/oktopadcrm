@@ -1,5 +1,4 @@
-import { makeEntitiesFromStructures, use } from 'kate-platform';
-
+import { makeEntitiesFromStructures, use } from 'katejs';
 import { structures, title, packageName } from './structure';
 
 const AppServer = parent => class Server extends use(parent) {

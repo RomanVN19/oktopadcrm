@@ -1,4 +1,4 @@
-import KatePlatformClient from 'kate-platform/client';
+import KatePlatformClient from 'katejs/client';
 
 import AppClient from './AppClient';
 

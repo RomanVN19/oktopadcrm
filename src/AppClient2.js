@@ -1,4 +1,4 @@
-import { use } from 'kate-platform/client';
+import { use } from 'katejs/client';
 import App1 from './AppClient1';
 
 const AppClient = parent => class Client extends use(parent, App1) {

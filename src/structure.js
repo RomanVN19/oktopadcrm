@@ -1,4 +1,4 @@
-import Fields from 'kate-platform/fields';
+import Fields from 'katejs/fields';
 
 const Project = {
   name: 'project',
