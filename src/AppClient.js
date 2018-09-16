@@ -8,9 +8,8 @@ const AppClient = parent => class Client extends use(parent, App2, App3) {
   static title = title;
   constructor(params) {
     super(params);
-    console.log('assistant constructor', Client.packages);
     this.init({ structures });
-    // this.allForms = {
+    // this.allForms == {
     //   ProjectList,
     //   ProjectItem,
     //   ..
