@@ -1,48 +1,26 @@
 {
   "name": "assistant",
   "version": "0.0.1",
-  "private": true,
-  "dependencies": {
-    "extract-text-webpack-plugin": "^4.0.0-beta.0",
-    "history": "^4.7.2",
-    "kate-form": "^1.0.3",
-    "kate-form-material-kit-react": "^0.1.9",
-    "koa": "^2.5.2",
-    "koa-bodyparser": "^4.2.1",
-    "koa-router": "^7.4.0",
-    "koa-send": "^5.0.0",
-    "koa-static": "^5.0.0",
-    "mysql2": "^1.5.3",
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2",
-    "react-redux": "^5.0.7",
-    "redux": "^4.0.0",
-    "redux-logger": "^3.0.6",
-    "sequelize": "^4.38.0",
-    "webpack": "^4.16.3"
-  },
-  "todo": "при оформлении пакета часть зависимостей из dev придется поднять в обычне",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-eslint": "^7.2.3",
-    "babel-loader": "^7.1.5",
     "babel-plugin-module-resolver": "^3.1.1",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-es2015": "^6.24.1",
-    "babel-preset-stage-3": "^6.24.1",
-    "css-loader": "^1.0.0",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-import-resolver-babel-module": "^4.0.0",
     "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-jsx-a11y": "^6.1.0",
     "eslint-plugin-react": "^7.7.0",
-    "nodemon": "^1.18.3",
-    "style-loader": "^0.21.0"
+    "nodemon": "^1.18.4"
   },
   "scripts": {
-    "dev": "nodemon --watch src --exec babel-node src/index.js"
+    "dev": "nodemon --watch src --exec babel-node src/server.js"
+  },
+  "dependencies": {
+    "katejs": "^0.2.1",
+    "katejs-service": "^1.0.1"
   }
 }

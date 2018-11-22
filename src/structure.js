@@ -1,71 +1,41 @@
-import Fields from 'katejs/fields';
+import Fields from 'katejs/lib/fields';
 
-const Project = {
-  name: 'project',
-  fields: [
-    {
-      name: 'title',
-      type: Fields.STRING,
-    },
-  ],
-};
-
-const User = {
-  name: 'user',
+const Note = {
+  name: 'note',
   fields: [
     {
       name: 'title',
       type: Fields.STRING,
     },
     {
-      name: 'salary',
-      type: Fields.DECIMAL,
-      length: 5,
-      precision: 2,
-    },
-  ],
-};
-
-const Task = {
-  name: 'task',
-  fields: [
-    {
-      name: 'title',
-      type: Fields.STRING,
+      name: 'noteDone',
+      type: Fields.BOOLEAN,
     },
     {
-      name: 'project',
-      type: Fields.REFERENCE,
-      entity: 'Project',
+      name: 'description',
+      type: Fields.TEXT,
     },
   ],
   tables: [
     {
-      name: 'users',
+      name: 'checklist',
       fields: [
         {
-          name: 'title',
-          type: Fields.STRING,
+          name: 'done',
+          type: Fields.BOOLEAN,
         },
         {
-          name: 'user',
-          type: Fields.REFERENCE,
-          entity: 'User',
+          name: 'description',
+          type: Fields.STRING,
         },
       ],
     },
   ],
 };
 
-const Command = {
-  name: 'command',
-};
 
 export const title = 'Assistant';
-export const packageName = 'assistant';
+export const packageName = 'katejs-assistant';
 export const structures = {
-  Project,
-  Task,
-  User,
-  Command,
+  Note,
 };
