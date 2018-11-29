@@ -1,6 +1,6 @@
 {
   "name": "assistant",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-eslint": "^7.2.3",
@@ -20,7 +20,7 @@
     "dev": "nodemon --watch src --exec babel-node src/server.js"
   },
   "dependencies": {
-    "katejs": "^0.2.1",
-    "katejs-service": "^1.0.1"
+    "katejs": "^0.2.3",
+    "katejs-service": "^1.1.1"
   }
 }

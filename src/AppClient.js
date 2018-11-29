@@ -1,11 +1,15 @@
 import { use } from 'katejs/lib/client';
-import AppService, { serviceAdminRule } from 'katejs-service/lib/ServiceClient';
+import AppService, { serviceAdminRule } from 'katejs-service/lib/AppClient';
 import { structures, title, packageName } from './structure';
 import NoteItemForm from './forms/NoteItem';
 import NoteListForm from './forms/NoteList';
+import logo from './assistant.svg';
 
 const AppClient = parent => class Client extends use(parent, AppService) {
   static title = title;
+  static path = '/app';
+  static primaryColor = '#085d96';
+  static logo = logo;
   constructor(params) {
     super(params);
     this.init({ structures, addToMenu: true });
