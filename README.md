@@ -1,3 +1,3 @@
 # Assistant
 
-... developing ...
+Демо приложение фреймворка KateJS
