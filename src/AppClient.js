@@ -5,6 +5,8 @@ import NoteItemForm from './forms/NoteItem';
 import NoteListForm from './forms/NoteList';
 import logo from './assistant.svg';
 
+import env from '../env.json';
+
 const AppClient = parent => class Client extends use(parent, AppService) {
   static title = title;
   static path = '/app';
@@ -13,7 +15,7 @@ const AppClient = parent => class Client extends use(parent, AppService) {
   constructor(params) {
     super(params);
     this.init({ structures, addToMenu: true });
-    this.baseUrl = 'http://localhost:2000/api';
+    this.baseUrl = env.apiUrl || '/api';
     this.forms.NoteItem = NoteItemForm(this.forms.NoteItem);
     this.forms.NoteList = NoteListForm(this.forms.NoteList);
     this.menu = [
