@@ -5,7 +5,7 @@ import NoteItemForm from './forms/NoteItem';
 import NoteListForm from './forms/NoteList';
 import logo from './assistant.svg';
 
-import env from '../env.json';
+import env from './env.json';
 
 const AppClient = parent => class Client extends use(parent, AppService) {
   static title = title;
@@ -34,7 +34,7 @@ const AppClient = parent => class Client extends use(parent, AppService) {
         rule: { rule: serviceAdminRule },
       },
     ];
-    this.checkSavedAuth();
+    this.saveAuth = true;
   }
 };
 AppClient.package = packageName;
