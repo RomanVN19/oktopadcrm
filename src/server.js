@@ -1,7 +1,9 @@
-import KateJS from 'katejs';
+import KateJSServer from 'katejs/lib/server';
 import AppServer from './AppServer';
 
-const platform = new KateJS({ AppServer });
-platform.compileClient();
-// platform.syncDatabase(); // run once when structure changes
-platform.startServer();
+const server = new KateJSServer({ AppServer });
+if (process.argv.indexOf('dbsync') > -1) {
+  server.syncDatabase();
+} else {
+  server.start();
+}
