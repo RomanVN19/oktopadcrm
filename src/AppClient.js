@@ -29,6 +29,8 @@ import updates from './updates';
 import logo from './assistant.svg';
 import icons from './icons';
 
+import env from './front.env.json';
+
 const AppClient = parent => class Client extends
   use(parent, AppUser, AppDoc, AppPrint, AppSettings, AppDocs) {
   static title = title;
@@ -37,6 +39,8 @@ const AppClient = parent => class Client extends
   static logo = logo;
   constructor(params) {
     super(params);
+    this.baseUrl = env.apiUrl || '/api';
+
     this.menu.unshift(
       {
         form: 'ProductSalesReport',
