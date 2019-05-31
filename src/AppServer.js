@@ -1,24 +1,34 @@
-import { makeEntitiesFromStructures, use } from 'katejs';
-import AppService from 'katejs-service/lib/AppServer';
-import { structures, title, packageName } from './structure';
+import { makeEntitiesFromStructures, use, Fields } from 'katejs';
+import AppUser from 'katejs-user/lib/AppServer';
+import AppDoc from 'katejs-doc/lib/AppServer';
+import AppDocs from 'katejs-docs/lib/AppServer';
+import AppPrint from 'katejs-print/lib/AppServer';
+import AppSettings from 'katejs-settings/lib/AppServer';
+import { structures, title, packageName, Settings } from './structure';
 
-import env from './env.json';
+import Order from './entities/Order';
+import Payment from './entities/Payment';
+import Expense from './entities/Expense';
 
-const AppServer = parent => class Server extends use(parent, AppService) {
+const AppServer = parent => class Server extends
+  use(parent, AppUser, AppDoc, AppPrint, AppDocs, AppSettings) {
   constructor(params) {
     super(params);
     this.title = title; // название приложения
-    this.databaseParams = env.databaseParams || { // параметры СУБД
-      host: '127.0.0.1',
-      database: 'testdb',
-      username: 'root',
-      password: '',
-    };
-    this.httpParams = env.httpParams || { // параметры http сервера
-      port: 2000,
-    };
     makeEntitiesFromStructures(this.entities, structures);
-    this.setAuthParams({ jwtSecret: 'default' });
+    this.entities = {
+      ...this.entities,
+      Order,
+      Payment,
+      Expense,
+    };
+    this.entities.DebtRecord.record = true;
+    this.entities.MoneyRecord.record = true;
+    // this.skipAuthorization = true;
+    this.setAuthParams({ jwtSecret: this.env.jwtSecret || 'default' });
+    this.userRegistrationRoleTitle = 'Manager';
+
+    this.settingsParams = Settings;
   }
 };
 AppServer.package = packageName;

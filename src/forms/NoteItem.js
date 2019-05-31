@@ -1,26 +1,19 @@
-import { Elements, getElement, getTableElement } from 'katejs/lib/client';
-
+import { Elements, getElement, getTableElement, ItemForm } from 'katejs/lib/client';
 import { structures } from '../structure';
 
 const { Note } = structures;
 
-const NoteItemForm = parent => class NoteItem extends parent {
+class NoteItem extends ItemForm({ Note }, { addActions: true }) {
   constructor(params) {
     super(params);
-    const tableCardElement = getTableElement(Note.tables[0], this);
-    tableCardElement.elements.find(item => item.type === Elements.TABLE_EDITABLE)
-      .columns[0].width = 50;
 
-    const confirmDialog = this.elements.find(item => item.type === Elements.MODAL);
-
-    this.elements = [
-      confirmDialog,
+    this.elements.push(
       {
         id: 'grid',
         type: Elements.GRID,
         elements: [
-          { cols: 8, ...getElement(Note.fields[0], this) },
-          { cols: 4, ...getElement(Note.fields[1], this) },
+          { cols: 8, ...getElement(Note.fields[0], this) }, // title
+          { cols: 4, ...getElement(Note.fields[1], this) }, // noteDone
         ],
       },
       {
@@ -36,13 +29,15 @@ const NoteItemForm = parent => class NoteItem extends parent {
           {
             title: 'Checklist',
             elements: [
-              tableCardElement,
+              getTableElement(Note.tables[0], this),
             ],
           },
         ],
       },
-    ];
-  }
-};
+    );
 
-export default NoteItemForm;
+    this.elements.get('checklist').columns[0].width = 50;
+  }
+}
+
+export default NoteItem;
