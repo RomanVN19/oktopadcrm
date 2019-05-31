@@ -1,5 +1,6 @@
 {
   "name": "katejs-assistant",
+  "author": "Roman Nep <neproman@gmail.com>",
   "version": "1.0.0",
   "devDependencies": {
     "@babel/cli": "^7.2.3",
