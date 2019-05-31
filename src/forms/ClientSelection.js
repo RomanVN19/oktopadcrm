@@ -9,12 +9,13 @@ const addCondition = (where, field, value) => {
 };
 
 export default class ClientSelection {
-  constructor({ form, replaceSelect, changePhoneAddress }) {
+  constructor({ form, replaceSelect, changePhoneAddress, openOnFocus }) {
     this.elements = form.elements;
     this.content = form.content;
     this.app = form.app;
 
     const clientInput = this.elements.get('client');
+    clientInput.openOnFocus = openOnFocus;
     if (changePhoneAddress) {
       clientInput.onChange = this.clientSelect;
     }

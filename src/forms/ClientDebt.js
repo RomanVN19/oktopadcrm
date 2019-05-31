@@ -17,6 +17,7 @@ export default class ClientDebt {
         id: 'clientDebtData',
         type: Elements.TABLE,
         style,
+        rowClick: this.rowClick,
         columns: [
           {
             title: 'Document',
@@ -79,5 +80,10 @@ export default class ClientDebt {
   showModal = async () => {
     this.content.clientDebtModal.open = true;
     this.exec();
+  }
+  rowClick = (row) => {
+    if (this.report) {
+      this.app.open(`${row.entity}Item`, { id: row.docUuid });
+    }
   }
 }

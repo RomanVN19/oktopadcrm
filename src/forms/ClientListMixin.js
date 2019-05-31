@@ -9,7 +9,7 @@ export default ListForm => class ClientList extends ListForm {
       elements: [
         {
           id: 'client',
-          title: 'Search (name or phone)',
+          title: 'Search (name, phone, address)',
           type: Elements.INPUT,
           onChange: this.clientChange,
           cols: 4,
@@ -22,12 +22,12 @@ export default ListForm => class ClientList extends ListForm {
     this.changeTimeout = setTimeout(this.search, 400);
   }
   search = () => {
-    console.log('searching', this.content.client.value);
     const query = this.content.client.value;
     this.filters = {
       $or: [
         { title: { $like: `%${query}%` } },
         { phone: { $like: `%${query}%` } },
+        { address: { $like: `%${query}%` } },
       ],
     };
     this.load();

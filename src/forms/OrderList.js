@@ -19,7 +19,7 @@ export default class OrderList extends
       elements: [
         {
           id: 'client',
-          title: 'Client (name or phone)',
+          title: 'Client (name, phone, address)',
           type: Elements.SELECT,
           getOptions: this.clientQuery,
           onChange: this.clientChange,
@@ -38,9 +38,10 @@ export default class OrderList extends
       where: { $or: [
         { title: { $like: `%${query}%` } },
         { phone: { $like: `%${query}%` } },
+        { address: { $like: `%${query}%` } },
       ] },
     });
-    return (response || []).map(item => ({ ...item, title: `${item.title} (${item.phone})` }));
+    return (response || []).map(item => ({ ...item, title: `${item.title} (${item.phone}, ${item.address})` }));
   }
   clientChange = (val) => {
     this.filters.clientUuid = (val && val.uuid) || undefined;

@@ -99,6 +99,12 @@ const OrderDynamics = () => (
   </svg>
 );
 
+const Dashboard = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="24" height="24" viewBox="0 0 24 24">
+    <path fill="#ffffff" d="M13,3V9H21V3M13,21H21V11H13M3,21H11V15H3M3,13H11V3H3V13Z" />
+  </svg>
+);
+
 export default {
   OrderList,
   OrdersMy: OrderList,
@@ -113,4 +119,5 @@ export default {
   ExpenseList,
   PaymentList,
   OrderDynamics,
+  Dashboard,
 };

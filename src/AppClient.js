@@ -18,6 +18,7 @@ import CashFlow from './forms/CashFlow';
 import OrderDynamics from './forms/OrderDynamics';
 import ClientListMixin from './forms/ClientListMixin';
 import ClientItemMixin from './forms/ClientItemMixin';
+import Dashboard from './forms/Dashboard';
 
 // agent app
 import OrdersUnassigned from './forms/OrdersUnassigned';
@@ -86,6 +87,7 @@ const AppClient = parent => class Client extends
       OrdersToDeliverReport,
       CashFlow,
       OrderDynamics,
+      Dashboard,
 
       OrdersUnassigned,
       OrdersMy,
@@ -109,6 +111,11 @@ const AppClient = parent => class Client extends
       if (docsItem.entity === 'Agent app') return this.allow('Order', 'put') || this.allow('Order', 'take');
       return this.allow(docsItem.entity, 'put');
     };
+
+    this.menu.unshift({
+      title: 'Dashboard',
+      form: 'Dashboard',
+    });
 
     this.menu.forEach((item) => {
       if (icons[item.form]) {

@@ -41,8 +41,8 @@ const translate = {
     'To pay': 'Оплатить',
     'Find, create': 'Найти, создать',
     'Find, create client': 'Найти, создать клиента',
-    'Client (name or phone)': 'Клиент (имя или телефон)',
-    'Search (name or phone)': 'Поиск (имя или телефон)',
+    'Client (name, phone, address)': 'Клиент (имя, телефон, адрес)',
+    'Search (name, phone, address)': 'Поиск (имя, телефон, адрес)',
     'Spread payment': 'Распределить оплату',
     'Spread': 'Распределить',
     'Spread payment from ': 'Распределение оплаты от ',
@@ -118,6 +118,7 @@ const translate = {
     'Orders count': 'Количество заказов',
     'Orders sum': 'Сумма заказов',
     'Orders average sum': 'Средний чек',
+    'Dashboard': 'Рабочий стол',
   },
 };
 
