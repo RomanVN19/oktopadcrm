@@ -20,9 +20,20 @@ export class ProductsTable {
     row.sum.value = (row.amount.value * row.price.value).toFixed(2);
     this.sumChange();
   }
-  productChange = (row) => {
+  productChange = async (row) => {
     const { price, amount, product } = row;
-    price.value = product.value.price;
+    const { response: prices } = await this.app.PriceList.query({
+      where: {
+        '$products.productUuid$': product.value.uuid,
+      },
+      order: [['date', 'DESC']],
+      limit: 1,
+    });
+    if (prices.length && prices[0].products.length) {
+      price.value = prices[0].products[0].price;
+    } else {
+      price.value = product.value.price;
+    }
     if (!row.amount.value) {
       amount.value = 1;
     }
@@ -52,6 +63,7 @@ class OrderItem extends ItemForm({ Order }, { addActions: true, addElements: tru
     this.productsTable = new ProductsTable({
       elements: this.elements,
       content: this.content,
+      app: this.app,
     });
     this.elements.set('phone', {
       type: Elements.GRID,
@@ -94,6 +106,7 @@ class OrderItem extends ItemForm({ Order }, { addActions: true, addElements: tru
     });
 
     this.elements.set('paymentToAgent', {
+      id: 'statusPaymentAgent',
       type: Elements.GRID,
       elements: [
         {

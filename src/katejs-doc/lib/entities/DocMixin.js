@@ -27,10 +27,18 @@ const DocMixin = Entity => class DocEntity extends Entity {
       // eslint-disable-next-line no-param-reassign
       params.data.body.number = maxNumber + 1;
     }
-    const { number } = params.data.body;
-    // eslint-disable-next-line no-param-reassign
-    params.data.body.title = this.app.t`${this.app.t(this.constructor.docName)} №${number} from ${moment(date).format('DD.MM.YYYY HH:mm')}`;
+    // date can be missed. title set moved to beforePut
+    // const { number } = params.data.body;
+    // // eslint-disable-next-line no-param-reassign
+    // params.data.body.title = this.app.t`${this.app.t(this.constructor.docName)} №${number} from ${moment(date).format('DD.MM.YYYY HH:mm')}`;
     return super.put(params);
+  }
+  async beforePut({ savedEntity, body, transaction, ctx }) {
+    if (super.beforePut) await super.beforePut({ savedEntity, body, transaction, ctx });
+    const date = body.date || savedEntity.date;
+    const number = body.number || savedEntity.number;
+    // eslint-disable-next-line no-param-reassign
+    body.title = this.app.t`${this.app.t(this.constructor.docName)} №${number} from ${moment(date).format('DD.MM.YYYY HH:mm')}`;
   }
   async afterPut({ entity: doc, transaction, ctx }) {
     if (super.afterPut) {

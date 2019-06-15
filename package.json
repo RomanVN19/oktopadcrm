@@ -1,7 +1,7 @@
 {
   "name": "katejs-assistant",
   "author": "Roman Nep <neproman@gmail.com>",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "eslint-config-airbnb": "^17.1.0",

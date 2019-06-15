@@ -35,7 +35,7 @@ export default class ClientDebt {
         columns: [
           {
             title: 'Product',
-            dataPath: 'products.0.product.title',
+            dataPath: 'products.product.title',
           },
           {
             title: 'Amount',
@@ -80,6 +80,7 @@ export default class ClientDebt {
       order: [{ $col: 'products->product.title' }],
       where: { clientUuid },
       limit: -1,
+      raw: true,
     });
 
     this.content.clientSalesData.value = data;

@@ -118,7 +118,16 @@ const translate = {
     'Orders count': 'Количество заказов',
     'Orders sum': 'Сумма заказов',
     'Orders average sum': 'Средний чек',
+    'Profile': 'Профиль',
+    'Your email (username)': 'Ваш email (логин)',
+    'Name': 'Имя',
+    'Passwords match': 'Пароли совпадают',
+    'Passwords do not match': 'Пароли не совпадают',
     'Dashboard': 'Рабочий стол',
+    'Price lists': 'Цены',
+    'PriceList': 'Прайс-лист',
+    'Import': 'Импорт',
+    'Entity': 'Справочник',
   },
 };
 

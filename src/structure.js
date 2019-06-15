@@ -241,6 +241,29 @@ const MoneyRecord = {
   ],
 };
 
+const PriceList = {
+  fields: [
+  ],
+  tables: [
+    {
+      name: 'products',
+      fields: [
+        {
+          name: 'product',
+          type: Fields.REFERENCE,
+          entity: 'Product',
+        },
+        {
+          name: 'price',
+          type: Fields.DECIMAL,
+          length: 10,
+          precision: 2,
+        },
+      ],
+    },
+  ],
+};
+
 export const Settings = {
   fields: [
     {
@@ -257,6 +280,7 @@ export const structures = {
   DebtRecord,
   Note,
   Cashbox,
+  PriceList,
   Product,
   Client,
   Expense,

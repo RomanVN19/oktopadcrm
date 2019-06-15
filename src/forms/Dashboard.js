@@ -1,10 +1,12 @@
 import { Elements, Form } from 'katejs/lib/client';
+import moment from 'moment';
 import { wholeDay } from '../utils';
 
 export default class Dashboard extends Form {
   static title = 'Dashboard';
   constructor(args) {
     super(args);
+    this.date = new Date();
     this.elements = [
       {
         type: Elements.GRID,
@@ -14,9 +16,28 @@ export default class Dashboard extends Form {
             cols: 6,
             elements: [
               {
-                type: Elements.LABEL,
-                title: 'Today',
-                tag: 'h3',
+                type: Elements.GROUP,
+                div: true,
+                style: { display: 'flex' },
+                elements: [
+                  {
+                    type: Elements.LABEL,
+                    id: 'title',
+                    title: moment(this.date).format('DD.MM.YYYY'),
+                    tag: 'h3',
+                    style: { marginRight: 50 },
+                  },
+                  {
+                    type: Elements.BUTTON,
+                    title: 'Prev',
+                    onClick: this.prev,
+                  },
+                  {
+                    type: Elements.BUTTON,
+                    title: 'Next',
+                    onClick: this.next,
+                  },
+                ],
               },
               {
                 id: 'ordersTotalsLabel',
@@ -30,7 +51,7 @@ export default class Dashboard extends Form {
                 columns: [
                   {
                     title: 'Product',
-                    dataPath: 'products.0.product.title',
+                    dataPath: 'products.product.title',
                   },
                   {
                     title: 'Amount',
@@ -48,7 +69,10 @@ export default class Dashboard extends Form {
         ],
       },
     ];
-
+    this.load();
+  }
+  async load() {
+    this.content.title.title = moment(this.date).format('DD.MM.YYYY');
     this.loadOrdersCount();
     this.loadProductSales();
   }
@@ -59,7 +83,7 @@ export default class Dashboard extends Form {
         [{ $func: { fn: 'COUNT', col: 'uuid' } }, 'amount'],
         [{ $func: { fn: 'SUM', col: 'total' } }, 'sum'],
       ],
-      where: { date: wholeDay(new Date()) },
+      where: { date: wholeDay(this.date) },
     });
     this.content.ordersTotalsLabel.title = `${this.app.t('Orders count')}: ${totals.amount} (${totals.sum})`;
   }
@@ -71,9 +95,18 @@ export default class Dashboard extends Form {
       ],
       group: [{ $col: 'products->product.uuid' }],
       order: [{ $col: 'products->product.title' }],
-      where: { date: wholeDay(new Date()) },
+      where: { date: wholeDay(this.date) },
       limit: -1,
+      raw: true,
     });
     this.content.productSalesData.value = data;
+  }
+  next = () => {
+    this.date = moment(this.date).add(1, 'day');
+    this.load();
+  }
+  prev = () => {
+    this.date = moment(this.date).add(-1, 'day');
+    this.load();
   }
 }

@@ -4,6 +4,7 @@ import AppDoc from 'katejs-doc/lib/AppClient';
 import AppDocs from 'katejs-docs/lib/AppClient';
 import AppPrint from 'katejs-print/lib/AppClient';
 import AppSettings from 'katejs-settings/lib/AppClient';
+import AppImport from 'katejs-import/lib/AppClient';
 
 import { structures, title, packageName, Settings } from './structure';
 
@@ -19,6 +20,7 @@ import OrderDynamics from './forms/OrderDynamics';
 import ClientListMixin from './forms/ClientListMixin';
 import ClientItemMixin from './forms/ClientItemMixin';
 import Dashboard from './forms/Dashboard';
+import ExpenseItem from './forms/ExpenseItem';
 
 // agent app
 import OrdersUnassigned from './forms/OrdersUnassigned';
@@ -29,18 +31,14 @@ import updates from './updates';
 import logo from './assistant.svg';
 import icons from './icons';
 
-import env from './front.env.json';
-
 const AppClient = parent => class Client extends
-  use(parent, AppUser, AppDoc, AppPrint, AppSettings, AppDocs) {
+  use(parent, AppUser, AppDoc, AppPrint, AppSettings, AppDocs, AppImport) {
   static title = title;
   static path = '/app';
   static primaryColor = '#085d96';
   static logo = logo;
   constructor(params) {
     super(params);
-    this.baseUrl = env.apiUrl || '/api';
-
     this.menu.unshift(
       {
         form: 'ProductSalesReport',
@@ -92,6 +90,7 @@ const AppClient = parent => class Client extends
       CashFlow,
       OrderDynamics,
       Dashboard,
+      ExpenseItem,
 
       OrdersUnassigned,
       OrdersMy,
@@ -101,6 +100,8 @@ const AppClient = parent => class Client extends
     this.forms.PaymentList.doc = true;
     this.forms.ExpenseList.doc = true;
     this.forms.ExpenseItem.doc = true;
+    this.forms.PriceListList.doc = true;
+    this.forms.PriceListItem.doc = true;
 
     this.saveAuth = true;
     this.docsContent.push(...updates);

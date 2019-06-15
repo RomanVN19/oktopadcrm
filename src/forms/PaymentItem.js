@@ -10,6 +10,7 @@ class PaymentItem extends ItemForm({ Payment }, { addActions: true, addElements:
   static doc = true;
   constructor(params) {
     super(params);
+    this.elements.get('cashbox').openOnFocus = true;
     this.elements.get('clientpaymentsCardActions').elements.push(
       {
         type: Elements.BUTTON,
@@ -51,6 +52,7 @@ class PaymentItem extends ItemForm({ Payment }, { addActions: true, addElements:
     const table = this.elements.get('clientpayments');
     table.columns[2].onChange = this.sumChange;
     table.onDelete = this.sumChange;
+    table.columns[1].getOptions = this.getOptionsClient;
   }
   fillByDebts = async () => {
     // заполняем по остаткам расчетом на дату документа.
@@ -92,6 +94,18 @@ class PaymentItem extends ItemForm({ Payment }, { addActions: true, addElements:
     this.content.clientpayments.value = payments;
     this.sumChange();
     this.content.agentSelectModal.open = false;
+  }
+  getOptionsClient = async (query) => {
+    const { response } = await this.app.Client.query({
+      where: {
+        $or: [
+          { title: { $like: `%${query || ''}%` } },
+          { phone: { $like: `%${query || ''}%` } },
+          { address: { $like: `%${query || ''}%` } },
+        ],
+      },
+    });
+    return (response || []).map(item => ({ ...item, title: `${item.title} (${item.phone}, ${item.address})` }));
   }
 }
 
