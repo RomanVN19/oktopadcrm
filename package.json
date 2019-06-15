@@ -19,6 +19,7 @@
     "build": "babel-node makeEnv.js && react-scripts build",
     "server": "babel-node src/server.js",
     "build-server": "babel src --out-dir lib --copy-files",
+    "build-package": "babel src --out-dir lib --copy-files",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
