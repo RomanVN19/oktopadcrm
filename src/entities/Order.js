@@ -34,7 +34,7 @@ export default class Order extends Entity {
         client: doc.client,
         sum: doc.total,
       }];
-      if (doc.payment) {
+      if (doc.payment && !doc.paymentToAgent) {
         records.push({
           client: doc.client,
           sum: -doc.payment,
