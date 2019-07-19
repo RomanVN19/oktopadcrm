@@ -15,3 +15,5 @@ npm install
 ````
 npm run dev
 ````
+## Лицензия
+[AGPL-3.0](https://github.com/romannep/assistant/blob/master/LICENSE)
