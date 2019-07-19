@@ -25,7 +25,11 @@ export default class ClientSelection {
         id: 'clientGroup',
         type: Elements.GRID,
         elements: [
-          { ...clientInput, cols: 8 },
+          { 
+            ...clientInput,
+            cols: 8,
+            getOptions: this.clientQuery,
+          },
           {
             type: Elements.BUTTON,
             title: 'Find, create',
@@ -144,5 +148,17 @@ export default class ClientSelection {
     };
     await this.app.Client.put({ body });
     this.search();
+  }
+  clientQuery = async (query) => {
+    const { response } = await this.app.Client.query({
+      where: {
+        $or: [
+          { title: { $like: `%${query}%` } },
+          { phone: { $like: `%${query}%` } },
+          { address: { $like: `%${query}%` } },
+        ]
+      },
+    });
+    return (response || []).map(item => ({ ...item, title: `${item.title} (${item.phone}, ${item.address})` }));
   }
 }
