@@ -1,5 +1,5 @@
 import { makeEntitiesFromStructures, use, Fields } from 'katejs';
-import AppUser from 'katejs-user/lib/AppServer';
+import { AppUser } from 'katejs-modules';
 import AppDoc from 'katejs-doc/lib/AppServer';
 import AppDocs from 'katejs-docs/lib/AppServer';
 import AppPrint from 'katejs-print/lib/AppServer';

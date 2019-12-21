@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { model } from 'katejs/lib/Entity';
+import { model } from 'katejs';
 import { structures } from '../structure';
 
 const DocMixin = Entity => class DocEntity extends Entity {

@@ -1,5 +1,5 @@
 import { use } from 'katejs/lib/client';
-import AppUser from 'katejs-user/lib/AppClient';
+import { AppUser } from 'katejs-modules/lib/client';
 import AppDoc from 'katejs-doc/lib/AppClient';
 import AppDocs from 'katejs-docs/lib/AppClient';
 import AppPrint from 'katejs-print/lib/AppClient';

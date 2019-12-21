@@ -1,7 +1,7 @@
 {
   "name": "katejs-assistant",
   "author": "Roman Nep <neproman@gmail.com>",
-  "version": "1.0.4",
+  "version": "1.0.8",
   "main": "lib/index.js",
   "devDependencies": {
     "@babel/cli": "^7.2.3",
@@ -26,8 +26,8 @@
   "dependencies": {
     "@babel/node": "^7.2.2",
     "babel-plugin-module-resolver": "^3.1.1",
-    "katejs": "^0.7.3",
-    "katejs-user": "^1.5.6"
+    "katejs": "^1.0.27",
+    "katejs-modules": "^0.0.4"
   },
   "browserslist": [
     ">0.2%",
