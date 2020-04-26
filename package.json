@@ -1,39 +1,38 @@
 {
   "name": "katejs-assistant",
   "author": "Roman Nep <neproman@gmail.com>",
-  "version": "1.0.8",
+  "version": "1.1.0",
   "main": "lib/index.js",
-  "devDependencies": {
-    "@babel/cli": "^7.2.3",
-    "eslint-config-airbnb": "^17.1.0",
-    "eslint-import-resolver-babel-module": "^5.0.1",
-    "nodemon": "^1.18.4"
-  },
   "scripts": {
-    "dev": "set ENV=local && babel-node makeEnv.js && nodemon --watch src --exec babel-node src/platform.js",
-    "dev-server": "set ENV=local && nodemon --watch src/AppServer.js  --watch src/entities --exec babel-node src/server.js",
-    "dev-client": "set ENV=local && babel-node makeEnv.js && react-scripts start",
-    "dev-dbsync": "set ENV=local && babel-node src/server.js dbsync",
-    "dev-build-client": "set ENV=local && babel-node makeEnv.js && babel-node src/platform.js build-client",
-    "build-client": "babel-node makeEnv.js && babel-node src/platform.js build-client",
+    "dev": "cross-env ENV=local babel-node makeEnv.js && nodemon --watch src --exec babel-node src/platform.js",
+    "dev-server": "cross-env ENV=local nodemon --watch src/AppServer.js  --watch src/entities --exec babel-node src/server.js",
+    "dev-client": "cross-env ENV=local babel-node makeEnv.js && react-scripts start",
+    "dev-dbsync": "cross-env ENV=local babel-node src/server.js dbsync",
+    "build-client": "babel-node makeEnv.js && react-scripts build",
+    "build-server": "babel src --out-dir lib --copy-files",
     "dbsync": "babel-node src/server.js dbsync",
     "build": "babel-node makeEnv.js && react-scripts build",
     "server": "babel-node src/server.js",
-    "build-server": "babel src --out-dir lib --copy-files",
-    "build-package": "babel src --out-dir lib --copy-files",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "license": "AGPL-3.0",
   "dependencies": {
+    "katejs": "1.1.3",
+    "katejs-modules": "0.0.8"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.6.0",
     "@babel/node": "^7.2.2",
     "babel-plugin-module-resolver": "^3.1.1",
-    "katejs": "^1.0.27",
-    "katejs-modules": "^0.0.4"
+    "cross-env": "^5.2.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-import-resolver-babel-module": "^5.0.1",
+    "nodemon": "^1.18.4"
   },
   "browserslist": [
     ">0.2%",
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ],
-  "license": "AGPL-3.0"
+  ]
 }

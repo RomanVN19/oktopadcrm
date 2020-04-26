@@ -2,7 +2,14 @@ import { Elements } from 'katejs/lib/client';
 import ClientDebt from './ClientDebt';
 import ClientSales from './ClientSales';
 
-export default ItemForm => class Clientitem extends ItemForm {
+const MAX_REPORT_HEIGHT = 500;
+
+export const reportStyle = {
+  maxHeight: MAX_REPORT_HEIGHT,
+  overflowY: 'scroll',
+};
+
+export default ItemForm => class ClientItem extends ItemForm {
   constructor(args) {
     super(args);
 
@@ -27,13 +34,17 @@ export default ItemForm => class Clientitem extends ItemForm {
           type: Elements.GROUP,
           cols: 6,
           elements: this.clientDebt.elements,
+          div: true,
+          style: reportStyle,
         },
         {
           type: Elements.GROUP,
           cols: 6,
           elements: this.clientSales.elements,
+          div: true,
+          style: reportStyle,
         },
       ],
     });
   }
-}
+};

@@ -7,44 +7,55 @@ const checkEqual = (val1, val2) => {
   return false;
 };
 
-const joinRecord = ({ balance, turnover, fields, resources }) => {
+export const joinRecord = ({ balance, turnover, fields, resources, noDetails }) => {
   const data = [];
-  const totals = balance.map(item => ({ ...item, records: [], increase: 0, decrease: 0 }));
+  const totals = balance.map(item => ({
+    ...item,
+    records: [],
+    increase: 0,
+    decrease: 0,
+    start: item[resources[0]],
+    total: 0,
+  }));
+
   turnover.forEach((record) => {
     let total = totals.find(item => checkEqual(item[fields[0]], record[fields[0]]));
     if (!total) {
       total = {
-        [resources[0]]: 0,
         [fields[0]]: record[fields[0]],
         records: [],
         increase: 0,
         decrease: 0,
-        sum: 0,
+        start: 0,
+        total: 0,
       };
       totals.push(total);
     }
-    total.records.push(record);
-    if (record.sum > 0) {
-      // eslint-disable-next-line no-param-reassign
-      record.increase = record.sum;
-      total.increase += record.sum;
+    if (!noDetails) {
+      total.records.push(record);
     }
-    if (record.sum < 0) {
+    const res = resources[0];
+    if (record[res] > 0) {
       // eslint-disable-next-line no-param-reassign
-      record.decrease = -record.sum;
-      total.decrease -= record.sum;
+      record.increase = record[res];
+      total.increase += record[res];
+    }
+    if (record[res] < 0) {
+      // eslint-disable-next-line no-param-reassign
+      record.decrease = -record[res];
+      total.decrease -= record[res];
     }
   });
   totals.forEach((total) => {
     // eslint-disable-next-line no-param-reassign
-    total.total = (total.sum + total.increase) - total.decrease;
+    total.total = (total.start + total.increase) - total.decrease;
     data.push(total, ...total.records);
   });
 
   return data;
 };
 
-const cellStyle = (data) => {
+export const cellStyle = (data) => {
   if (data.docTitle) return {};
   return { fontWeight: 'bold' };
 };
@@ -56,18 +67,28 @@ export default class Cashflow extends Form {
     super(args);
     this.elements = [
       {
-        id: 'periodStart',
-        type: Elements.DATE,
-        title: 'Period start',
-        timeFormat: false,
-        value: moment().startOf('week'),
-      },
-      {
-        id: 'periodEnd',
-        type: Elements.DATE,
-        title: 'Period end',
-        timeFormat: false,
-        value: moment().endOf('week'),
+        type: Elements.GRID,
+        elements: [
+          {
+            id: 'periodStart',
+            type: Elements.DATE,
+            title: 'Period start',
+            timeFormat: false,
+            value: moment().startOf('week'),
+          },
+          {
+            id: 'periodEnd',
+            type: Elements.DATE,
+            title: 'Period end',
+            timeFormat: false,
+            value: moment().endOf('week'),
+          },
+          {
+            id: 'details',
+            type: Elements.CHECKBOX,
+            title: 'Detail to document',
+          },
+        ]
       },
       {
         id: 'formReport',
@@ -123,6 +144,6 @@ export default class Cashflow extends Form {
         },
       }),
     ]);
-    this.content.data.value = joinRecord({ balance, turnover, fields: ['cashbox'], resources: ['sum'] });
+    this.content.data.value = joinRecord({ balance, turnover, fields: ['cashbox'], resources: ['sum'], noDetails: !this.content.details.value });
   }
 }

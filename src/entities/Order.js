@@ -4,7 +4,7 @@ import { structures } from '../structure';
 
 export default class Order extends Entity {
   static doc = true;
-  static records = ['DebtRecord', 'MoneyRecord'];
+  static records = ['DebtRecord', 'MoneyRecord', 'ProductRecord'];
   constructor(params) {
     super(params);
     this.structure = structures.Order;
@@ -49,6 +49,17 @@ export default class Order extends Entity {
       }];
       allRecords.MoneyRecord = records;
     }
+    const products = [];
+    (doc.products || []).forEach((row) => {
+      if (row.product.accountBalances) {
+        products.push({
+          product: row.product,
+          amount: -row.amount,
+        });
+      }
+    });
+    allRecords.ProductRecord = products.filter(item => item.amount < 0);
+
     return allRecords;
   }
   async take({ ctx, data: { uuid } }) {

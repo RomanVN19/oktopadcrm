@@ -19,6 +19,39 @@ export const fields = {
     length: 10,
     precision: 2,
   },
+  contractor: {
+    name: 'contractor',
+    type: Fields.REFERENCE,
+    entity: 'Client',
+  },
+  amount: {
+    name: 'amount',
+    type: Fields.DECIMAL,
+    length: 10,
+    precision: 2,
+  },
+};
+
+export const tables = {
+  products: {
+    name: 'products',
+    fields: [
+      {
+        name: 'product',
+        type: Fields.REFERENCE,
+        entity: 'Product',
+        attributes: ['uuid', 'title', 'accountBalances'],
+      },
+      fields.amount,
+      {
+        name: 'price',
+        type: Fields.DECIMAL,
+        length: 10,
+        precision: 2,
+      },
+      fields.sum,
+    ],
+  },
 };
 
 const Note = {
@@ -82,6 +115,11 @@ const Product = {
       length: 10,
       precision: 2,
     },
+    {
+      name: 'accountBalances',
+      type: Fields.BOOLEAN,
+      skipForList: true,
+    },
   ],
 };
 
@@ -141,27 +179,7 @@ const Order = {
     },
   ],
   tables: [
-    {
-      name: 'products',
-      fields: [
-        {
-          name: 'product',
-          type: Fields.REFERENCE,
-          entity: 'Product',
-        },
-        {
-          name: 'amount',
-          type: Fields.INTEGER,
-        },
-        {
-          name: 'price',
-          type: Fields.DECIMAL,
-          length: 10,
-          precision: 2,
-        },
-        fields.sum,
-      ],
-    },
+    tables.products,
   ],
 };
 
@@ -209,6 +227,7 @@ const Expense = {
       type: Fields.REFERENCE,
       entity: 'Cashbox',
     },
+    fields.contractor,
     fields.total,
     {
       name: 'comment',
@@ -241,8 +260,36 @@ const MoneyRecord = {
   ],
 };
 
+const ProductRecord = {
+  skipForForm: true,
+  fields: [
+    {
+      name: 'product',
+      type: Fields.REFERENCE,
+      entity: 'Product',
+    },
+  ],
+  resources: [
+    fields.amount,
+  ],
+};
+
+const PriceType = {
+  fields: [
+    {
+      name: 'title',
+      type: Fields.STRING,
+    },
+  ],
+};
+
 const PriceList = {
   fields: [
+    {
+      name: 'priceType',
+      type: Fields.REFERENCE,
+      entity: 'PriceType',
+    },
   ],
   tables: [
     {
@@ -264,6 +311,21 @@ const PriceList = {
   ],
 };
 
+const Receipt = {
+  fields: [
+    fields.contractor,
+    fields.total,
+    {
+      name: 'priceType',
+      type: Fields.REFERENCE,
+      entity: 'PriceType',
+    },
+  ],
+  tables: [
+    tables.products,
+  ],
+};
+
 export const Settings = {
   fields: [
     {
@@ -276,14 +338,17 @@ export const Settings = {
 export const title = 'Assistant';
 export const packageName = 'katejs-assistant';
 export const structures = {
+  ProductRecord,
   MoneyRecord,
   DebtRecord,
   Note,
   Cashbox,
+  PriceType,
   PriceList,
   Product,
-  Client,
+  Receipt,
   Expense,
   Payment,
+  Client,
   Order,
 };

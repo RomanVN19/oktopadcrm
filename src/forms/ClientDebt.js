@@ -5,7 +5,6 @@ export default class ClientDebt {
     Object.assign(this, params);
 
     const style = {};
-    if (this.report) style.maxHeight = 200;
     const reportElements = [
       {
         id: 'clientDebtTitle',

@@ -4,7 +4,7 @@ import ClientDebt from './ClientDebt';
 const addCondition = (where, field, value) => {
   if (value) {
     // eslint-disable-next-line no-param-reassign
-    where[field] = { $like: `%${value}%` };
+    where[field] = { $like: `%${value || ''}%` };
   }
 };
 
@@ -153,9 +153,9 @@ export default class ClientSelection {
     const { response } = await this.app.Client.query({
       where: {
         $or: [
-          { title: { $like: `%${query}%` } },
-          { phone: { $like: `%${query}%` } },
-          { address: { $like: `%${query}%` } },
+          { title: { $like: `%${query || ''}%` } },
+          { phone: { $like: `%${query || ''}%` } },
+          { address: { $like: `%${query || ''}%` } },
         ]
       },
     });

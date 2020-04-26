@@ -1,11 +1,10 @@
 import { Elements } from 'katejs/lib/client';
 
-export default class ClientDebt {
+export default class ClientSales {
   constructor(params) {
     Object.assign(this, params);
 
     const style = {};
-    if (this.report) style.maxHeight = 200;
     const reportElements = [
       {
         id: 'clientSalesTitle',

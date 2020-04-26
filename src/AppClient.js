@@ -1,10 +1,9 @@
 import { use } from 'katejs/lib/client';
-import { AppUser } from 'katejs-modules/lib/client';
-import AppDoc from 'katejs-doc/lib/AppClient';
-import AppDocs from 'katejs-docs/lib/AppClient';
-import AppPrint from 'katejs-print/lib/AppClient';
-import AppSettings from 'katejs-settings/lib/AppClient';
-import AppImport from 'katejs-import/lib/AppClient';
+import { AppDoc, AppDocs, AppPrint, AppSettings, AppImport, AppUser } from 'katejs-modules/lib/client';
+
+// eslint-disable-next-line import/no-extraneous-dependencies
+import 'moment/locale/ru';
+import 'katejs/lib/client.css';
 
 import { structures, title, packageName, Settings } from './structure';
 
@@ -21,6 +20,10 @@ import ClientListMixin from './forms/ClientListMixin';
 import ClientItemMixin from './forms/ClientItemMixin';
 import Dashboard from './forms/Dashboard';
 import ExpenseItem from './forms/ExpenseItem';
+import ReceiptItemMixin from './forms/ReceiptItemMixin';
+import ProductsFlowReport from './forms/ProducsFlowReport';
+import DebtsFlowReport from './forms/DebtsFlowReport';
+import ProductItemMixin from './forms/ProductItemMixin';
 
 // agent app
 import OrdersUnassigned from './forms/OrdersUnassigned';
@@ -31,6 +34,8 @@ import updates from './updates';
 import logo from './assistant.svg';
 import icons from './icons';
 
+import env from './front.env.json';
+
 const AppClient = parent => class Client extends
   use(parent, AppUser, AppDoc, AppPrint, AppSettings, AppDocs, AppImport) {
   static title = title;
@@ -39,22 +44,39 @@ const AppClient = parent => class Client extends
   static logo = logo;
   constructor(params) {
     super(params);
+
+    this.baseUrl = env.apiUrl || '/api';
+
     this.menu.unshift(
       {
-        form: 'ProductSalesReport',
-        title: 'Product sales',
-      },
-      {
-        form: 'OrdersToDeliverReport',
-        title: 'Orders to deliver',
-      },
-      {
-        form: 'CashFlow',
-        title: 'Cash flow',
-      },
-      {
-        form: 'OrderDynamics',
-        title: 'Order dynamics',
+        title: 'Reports',
+        icon: icons.OrderDynamics,
+        submenu: [
+          {
+            form: 'ProductSalesReport',
+            title: 'Product sales',
+          },
+          {
+            form: 'OrdersToDeliverReport',
+            title: 'Orders to deliver',
+          },
+          {
+            form: 'CashFlow',
+            title: 'Cash flow',
+          },
+          {
+            form: 'OrderDynamics',
+            title: 'Order dynamics',
+          },
+          {
+            form: 'ProductsFlowReport',
+            title: 'Product flow',
+          },
+          {
+            form: 'DebtsFlowReport',
+            title: 'Debt flow',
+          },
+        ],
       },
       {
         form: 'OrdersUnassigned',
@@ -84,6 +106,7 @@ const AppClient = parent => class Client extends
       PaymentItem,
       ClientList: ClientListMixin(this.forms.ClientList),
       ClientItem: ClientItemMixin(this.forms.ClientItem),
+      ProductItem: ProductItemMixin(this.forms.ProductItem),
 
       ProductSalesReport,
       OrdersToDeliverReport,
@@ -91,6 +114,9 @@ const AppClient = parent => class Client extends
       OrderDynamics,
       Dashboard,
       ExpenseItem,
+      ReceiptItem: ReceiptItemMixin(this.forms.ReceiptItem),
+      ProductsFlowReport,
+      DebtsFlowReport,
 
       OrdersUnassigned,
       OrdersMy,
@@ -102,6 +128,7 @@ const AppClient = parent => class Client extends
     this.forms.ExpenseItem.doc = true;
     this.forms.PriceListList.doc = true;
     this.forms.PriceListItem.doc = true;
+    this.forms.ReceiptList.doc = true;
 
     this.saveAuth = true;
     this.docsContent.push(...updates);
@@ -120,6 +147,10 @@ const AppClient = parent => class Client extends
     this.menu.unshift({
       title: 'Dashboard',
       form: 'Dashboard',
+      rule: {
+        entity: 'Order',
+        method: 'put',
+      },
     });
 
     this.menu.forEach((item) => {
@@ -127,9 +158,63 @@ const AppClient = parent => class Client extends
         // eslint-disable-next-line no-param-reassign
         item.icon = icons[item.form];
       }
+      if (item.submenu) {
+        item.submenu.forEach((sitem) => {
+          if (icons[sitem.form]) {
+            // eslint-disable-next-line no-param-reassign
+            sitem.icon = icons[sitem.form];
+          }
+        });
+      }
     });
 
+    this.menu.forEach((menuItem) => {
+      if (this.forms[menuItem.form] && this.forms[menuItem.form].entity) {
+        // eslint-disable-next-line no-param-reassign
+        menuItem.rule = {
+          entity: this.forms[menuItem.form].entity,
+          method: 'put',
+        };
+      }
+      if (menuItem.submenu) {
+        menuItem.submenu.forEach((submenuItem) => {
+          if (this.forms[submenuItem.form] && this.forms[submenuItem.form].entity) {
+            // eslint-disable-next-line no-param-reassign
+            submenuItem.rule = {
+              entity: this.forms[submenuItem.form].entity,
+              method: 'put',
+            };
+          }
+        });
+      }
+    });
     this.settingsParams = Settings;
+
+    // make submenu
+    this.initSubmenu('Payments', 'Money');
+    this.addSubmenu('Money', 'Expenses');
+    this.addSubmenu('Money', 'Cashboxs');
+    this.initSubmenu('Products', 'Products');
+    this.addSubmenu('Products', 'Price types');
+    this.addSubmenu('Products', 'Price lists');
+    this.addSubmenu('Products', 'Receipts');
+  }
+  initSubmenu(nameInitial, nameTarget) {
+    const item = this.menu.find(i => i.title === nameInitial);
+    item.submenu = [];
+    item.submenu.push({
+      title: item.title,
+      form: item.form,
+      icon: item.icon,
+    });
+    item.title = nameTarget;
+    delete item.form;
+  }
+  addSubmenu(submenuName, itemName) {
+    const itemIndex = this.menu.findIndex(i => i.title === itemName);
+    const submenu = this.menu.find(i => i.title === submenuName);
+    submenu.submenu.push(this.menu[itemIndex]);
+    this.menu.splice(itemIndex, 1);
   }
 };
 AppClient.package = packageName;

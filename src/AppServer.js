@@ -1,16 +1,12 @@
-import { makeEntitiesFromStructures, use, Fields } from 'katejs';
-import { AppUser } from 'katejs-modules';
-import AppDoc from 'katejs-doc/lib/AppServer';
-import AppDocs from 'katejs-docs/lib/AppServer';
-import AppPrint from 'katejs-print/lib/AppServer';
-import AppSettings from 'katejs-settings/lib/AppServer';
-import AppImport from 'katejs-import/lib/AppServer';
+import { makeEntitiesFromStructures, use } from 'katejs';
+import { AppDoc, AppDocs, AppPrint, AppSettings, AppImport, AppUser } from 'katejs-modules';
 
 import { structures, title, packageName, Settings } from './structure';
 
 import Order from './entities/Order';
 import Payment from './entities/Payment';
 import Expense from './entities/Expense';
+import Receipt from './entities/Receipt';
 
 const AppServer = parent => class Server extends
   use(parent, AppUser, AppDoc, AppPrint, AppDocs, AppSettings, AppImport) {
@@ -23,9 +19,11 @@ const AppServer = parent => class Server extends
       Order,
       Payment,
       Expense,
+      Receipt,
     };
     this.entities.DebtRecord.record = true;
     this.entities.MoneyRecord.record = true;
+    this.entities.ProductRecord.record = true;
     this.entities.PriceList.doc = true;
     // this.skipAuthorization = true;
     this.setAuthParams({ jwtSecret: this.env.jwtSecret || 'default' });

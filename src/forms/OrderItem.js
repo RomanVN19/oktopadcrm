@@ -8,7 +8,9 @@ const { Order } = structures;
 
 export class ProductsTable {
   constructor(args) {
-    Object.assign(this, args);
+    this.elements = args.elements;
+    this.content = args.content;
+    this.app = args.app;
 
     this.elements.get('products').columns[1].onChange = this.productChange;
     this.elements.get('products').columns[1].openOnFocus = true;
@@ -22,10 +24,16 @@ export class ProductsTable {
   }
   productChange = async (row) => {
     const { price, amount, product } = row;
+    if (!product.value) return;
+    const priceTypeContent = this.content.priceType;
+    const priceType = priceTypeContent && priceTypeContent.value;
+    const where = {
+      '$products.productUuid$': product.value.uuid,
+    };
+    // use selected price type, otherwise use pricelist without price type
+    where.priceTypeUuid = (priceType && priceType.uuid) || null;
     const { response: prices } = await this.app.PriceList.query({
-      where: {
-        '$products.productUuid$': product.value.uuid,
-      },
+      where,
       order: [['date', 'DESC']],
       limit: 1,
     });
@@ -60,11 +68,7 @@ class OrderItem extends ItemForm({ Order }, { addActions: true, addElements: tru
       changePhoneAddress: true,
       openOnFocus: true,
     });
-    this.productsTable = new ProductsTable({
-      elements: this.elements,
-      content: this.content,
-      app: this.app,
-    });
+    this.productsTable = new ProductsTable(this);
     this.elements.set('phone', {
       type: Elements.GRID,
       elements: [

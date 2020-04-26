@@ -85,7 +85,7 @@ export default class Dashboard extends Form {
       ],
       where: { date: wholeDay(this.date) },
     });
-    this.content.ordersTotalsLabel.title = `${this.app.t('Orders count')}: ${totals.amount} (${totals.sum})`;
+    this.content.ordersTotalsLabel.title = `${this.app.t('Orders count')}: ${totals.amount} (${totals.sum || 0})`;
   }
   async loadProductSales() {
     const { response: data } = await this.app.Order.query({

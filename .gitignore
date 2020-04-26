@@ -3,12 +3,12 @@
 # dependencies
 /node_modules
 
-# testing
-/coverage
-
 # production
 /build
 /lib
+
+# env
+/src/front.env.json
 
 # misc
 .DS_Store
