@@ -1,5 +1,4 @@
 import { Elements } from 'katejs/lib/client';
-import moment from 'moment';
 
 export default class ProductCard {
   constructor(args) {

@@ -46,6 +46,7 @@ export default class ClientDebt {
           type: Elements.BUTTON,
           title: 'Client debt',
           onClick: this.showModal,
+          fullWidth: true,
         },
         {
           id: 'clientDebtModal',

@@ -25,9 +25,9 @@ export default class ClientSelection {
         id: 'clientGroup',
         type: Elements.GRID,
         elements: [
-          { 
+          {
             ...clientInput,
-            cols: 8,
+            cols: 6,
             getOptions: this.clientQuery,
           },
           {
@@ -35,12 +35,12 @@ export default class ClientSelection {
             title: 'Find, create',
             onClick: this.clientSelection,
             fullWidth: true,
-            cols: 2,
+            cols: 3,
           },
           {
             type: Elements.GROUP,
             elements: new ClientDebt({ content: this.content, app: this.app }).elements,
-            cols: 2,
+            cols: 3,
           },
         ],
       });
@@ -156,9 +156,9 @@ export default class ClientSelection {
           { title: { $like: `%${query || ''}%` } },
           { phone: { $like: `%${query || ''}%` } },
           { address: { $like: `%${query || ''}%` } },
-        ]
+        ],
       },
     });
-    return (response || []).map(item => ({ ...item, title: `${item.title} (${item.phone}, ${item.address})` }));
+    return (response || []).map(item => ({ ...item, title: `${item.title} (${item.phone || ''}${(item.phone && item.address) ? ',' : ''}${item.address || ''})` }));
   }
 }
