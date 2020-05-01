@@ -37,5 +37,19 @@ npm run build-server
 npm run ./lib/server-node.js
 ````
 
+## Настройка
+Перед созданием пользователей необходимо создать роли, как минимум
+роль с полными правами.
+
+При создании роли с полными правами, необходимо снять флажки с метода
+`put` у сущностей `ProductRecord`, `MoneyRecord` и `ВуиеRecord`. 
+Эти сущности не создаются непосредтвенно и не нужны в меню.
+
+Также, нужно снять флаг с метода `put` у метода `EntityDescription`
+ 
+Для возможности печати заказа необходимо создать шаблон печати (Print template)
+с названием Order и содержимым - html щаблоном с синтаксисом 
+[Handlebars](https://handlebarsjs.com/). [Образец](https://raw.githubusercontent.com/romannep/assistant/master/order.html)
+
 ## Лицензия
 [AGPL-3.0](https://github.com/romannep/assistant/blob/master/LICENSE)

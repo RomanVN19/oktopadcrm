@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>{{Order}}</title>
+    <style>
+        html, body {
+            width: 210mm;
+            height: 297mm;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h3>{{title}}</h3>
+    <p>Компания: {{companyName}}</p>
+    <p>Клиент: {{client.title}}</p>
+    <table class="table">
+        <tr>
+            <td>Товар</td>
+            <td>Кол-во</td>
+            <td>Цена</td>
+            <td>Сумма</td>
+        </tr>
+        {{#each products}}
+        <tr>
+            <td>{{product.title}}</td>
+            <td>{{amount}}</td>
+            <td>{{price}}</td>
+            <td>{{sum}}</td>
+        </tr>
+        {{/each}}
+        <tr>
+            <td colspan="3">Итого</td>
+            <td>{{total}}</td>
+        </tr>
+    </table>
+
+</div>
+</body>
+</html>
