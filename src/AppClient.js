@@ -26,7 +26,7 @@ import DebtsFlowReport from './forms/DebtsFlowReport';
 import ProductItemMixin from './forms/ProductItemMixin';
 
 import updates from './updates';
-import logo from './assistant.svg';
+import logo from './book-open-variant.svg';
 import icons from './icons';
 
 import env from './front.env.json';
