@@ -34,7 +34,7 @@ export default class Order extends Entity {
         client: doc.client,
         sum: doc.total,
       }];
-      if (doc.payment && !doc.paymentToAgent) {
+      if (doc.payment) {
         records.push({
           client: doc.client,
           sum: -doc.payment,
@@ -42,7 +42,7 @@ export default class Order extends Entity {
       }
       allRecords.DebtRecord = records;
     }
-    if (doc.payment && !doc.paymentToAgent) {
+    if (doc.payment) {
       const records = [{
         cashbox: doc.cashbox,
         sum: doc.payment,
@@ -73,24 +73,6 @@ export default class Order extends Entity {
           status: 2, // assigned
           agent: { uuid: ctx.state.user.uuid },
         },
-      },
-    });
-  }
-  async done({ ctx, data: { uuid, payment, cashbox } }) {
-    const body = {
-      status: 9, // done
-      agent: { uuid: ctx.state.user.uuid },
-    };
-    if (payment) {
-      body.payment = payment;
-      body.paymentToAgent = true;
-      body.cashbox = cashbox;
-    }
-    return this.put({
-      ctx,
-      data: {
-        uuid,
-        body,
       },
     });
   }

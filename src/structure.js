@@ -123,20 +123,6 @@ const Product = {
   ],
 };
 
-export const OrderStatuses = [
-  {
-    title: 'New',
-    value: 1,
-  },
-  {
-    title: 'Assigned',
-    value: 2,
-  },
-  {
-    title: 'Completed',
-    value: 9,
-  },
-];
 
 const Order = {
   fields: [
@@ -164,19 +150,6 @@ const Order = {
       ...fields.total,
       name: 'payment',
     },
-    {
-      name: 'paymentToAgent',
-      type: Fields.BOOLEAN,
-    },
-    {
-      name: 'agent',
-      type: Fields.REFERENCE,
-      entity: 'User',
-    },
-    {
-      name: 'status',
-      type: Fields.INTEGER,
-    },
   ],
   tables: [
     tables.products,
@@ -188,10 +161,6 @@ const Cashbox = {
     {
       name: 'title',
       type: Fields.STRING,
-    },
-    {
-      name: 'availableToAgent',
-      type: Fields.BOOLEAN,
     },
   ],
 };

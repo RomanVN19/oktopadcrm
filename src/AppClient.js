@@ -25,11 +25,6 @@ import ProductsFlowReport from './forms/ProducsFlowReport';
 import DebtsFlowReport from './forms/DebtsFlowReport';
 import ProductItemMixin from './forms/ProductItemMixin';
 
-// agent app
-import OrdersUnassigned from './forms/OrdersUnassigned';
-import OrdersMy from './forms/OrdersMy';
-import OrderAgent from './forms/OrderAgent';
-
 import updates from './updates';
 import logo from './assistant.svg';
 import icons from './icons';
@@ -78,22 +73,6 @@ const AppClient = parent => class Client extends
           },
         ],
       },
-      {
-        form: 'OrdersUnassigned',
-        title: 'Unassigned orders',
-        rule: {
-          entity: 'Order',
-          method: 'take',
-        },
-      },
-      {
-        form: 'OrdersMy',
-        title: 'My orders',
-        rule: {
-          entity: 'Order',
-          method: 'take',
-        },
-      },
     );
 
     this.init({ structures, addToMenu: true });
@@ -117,11 +96,7 @@ const AppClient = parent => class Client extends
       ReceiptItem: ReceiptItemMixin(this.forms.ReceiptItem),
       ProductsFlowReport,
       DebtsFlowReport,
-
-      OrdersUnassigned,
-      OrdersMy,
-      OrderAgent,
-    };
+     };
 
     this.forms.PaymentList.doc = true;
     this.forms.ExpenseList.doc = true;

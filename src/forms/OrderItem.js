@@ -2,7 +2,7 @@ import { ItemForm, Elements } from 'katejs/lib/client';
 
 import ClientSelection from './ClientSelection';
 
-import { structures, OrderStatuses } from '../structure';
+import { structures } from '../structure';
 
 const { Order } = structures;
 
@@ -99,35 +99,6 @@ class OrderItem extends ItemForm({ Order }, { addActions: true, addElements: tru
       ],
     });
     this.elements.splice(this.elements.findIndex(item => item.id === 'payment'), 1);
-    this.elements.set('status', {
-      id: 'status',
-      type: Elements.SELECT,
-      title: 'Status',
-      options: OrderStatuses,
-      selectValue: true,
-      value: 1,
-      openOnFocus: true,
-    });
-
-    this.elements.set('paymentToAgent', {
-      id: 'statusPaymentAgent',
-      type: Elements.GRID,
-      elements: [
-        {
-          ...this.elements.get('status'),
-          cols: 4,
-        },
-        {
-          ...this.elements.get('paymentToAgent'),
-          cols: 4,
-        },
-        {
-          ...this.elements.get('agent'),
-          cols: 4,
-        },
-      ],
-    });
-    this.elements.splice(this.elements.findIndex(item => item.id === 'agent'), 2);
 
     this.actions.push({
       type: Elements.BUTTON,

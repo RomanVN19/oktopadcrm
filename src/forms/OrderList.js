@@ -1,5 +1,5 @@
 import { ListForm, Elements } from 'katejs/lib/client';
-import { structures, OrderStatuses } from '../structure';
+import { structures } from '../structure';
 
 const { Order } = structures;
 
@@ -11,9 +11,6 @@ export default class OrderList extends
     super(params);
     const list = this.elements.get('list');
     list.columns.find(column => column.dataPath === 'comment').maxWidth = 400;
-    list.columns.find(column => column.dataPath === 'status').format =
-      val => this.app.t((OrderStatuses.find(item => item.value === val) || {}).title || '');
-    // this.spreadPayment = new SpreadPayment({ form: this });
     this.elements.unshift({
       type: Elements.GRID,
       elements: [
@@ -28,8 +25,6 @@ export default class OrderList extends
         },
       ],
     });
-    list.columns.find(column => column.dataPath === 'paymentToAgent').title = 'To agent';
-    list.columns.find(column => column.dataPath === 'paymentToAgent').format = val => (val ? '+' : '');
 
     this.filters = this.filters || { clientUuid: (this.app.ordersClientFilter && this.app.ordersClientFilter.uuid) || undefined };
   }

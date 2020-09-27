@@ -1,6 +1,5 @@
 import { Elements, Form } from 'katejs/lib/client';
 import moment from 'moment';
-import { OrderStatuses } from '../structure';
 
 export default class OrderDynamics extends Form {
   static title = 'Order dynamics';
@@ -21,12 +20,6 @@ export default class OrderDynamics extends Form {
         title: 'Period end',
         timeFormat: false,
         value: moment().endOf('week'),
-      },
-      {
-        id: 'status',
-        title: 'Status',
-        type: Elements.SELECT,
-        options: OrderStatuses,
       },
       {
         id: 'formReport',
@@ -63,9 +56,6 @@ export default class OrderDynamics extends Form {
         $lte: moment(this.content.periodEnd.value).endOf('day'),
       },
     };
-    if (this.content.status.value) {
-      where.status = this.content.status.value;
-    }
     const { response: data } = await this.app.Order.query({
       noOptions: true,
       attributes: [
