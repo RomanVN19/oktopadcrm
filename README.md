@@ -10,7 +10,7 @@ npm install katejs-assistant --save
 
 `AppServer`
 ````
-import AppAssistant from 'katejs-assistant';
+import AppAssistant from 'katejs-assistant/lib/AppServer';
 
 ...
 
@@ -52,16 +52,6 @@ npm run dbsync
 ````
 npm run dev-server
 npm run dev-client
-````
-
-## Сборка
-````
-npm run build-client
-npm run build-server
-````
-Запуск сборки
-````
-npm run ./lib/server-node.js
 ````
 
 ## Настройка
