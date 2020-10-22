@@ -1,7 +1,7 @@
 {
   "name": "katejs-assistant",
   "author": "Roman Nep <neproman@gmail.com>",
-  "version": "1.1.4",
+  "version": "1.2.0",
   "main": "lib/index.js",
   "scripts": {
     "dev": "cross-env ENV=local babel-node makeEnv.js && nodemon --watch src --exec babel-node src/platform.js",

@@ -26,7 +26,7 @@ import DebtsFlowReport from './forms/DebtsFlowReport';
 import ProductItemMixin from './forms/ProductItemMixin';
 
 import updates from './updates';
-import logo from './book-open-variant.svg';
+import logo from './account-supervisor.svg';
 import icons from './icons';
 
 import env from './front.env.json';
@@ -35,7 +35,7 @@ const AppClient = parent => class Client extends
   use(parent, AppUser, AppDoc, AppPrint, AppSettings, AppDocs, AppImport) {
   static title = title;
   static path = '/app';
-  static primaryColor = '#085d96';
+  static primaryColor = '#089679';
   static logo = logo;
   constructor(params) {
     super(params);
