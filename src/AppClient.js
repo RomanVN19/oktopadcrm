@@ -165,6 +165,12 @@ const AppClient = parent => class Client extends
     });
     this.settingsParams = Settings;
 
+    this.menu.unshift(
+      this.spliceMenuItem('Deals'),
+      this.spliceMenuItem('Tasks'),
+      this.spliceMenuItem('Clients'),
+    );
+
     // make submenu
     this.initSubmenu('Payments', 'Money');
     this.addSubmenu('Money', 'Expenses');
@@ -190,6 +196,9 @@ const AppClient = parent => class Client extends
     const submenu = this.menu.find(i => i.title === submenuName);
     submenu.submenu.push(this.menu[itemIndex]);
     this.menu.splice(itemIndex, 1);
+  }
+  spliceMenuItem(itemTitle) {
+    return this.menu.splice(this.menu.findIndex(item => item.title === itemTitle), 1)[0];
   }
 };
 AppClient.package = packageName;

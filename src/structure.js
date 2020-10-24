@@ -30,6 +30,11 @@ export const fields = {
     length: 10,
     precision: 2,
   },
+  salesman: {
+    name: 'salesman',
+    type: Fields.REFERENCE,
+    entity: 'User',
+  }
 };
 
 export const tables = {
@@ -301,12 +306,68 @@ export const Settings = {
       name: 'companyName',
       type: Fields.STRING,
     },
+    {
+      name: 'dealStartStatus',
+      type: Fields.REFERENCE,
+      entity: 'DealStatus',
+    }
+  ],
+};
+
+const DealStatus = {
+  fields: [
+    {
+      name: 'title',
+      type: Fields.STRING,
+    },
+  ],
+  tables: [
+    {
+      name: 'nexts',
+      fields: [
+        {
+          name: 'status',
+          type: Fields.REFERENCE,
+          entity: 'DealStatus',
+        },
+      ],
+    }
+  ]
+};
+
+const Deal = {
+  fields: [
+    {
+      name: 'title',
+      type: Fields.STRING,
+    },
+    fields.client,
+    fields.salesman,
+  ],
+};
+
+const Task = {
+  fields: [
+    {
+      name: 'title',
+      type: Fields.STRING,
+    },
+    fields.client,
+    {
+      name: 'deal',
+      type: Fields.REFERENCE,
+      entity: 'Deal',
+    },
+    fields.salesman,
   ],
 };
 
 export const title = 'Assistant';
 export const packageName = 'katejs-assistant';
 export const structures = {
+  DealStatus,
+  Deal,
+  Task,
   ProductRecord,
   MoneyRecord,
   DebtRecord,
