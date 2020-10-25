@@ -1,5 +1,6 @@
 import { use } from 'katejs/lib/client';
 import { AppDoc, AppDocs, AppPrint, AppSettings, AppImport, AppUser } from 'katejs-modules/lib/client';
+import AppTrigger from './katejs-trigger/lib/AppClient';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'moment/locale/ru';
@@ -32,7 +33,7 @@ import icons from './icons';
 import env from './front.env.json';
 
 const AppClient = parent => class Client extends
-  use(parent, AppUser, AppDoc, AppPrint, AppSettings, AppDocs, AppImport) {
+  use(parent, AppUser, AppDoc, AppPrint, AppSettings, AppDocs, AppImport, AppTrigger) {
   static title = title;
   static path = '/app';
   static primaryColor = '#089679';
@@ -169,6 +170,7 @@ const AppClient = parent => class Client extends
       this.spliceMenuItem('Deals'),
       this.spliceMenuItem('Tasks'),
       this.spliceMenuItem('Clients'),
+      this.spliceMenuItem('Triggers'),
     );
 
     // make submenu
