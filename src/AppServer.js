@@ -1,6 +1,7 @@
 import { makeEntitiesFromStructures, use } from 'katejs';
 import { AppDoc, AppDocs, AppPrint, AppSettings, AppImport, AppUser } from 'katejs-modules';
 import AppTrigger from './katejs-trigger/lib/AppServer';
+import AppFields from './katejs-fields/lib/AppServer';
 
 import { structures, title, packageName, Settings } from './structure';
 
@@ -10,7 +11,7 @@ import Expense from './entities/Expense';
 import Receipt from './entities/Receipt';
 
 const AppServer = parent => class Server extends
-  use(parent, AppUser, AppDoc, AppPrint, AppDocs, AppSettings, AppImport, AppTrigger) {
+  use(parent, AppUser, AppDoc, AppPrint, AppDocs, AppSettings, AppImport, AppTrigger, AppFields) {
   constructor(params) {
     super(params);
     this.title = title; // название приложения
