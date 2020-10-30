@@ -1,6 +1,6 @@
 import Fields from 'katejs/lib/fields';
 
-const ExtraFields = {
+const ExtraFieldsList = {
   fields: [
     {
       name: 'title',
@@ -13,7 +13,7 @@ const ExtraFields = {
   ],
   tables: [
     {
-      name: 'fields',
+      name: 'fieldsList',
       fields: [
         {
           name: 'name',
@@ -21,19 +21,23 @@ const ExtraFields = {
         },
         {
           name: 'type',
-          type: Fields.INTEGER,
+          type: Fields.STRING,
         },
         {
           name: 'values',
           type: Fields.REFERENCE,
-          entity: 'ExtraFieldValues',
+          entity: 'ExtraFieldValuesList',
+        },
+        {
+          name: 'entityName',
+          type: Fields.STRING,
         },
       ],
     },
   ],
 };
 
-const ExtraFieldValues = {
+const ExtraFieldValuesList = {
   fields: [
     {
       name: 'title',
@@ -53,7 +57,7 @@ const ExtraFieldValues = {
   ],
 };
 
-const EntityFieldsValues = {
+const EntityFieldsValuesList = {
   fields: [
     {
       name: 'entityId',
@@ -72,13 +76,31 @@ const EntityFieldsValues = {
           name: 'value',
           type: Fields.STRING,
         },
+        {
+          name: 'valueTitle',
+          type: Fields.STRING,
+        }
       ],
     }
   ],
 };
 
+export const FieldType = {
+  'Numeric': 'Numeric',
+  'String': 'String',
+  'Date': 'Date',
+  'Reference': 'Reference',
+  'Select': 'Select',
+};
+
+export const FieldTypeOptions = Object.keys(FieldType).map(key => ({
+  title: key,
+  value: FieldType[key],
+}));
+
 export const structures = {
-  ExtraFields,
-  ExtraFieldValues,
+  ExtraFieldsList,
+  ExtraFieldValuesList,
+  EntityFieldsValuesList,
 };
 export const packageName = 'katejs-fields';

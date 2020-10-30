@@ -172,8 +172,8 @@ const AppClient = parent => class Client extends
       this.spliceMenuItem('Tasks'),
       this.spliceMenuItem('Clients'),
       this.spliceMenuItem('Triggers'),
-      this.spliceMenuItem('Extra fieldss'),
-      this.spliceMenuItem('Extra field valuess'),
+      this.spliceMenuItem('Extra fields lists'),
+      this.spliceMenuItem('Extra field values lists'),
     );
 
     // make submenu
