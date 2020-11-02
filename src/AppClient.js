@@ -176,6 +176,8 @@ const AppClient = parent => class Client extends
       this.spliceMenuItem('Extra field values lists'),
     );
 
+    this.entitiesWithExtraFields = ['Deal', 'Task', 'Client'];
+
     // make submenu
     this.initSubmenu('Payments', 'Money');
     this.addSubmenu('Money', 'Expenses');

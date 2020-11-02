@@ -60,7 +60,7 @@ const ExtraFieldValuesList = {
 const EntityFieldsValuesList = {
   fields: [
     {
-      name: 'entityId',
+      name: 'entityUuid',
       type: Fields.STRING,
     },
   ],
