@@ -1,9 +1,10 @@
 import { Elements } from 'katejs/lib/client';
 
+const EXTRA_FIELD = 'extraField';
+
 const getExtraElement = (field, index) => {
-  console.log('got field', field);
   const element = {
-    id: `extraField${index}`,
+    id: `${EXTRA_FIELD}${index}`,
     title: field.name,
     type: Elements.INPUT,
   };
@@ -24,23 +25,34 @@ export default Form => class FormWithEctraFields extends Form {
   }
   async load() {
     const result = await super.load();
-    if (this.uuid) {
-      const { response: extraFieldsvalues } = await this.app.EntityFieldsValuesList.query({
+    if (this.app.fieldsLists && this.app.fieldsLists[this.constructor.entity] && this.uuid) {
+      const { response } = await this.app.EntityFieldsValuesList.query({
         where: { entityUuid: this.uuid },
+        limit: 1,
       });
+      if (response && response.length) {
+        const [ { values: extraFieldsvalues } ] = response;
+        const fields = this.app.fieldsLists[this.constructor.entity];
+        extraFieldsvalues.forEach((field) => {
+          const index = fields.findIndex(f => f.name === field.name);
+          if (index > -1) {
+            this.content[`${EXTRA_FIELD}${index}`].value = field.value;
+          }
+        });
+      }
     }
     return result;
   }
   async save() {
     await super.save();
-    const values = this.getValues();
+    const formValues = this.getValues();
     const fields = this.app.fieldsLists[this.constructor.entity];
     if (fields) {
       const values = fields.map((field, index) => ({
         name: field.name,
-        value: values[`extraField${index}`],
+        value: formValues[`extraField${index}`],
       }));
-      console.log('got vals', values);
+      this.app.EntityFieldsValuesList.save({ uuid: this.uuid, values });
     }
   }
 }

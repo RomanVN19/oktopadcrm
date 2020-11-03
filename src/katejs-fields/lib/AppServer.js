@@ -1,5 +1,6 @@
 import { makeEntitiesFromStructures, use } from 'katejs';
 import { packageName, structures } from './structure';
+import EntityFieldsValuesList from './entities/EntityFieldsValuesList';
 
 
 const AppServer = parent => class Server extends use(parent) {
@@ -10,6 +11,7 @@ const AppServer = parent => class Server extends use(parent) {
 
     this.entities = {
       ...this.entities,
+      EntityFieldsValuesList: EntityFieldsValuesList(this.entities.EntityFieldsValuesList),
     }
   }
 };
