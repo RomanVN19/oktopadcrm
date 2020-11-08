@@ -11,7 +11,8 @@ const getExtraElement = (field, index) => {
   return element;
 };
 
-export default Form => class FormWithEctraFields extends Form {
+export default Form => class FormWithExtraFields extends Form {
+  static extraFieldsApplied = true;
   constructor(args) {
     super(args);
     if (this.app.fieldsLists && this.app.fieldsLists[this.constructor.entity]) {

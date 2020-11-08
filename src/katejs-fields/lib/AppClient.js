@@ -17,23 +17,34 @@ const AppClient = parent => class Client extends use(parent) {
     this.entitiesWithExtraFields = [];
   }
   async afterInit() {
-    if (super.afterInit) {
-      await super.afterInit();
+    if (super.afterInit) await super.afterInit();
+
+    if (!this.successAuth) {
+      await this.updateExtraFieldsLists();
+      this.applyExtraFiledsListsMixins();
     }
+  }
+  async afterUserInit() {
+    if (super.afterUserInit()) await super.afterUserInit();
     await this.updateExtraFieldsLists();
-    Object.keys(this.forms).forEach((formName) => {
-      if (formName.endsWith('Item') && this.entitiesWithExtraFields.indexOf(this.forms[formName].entity) > -1) {
-        this.forms[formName] = ExtraFieldsItemMixin(this.forms[formName]);
-      }
-    });
   }
   async updateExtraFieldsLists() {
     const { response: fieldsLists } = await this.ExtraFieldsList.query();
+    if (!fieldsLists ) return;
     this.fieldsLists = fieldsLists.reduce((acc, val) => {
       acc[val.entityName] = acc[val.entityName] || [];
       acc[val.entityName] = acc[val.entityName].concat(val.fieldsList);
       return acc;
     }, {});
+    Object.keys(this.forms).forEach((formName) => {
+      if (
+        formName.endsWith('Item')
+        && this.entitiesWithExtraFields.indexOf(this.forms[formName].entity) > -1
+        && !this.forms[formName].extraFieldsApplied
+      ) {
+        this.forms[formName] = ExtraFieldsItemMixin(this.forms[formName]);
+      }
+    });
   }
 };
 AppClient.package = packageName;
