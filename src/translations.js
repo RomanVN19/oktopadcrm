@@ -164,6 +164,23 @@ const translate = {
     'Client debts': 'Долги клиентов',
     'Product card': 'Карточка товара',
     'Rest: ': 'Остаток: ',
+    'Deals': 'Сделки',
+    'Deal': 'Сделка',
+    'Tasks': 'Задачи',
+    'Triggers': 'Триггеры',
+    'Trigger': 'Триггер',
+    'Extra fields lists': 'Дополнительные поля',
+    'Extra fields list': 'Список дополнительных полей',
+    'Entity name': 'Сущность',
+    'Fields list': 'Список полей',
+    'Condition entity': 'Сущность источник',
+    'Condition': 'Условие',
+    'Action entity': 'Целевая сущность',
+    'Action entity uuid': 'Целевой uuid (необязательно)',
+    'Action entity fields': 'Поля целевой сущности',
+    'Field': 'Поле',
+    'Values': 'Значение',
+    'Salesman': 'Специалист по продажам'
   },
 };
 
