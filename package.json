@@ -19,7 +19,8 @@
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "katejs": "^1.1.8",
-    "katejs-modules": "^0.0.14"
+    "katejs-modules": "^0.0.14",
+    "react-beautiful-dnd": "12.2.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.0",
