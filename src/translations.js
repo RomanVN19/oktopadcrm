@@ -180,7 +180,15 @@ const translate = {
     'Action entity fields': 'Поля целевой сущности',
     'Field': 'Поле',
     'Values': 'Значение',
-    'Salesman': 'Специалист по продажам'
+    'Salesman': 'Специалист по продажам',
+    'Contacts': 'Контакты',
+    'Contact': 'Контакт',
+    'Schemas': 'Схемы',
+    'Schema': 'Схема',
+    'Steps': 'Шаги',
+    'Step': 'Шаг',
+    'by': 'от',
+    'at': 'из',
   },
 };
 

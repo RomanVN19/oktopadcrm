@@ -27,6 +27,7 @@ import ProductsFlowReport from './forms/ProducsFlowReport';
 import DebtsFlowReport from './forms/DebtsFlowReport';
 import ProductItemMixin from './forms/ProductItemMixin';
 import DealsBoard from './forms/DealsBoard';
+import DealItem from './forms/DealItem';
 
 import Components from './components';
 
@@ -92,6 +93,7 @@ const AppClient = parent => class Client extends
       ClientList: ClientListMixin(this.forms.ClientList),
       ClientItem: ClientItemMixin(this.forms.ClientItem),
       ProductItem: ProductItemMixin(this.forms.ProductItem),
+      DealItem: DealItem(this.forms.DealItem),
 
       ProductSalesReport,
       OrdersToDeliverReport,
@@ -103,6 +105,7 @@ const AppClient = parent => class Client extends
       ProductsFlowReport,
       DebtsFlowReport,
       DealsBoard,
+
      };
 
     this.forms.PaymentList.doc = true;

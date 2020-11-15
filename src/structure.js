@@ -34,7 +34,12 @@ export const fields = {
     name: 'salesman',
     type: Fields.REFERENCE,
     entity: 'User',
-  }
+  },
+  contact: {
+    name: 'contact',
+    type: Fields.REFERENCE,
+    entity: 'Contact',
+  },
 };
 
 export const tables = {
@@ -300,21 +305,7 @@ const Receipt = {
   ],
 };
 
-export const Settings = {
-  fields: [
-    {
-      name: 'companyName',
-      type: Fields.STRING,
-    },
-    {
-      name: 'dealStartStatus',
-      type: Fields.REFERENCE,
-      entity: 'DealStatus',
-    }
-  ],
-};
-
-const DealStatus = {
+const SaleSchema = {
   fields: [
     {
       name: 'title',
@@ -323,12 +314,11 @@ const DealStatus = {
   ],
   tables: [
     {
-      name: 'nexts',
+      name: 'steps',
       fields: [
         {
-          name: 'status',
-          type: Fields.REFERENCE,
-          entity: 'DealStatus',
+          name: 'name',
+          type: Fields.STRING,
         },
       ],
     }
@@ -342,7 +332,17 @@ const Deal = {
       type: Fields.STRING,
     },
     fields.client,
+    fields.contact,
     fields.salesman,
+    {
+      name: 'schema',
+      type: Fields.REFERENCE,
+      entity: 'SaleSchema',
+    },
+    {
+      name: 'step',
+      type: Fields.STRING,
+    },
   ],
 };
 
@@ -353,6 +353,7 @@ const Task = {
       type: Fields.STRING,
     },
     fields.client,
+    fields.contact,
     {
       name: 'deal',
       type: Fields.REFERENCE,
@@ -362,10 +363,30 @@ const Task = {
   ],
 };
 
+const Contact = {
+  fields: [
+    {
+      name: 'title',
+      type: Fields.STRING,
+    },
+    fields.client,
+  ],
+};
+
+export const Settings = {
+  fields: [
+    {
+      name: 'companyName',
+      type: Fields.STRING,
+    },
+  ],
+};
+
 export const title = 'Assistant';
 export const packageName = 'katejs-assistant';
 export const structures = {
-  DealStatus,
+  Contact,
+  SaleSchema,
   Deal,
   Task,
   ProductRecord,
