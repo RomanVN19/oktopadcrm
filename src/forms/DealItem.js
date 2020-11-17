@@ -57,9 +57,31 @@ export default Form => class DealItem extends Form {
             type: Elements.GROUP,
             elements: [
               {
-                id: 'history',
+                id: 'historyCard',
                 type: Elements.CARD,
-                elements: [],
+                elements: [
+                  {
+                    type: Elements.GROUP,
+                    id: 'history',
+                  },
+                  {
+                    type: Elements.GRID,
+                    elements: [
+                      {
+                        id: 'commentText',
+                        title: 'Comment',
+                        type: Elements.INPUT,
+                        cols: 8,
+                      },
+                      {
+                        type: Elements.BUTTON,
+                        title: 'Do Comment',
+                        onClick: () => this.postComment(),
+                        cols: 4,
+                      },
+                    ],
+                  },
+                ],
               },
             ],
           },
@@ -67,5 +89,9 @@ export default Form => class DealItem extends Form {
       }
     ];
     //
+  }
+  postComment() {
+    const comment = this.content.commentText.value;
+    this.app.DealComment.put({ body: { comment, dealUuid: this.uuid } });
   }
 }

@@ -189,6 +189,7 @@ const translate = {
     'Step': 'Шаг',
     'by': 'от',
     'at': 'из',
+    'Do Comment': 'Комментировать',
   },
 };
 

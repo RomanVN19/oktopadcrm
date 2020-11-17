@@ -9,6 +9,7 @@ import Order from './entities/Order';
 import Payment from './entities/Payment';
 import Expense from './entities/Expense';
 import Receipt from './entities/Receipt';
+import DealComment from './entities/DealComment';
 
 const AppServer = parent => class Server extends
   use(parent, AppUser, AppDoc, AppPrint, AppDocs, AppSettings, AppImport, AppTrigger, AppFields) {
@@ -22,6 +23,7 @@ const AppServer = parent => class Server extends
       Payment,
       Expense,
       Receipt,
+      DealComment: DealComment(this.entities.DealComment),
     };
     this.entities.DebtRecord.record = true;
     this.entities.MoneyRecord.record = true;

@@ -32,7 +32,7 @@ import DealItem from './forms/DealItem';
 import Components from './components';
 
 import updates from './updates';
-import logo from './account-supervisor.svg';
+import logo from './oktopad.svg';
 import icons from './icons';
 
 import env from './front.env.json';
@@ -41,7 +41,7 @@ const AppClient = parent => class Client extends
   use(parent, AppUser, AppDoc, AppPrint, AppSettings, AppDocs, AppImport, AppTrigger, AppFields) {
   static title = title;
   static path = '/app';
-  static primaryColor = '#089679';
+  static primaryColor = '#088596';
   static logo = logo;
   constructor(params) {
     super(params);

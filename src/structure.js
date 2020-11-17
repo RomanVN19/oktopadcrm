@@ -346,6 +346,30 @@ const Deal = {
   ],
 };
 
+const DealComment = {
+  skipForForm: true,
+  fields: [
+    {
+      name: 'deal',
+      type: Fields.REFERENCE,
+      entity: 'Deal',
+    },
+    {
+      name: 'date',
+      type: Fields.DATE,
+    },
+    {
+      name: 'user',
+      type: Fields.REFERENCE,
+      entity: 'User',
+    },
+    {
+      name: 'comment',
+      type: Fields.STRING,
+    },
+  ],
+};
+
 const Task = {
   fields: [
     {
@@ -382,9 +406,10 @@ export const Settings = {
   ],
 };
 
-export const title = 'Assistant';
-export const packageName = 'katejs-assistant';
+export const title = 'Oktopad CRM';
+export const packageName = 'oktopad-crm';
 export const structures = {
+  DealComment,
   Contact,
   SaleSchema,
   Deal,
