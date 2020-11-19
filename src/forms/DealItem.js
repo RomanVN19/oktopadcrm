@@ -1,12 +1,67 @@
+import moment from 'moment';
 import { Elements } from 'katejs/lib/client';
+
+
+const dateStyle = {
+  display: 'inline',
+  marginRight: 10,
+  fontSize: 10,
+};
+
+const userStyle = {
+  display: 'inline',
+  marginRight: 10,
+  fontSize: 10,
+  fontWeight: 'bold',
+};
+
+const commentStyle = {
+  display: 'inline',
+};
+
+const mapDate = (obj) => ({
+  ...obj,
+  date: new Date(obj.date),
+});
+
+const mapHistory = (data) => {
+  const element = {
+    type: Elements.GROUP,
+    div: true,
+    elements: [
+      {
+        type: Elements.LABEL,
+        style: dateStyle,
+        title: moment(data.date).format('DD.MM.YYYY HH:mm'),
+      },
+    ],
+  };
+  if (data.comment) {
+    element.elements.push({
+      type: Elements.LABEL,
+      style: userStyle,
+      title: (data.user && data.user.title) || 'unknown',
+    });
+    element.elements.push({
+      type: Elements.LABEL,
+      style: commentStyle,
+      title: data.comment,
+    });
+  }
+  return element;
+};
 
 export default Form => class DealItem extends Form {
   constructor(args) {
     super(args);
+
+    if (!userStyle.color) {
+      userStyle.color = this.app.constructor.primaryColor;
+    }
+
     const generatedElements = this.elements;
     generatedElements.cut = function (id) {
-      const item = this.splice(this.findIndex(i => i.id === id), 1)[0];
-      return item;
+      return this.splice(this.findIndex(i => i.id === id), 1)[0];
     };
     const title = generatedElements.cut('title');
     const salesman = generatedElements.cut('salesman');
@@ -63,6 +118,7 @@ export default Form => class DealItem extends Form {
                   {
                     type: Elements.GROUP,
                     id: 'history',
+                    elements: [],
                   },
                   {
                     type: Elements.GRID,
@@ -90,8 +146,30 @@ export default Form => class DealItem extends Form {
     ];
     //
   }
-  postComment() {
+  async postComment() {
     const comment = this.content.commentText.value;
-    this.app.DealComment.put({ body: { comment, dealUuid: this.uuid } });
+    this.content.commentText.value = '';
+    await this.app.DealComment.put({ body: { comment, dealUuid: this.uuid } });
+    this.fillHistory();
+  }
+  async afterInit() {
+    super.afterInit();
+    this.fillHistory();
+  }
+  async fillHistory() {
+    if (!this.uuid) {
+      return;
+    }
+    const { response: comments } = await this.app.DealComment.query({
+      where: {
+        dealUuid: this.uuid,
+      },
+    });
+    console.log('comments', comments);
+    const history = [
+      ...comments.map(mapDate),
+    ];
+    history.sort((a, b) => b.date - a.date);
+    this.content.history.elements = history.map(mapHistory);
   }
 }
