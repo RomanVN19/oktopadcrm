@@ -112,6 +112,11 @@ export default Form => class DealItem extends Form {
             type: Elements.GROUP,
             elements: [
               {
+                type: Elements.BUTTON,
+                title: 'Add Task',
+                onClick: () => this.addTask(),
+              },
+              {
                 id: 'historyCard',
                 type: Elements.CARD,
                 elements: [
@@ -165,11 +170,22 @@ export default Form => class DealItem extends Form {
         dealUuid: this.uuid,
       },
     });
-    console.log('comments', comments);
     const history = [
       ...comments.map(mapDate),
     ];
     history.sort((a, b) => b.date - a.date);
     this.content.history.elements = history.map(mapHistory);
+  }
+  async save() {
+    await super.save();
+    const url = `${window.location.pathname}?id=${this.uuid}`;
+    window.history.replaceState(window.history.state, undefined, url);
+  }
+  addTask() {
+    this.app.vars.currentDeal = {
+      uuid: this.uuid,
+      title: this.content.title.value,
+    };
+    this.app.open(`TaskItem`, { id: 'new' });
   }
 }

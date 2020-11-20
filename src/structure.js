@@ -376,6 +376,10 @@ const Task = {
       name: 'title',
       type: Fields.STRING,
     },
+    {
+      name: 'done',
+      type: Fields.BOOLEAN,
+    },
     fields.client,
     fields.contact,
     {

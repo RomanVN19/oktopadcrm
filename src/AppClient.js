@@ -28,6 +28,7 @@ import DebtsFlowReport from './forms/DebtsFlowReport';
 import ProductItemMixin from './forms/ProductItemMixin';
 import DealsBoard from './forms/DealsBoard';
 import DealItem from './forms/DealItem';
+import TaskItem from './forms/TaskItem';
 
 import Components from './components';
 
@@ -48,6 +49,8 @@ const AppClient = parent => class Client extends
     this.constructor.components = { ...this.constructor.components, ...Components };
 
     this.baseUrl = env.apiUrl || '/api';
+
+    this.vars = {};
 
     this.menu.unshift(
       {
@@ -94,6 +97,7 @@ const AppClient = parent => class Client extends
       ClientItem: ClientItemMixin(this.forms.ClientItem),
       ProductItem: ProductItemMixin(this.forms.ProductItem),
       DealItem: DealItem(this.forms.DealItem),
+      TaskItem: TaskItem(this.forms.TaskItem),
 
       ProductSalesReport,
       OrdersToDeliverReport,
