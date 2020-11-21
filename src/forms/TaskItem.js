@@ -1,4 +1,5 @@
 import { Elements } from 'katejs/lib/client';
+import moment from 'moment';
 
 export default Form => class TaskItem extends Form {
   constructor(args) {
@@ -12,11 +13,16 @@ export default Form => class TaskItem extends Form {
       elements: [
         {
           ...this.elements.cut('title'),
-          cols: 9,
+          cols: 7,
+        },
+        {
+          ...this.elements.cut('date'),
+          title: 'On date',
+          cols: 3,
         },
         {
           ...this.elements.cut('done'),
-          cols: 3,
+          cols: 2,
         },
       ],
     };
@@ -29,8 +35,9 @@ export default Form => class TaskItem extends Form {
       super.afterInit();
     }
     if (!this.uuid) {
-      console.log('after init', this.app.vars.currentDeal);
       this.content.deal.value = this.app.vars.currentDeal;
+      this.content.user.value = this.app.user;
+      this.content.date.value = moment();
     }
   }
   close() {

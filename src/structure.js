@@ -30,8 +30,8 @@ export const fields = {
     length: 10,
     precision: 2,
   },
-  salesman: {
-    name: 'salesman',
+  user: {
+    name: 'user',
     type: Fields.REFERENCE,
     entity: 'User',
   },
@@ -333,7 +333,7 @@ const Deal = {
     },
     fields.client,
     fields.contact,
-    fields.salesman,
+    fields.user,
     {
       name: 'schema',
       type: Fields.REFERENCE,
@@ -377,6 +377,10 @@ const Task = {
       type: Fields.STRING,
     },
     {
+      name: 'date',
+      type: Fields.DATE,
+    },
+    {
       name: 'done',
       type: Fields.BOOLEAN,
     },
@@ -387,7 +391,7 @@ const Task = {
       type: Fields.REFERENCE,
       entity: 'Deal',
     },
-    fields.salesman,
+    fields.user,
   ],
 };
 

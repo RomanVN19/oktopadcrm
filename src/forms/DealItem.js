@@ -1,30 +1,46 @@
 import moment from 'moment';
 import { Elements } from 'katejs/lib/client';
 
+const TEXT_MARGIN = 6;
 
 const dateStyle = {
   display: 'inline',
-  marginRight: 10,
+  marginRight: TEXT_MARGIN,
   fontSize: 10,
 };
 
 const userStyle = {
   display: 'inline',
-  marginRight: 10,
+  marginRight: TEXT_MARGIN,
   fontSize: 10,
   fontWeight: 'bold',
 };
 
 const commentStyle = {
   display: 'inline',
+  marginRight: TEXT_MARGIN,
+};
+
+const taskStyle = {
+  display: 'inline',
+  marginRight: TEXT_MARGIN,
+  cursor: 'pointer',
+  textDecoration: 'underline',
+};
+
+const taskDoneStyle = {
+  display: 'inline',
+  marginRight: TEXT_MARGIN,
+  cursor: 'pointer',
+  textDecoration: 'line-through',
 };
 
 const mapDate = (obj) => ({
   ...obj,
-  date: new Date(obj.date),
+  date: obj.date? new Date(obj.date) : 0,
 });
 
-const mapHistory = (data) => {
+const mapHistory = (events) => (data) => {
   const element = {
     type: Elements.GROUP,
     div: true,
@@ -32,10 +48,11 @@ const mapHistory = (data) => {
       {
         type: Elements.LABEL,
         style: dateStyle,
-        title: moment(data.date).format('DD.MM.YYYY HH:mm'),
+        title: data.date ? moment(data.date).format('DD.MM.YYYY HH:mm') : '---',
       },
     ],
   };
+  // comment
   if (data.comment) {
     element.elements.push({
       type: Elements.LABEL,
@@ -46,6 +63,25 @@ const mapHistory = (data) => {
       type: Elements.LABEL,
       style: commentStyle,
       title: data.comment,
+    });
+  }
+  // task
+  if (data.done !== undefined) {
+    element.elements.push({
+      type: Elements.LABEL,
+      title: 'for',
+      style: commentStyle,
+    });
+    element.elements.push({
+      type: Elements.LABEL,
+      style: userStyle,
+      title: (data.user && data.user.title) || 'unknown',
+    });
+    element.elements.push({
+      type: Elements.LABEL,
+      style: data.done ? taskDoneStyle : taskStyle,
+      title: `: ${data.title}`,
+      onClick: () => events.openTask(data.uuid),
     });
   }
   return element;
@@ -165,16 +201,31 @@ export default Form => class DealItem extends Form {
     if (!this.uuid) {
       return;
     }
-    const { response: comments } = await this.app.DealComment.query({
-      where: {
-        dealUuid: this.uuid,
-      },
-    });
+    const [
+      { response: comments },
+      { response: tasks },
+    ] = await Promise.all([
+      this.app.DealComment.query({
+        where: {
+          dealUuid: this.uuid,
+        },
+      }),
+      this.app.Task.query({
+        where: {
+          dealUuid: this.uuid,
+        },
+      }),
+    ]);
+
+
     const history = [
       ...comments.map(mapDate),
+      ...tasks.map(mapDate),
     ];
     history.sort((a, b) => b.date - a.date);
-    this.content.history.elements = history.map(mapHistory);
+    this.content.history.elements = history.map(mapHistory({
+      openTask: (uuid) => this.openTask(uuid),
+    }));
   }
   async save() {
     await super.save();
@@ -187,5 +238,8 @@ export default Form => class DealItem extends Form {
       title: this.content.title.value,
     };
     this.app.open(`TaskItem`, { id: 'new' });
+  }
+  openTask(uuid) {
+    this.app.open('TaskItem', { id: uuid });
   }
 }
