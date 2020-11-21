@@ -96,11 +96,8 @@ export default Form => class DealItem extends Form {
     }
 
     const generatedElements = this.elements;
-    generatedElements.cut = function (id) {
-      return this.splice(this.findIndex(i => i.id === id), 1)[0];
-    };
     const title = generatedElements.cut('title');
-    const salesman = generatedElements.cut('salesman');
+    const salesman = generatedElements.cut('user');
     const schema = generatedElements.cut('schema');
     const step = generatedElements.cut('step');
     this.elements = [
@@ -195,6 +192,10 @@ export default Form => class DealItem extends Form {
   }
   async afterInit() {
     super.afterInit();
+    if (!this.uuid) {
+      this.content.user.value = this.app.user;
+    }
+    this.save();
     this.fillHistory();
   }
   async fillHistory() {
@@ -226,11 +227,6 @@ export default Form => class DealItem extends Form {
     this.content.history.elements = history.map(mapHistory({
       openTask: (uuid) => this.openTask(uuid),
     }));
-  }
-  async save() {
-    await super.save();
-    const url = `${window.location.pathname}?id=${this.uuid}`;
-    window.history.replaceState(window.history.state, undefined, url);
   }
   addTask() {
     this.app.vars.currentDeal = {

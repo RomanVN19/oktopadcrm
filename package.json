@@ -18,7 +18,7 @@
   "license": "AGPL-3.0",
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
-    "katejs": "^1.1.8",
+    "katejs": "^1.1.9",
     "katejs-modules": "^0.0.14",
     "react-beautiful-dnd": "12.2.0"
   },

@@ -4,9 +4,6 @@ import moment from 'moment';
 export default Form => class TaskItem extends Form {
   constructor(args) {
     super(args);
-    this.elements.cut = function (id) {
-      return this.splice(this.findIndex(i => i.id === id), 1)[0];
-    };
 
     const topRow = {
       type: Elements.GRID,
