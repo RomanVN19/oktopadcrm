@@ -411,6 +411,11 @@ export const Settings = {
       name: 'companyName',
       type: Fields.STRING,
     },
+    {
+      name: 'defaultSchema',
+      type: Fields.REFERENCE,
+      entity: 'SaleSchema',
+    }
   ],
 };
 

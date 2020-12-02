@@ -29,6 +29,7 @@ import ProductItemMixin from './forms/ProductItemMixin';
 import DealsBoard from './forms/DealsBoard';
 import DealItem from './forms/DealItem';
 import TaskItem from './forms/TaskItem';
+import DealList from './forms/DealList';
 
 import Components from './components';
 
@@ -98,6 +99,7 @@ const AppClient = parent => class Client extends
       ProductItem: ProductItemMixin(this.forms.ProductItem),
       DealItem: DealItem(this.forms.DealItem),
       TaskItem: TaskItem(this.forms.TaskItem),
+      DealList: DealList(this.forms.DealList),
 
       ProductSalesReport,
       OrdersToDeliverReport,

@@ -194,8 +194,9 @@ export default Form => class DealItem extends Form {
     super.afterInit();
     if (!this.uuid) {
       this.content.user.value = this.app.user;
+      this.content.schema.value = this.app.vars.schema;
+      this.save();
     }
-    this.save();
     this.fillHistory();
   }
   async fillHistory() {
