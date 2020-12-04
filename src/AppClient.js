@@ -30,6 +30,7 @@ import DealsBoard from './forms/DealsBoard';
 import DealItem from './forms/DealItem';
 import TaskItem from './forms/TaskItem';
 import DealList from './forms/DealList';
+import SaleSchemaItem from './forms/SaleSchemaItem';
 
 import Components from './components';
 
@@ -45,6 +46,7 @@ const AppClient = parent => class Client extends
   static path = '/app';
   static primaryColor = '#088596';
   static logo = logo;
+  static useLogger = true;
   constructor(params) {
     super(params);
     this.constructor.components = { ...this.constructor.components, ...Components };
@@ -100,6 +102,7 @@ const AppClient = parent => class Client extends
       DealItem: DealItem(this.forms.DealItem),
       TaskItem: TaskItem(this.forms.TaskItem),
       DealList: DealList(this.forms.DealList),
+      SaleSchemaItem: SaleSchemaItem(this.forms.SaleSchemaItem),
 
       ProductSalesReport,
       OrdersToDeliverReport,
@@ -204,6 +207,8 @@ const AppClient = parent => class Client extends
     this.addSubmenu('Products', 'Price types');
     this.addSubmenu('Products', 'Price lists');
     this.addSubmenu('Products', 'Receipts');
+
+    this.schemas = {};
   }
   initSubmenu(nameInitial, nameTarget) {
     const item = this.menu.find(i => i.title === nameInitial);
@@ -224,6 +229,16 @@ const AppClient = parent => class Client extends
   }
   spliceMenuItem(itemTitle) {
     return this.menu.splice(this.menu.findIndex(item => item.title === itemTitle), 1)[0];
+  }
+  async afterInit() {
+    await super.afterInit();
+    await this.fetchSchemas();
+  }
+  async fetchSchemas() {
+    const { response: schemas } = await this.SaleSchema.query();
+    if (!schemas) return;
+    this.schemas = schemas.reduce((acc, val) => ({ ...acc, [val.uuid]: val}), {});
+    console.log(this.schemas);
   }
 };
 AppClient.package = packageName;

@@ -127,7 +127,12 @@ export default Form => class DealItem extends Form {
               {
                 type: Elements.GRID,
                 elements: [
-                  { ...step, cols: 6 },
+                  {
+                    ...step,
+                    cols: 6,
+                    type: Elements.SELECT,
+                    selectValue: true,
+                  },
                   {
                     type: Elements.LABEL,
                     title: 'at',
@@ -195,6 +200,7 @@ export default Form => class DealItem extends Form {
     if (!this.uuid) {
       this.content.user.value = this.app.user;
       this.content.schema.value = this.app.vars.schema;
+      this.fillSteps();
       this.save();
     }
     this.fillHistory();
@@ -238,5 +244,19 @@ export default Form => class DealItem extends Form {
   }
   openTask(uuid) {
     this.app.open('TaskItem', { id: uuid });
+  }
+  async load() {
+    await super.load();
+    this.fillSteps();
+  }
+  fillSteps() {
+    const schema = this.content.schema.value;
+    if (!schema || !schema.uuid) return;
+    const steps = this.app.schemas[schema.uuid].steps;
+    this.content.step.options = steps.map(step => ({ title: step.name, value: step.name }));
+    const step = this.content.step.value;
+    if (!step) {
+      this.content.step.value = steps[0] && steps[0].name;
+    }
   }
 }
