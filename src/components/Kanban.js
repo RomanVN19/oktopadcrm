@@ -78,7 +78,6 @@ export default class Kanban extends Component {
     const columns = this.state.columns;
     return (
       <div style={{ display: "flex", justifyContent: "center", height: "100%" }}>
-    hello, world
   <DragDropContext
     onDragEnd={result => onDragEnd(result, columns, setColumns)}
   >

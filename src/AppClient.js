@@ -26,7 +26,6 @@ import ReceiptItemMixin from './forms/ReceiptItemMixin';
 import ProductsFlowReport from './forms/ProducsFlowReport';
 import DebtsFlowReport from './forms/DebtsFlowReport';
 import ProductItemMixin from './forms/ProductItemMixin';
-import DealsBoard from './forms/DealsBoard';
 import DealItem from './forms/DealItem';
 import TaskItem from './forms/TaskItem';
 import DealList from './forms/DealList';
@@ -46,7 +45,7 @@ const AppClient = parent => class Client extends
   static path = '/app';
   static primaryColor = '#088596';
   static logo = logo;
-  static useLogger = true;
+  // static useLogger = true;
   constructor(params) {
     super(params);
     this.constructor.components = { ...this.constructor.components, ...Components };
@@ -113,8 +112,6 @@ const AppClient = parent => class Client extends
       ReceiptItem: ReceiptItemMixin(this.forms.ReceiptItem),
       ProductsFlowReport,
       DebtsFlowReport,
-      DealsBoard,
-
      };
 
     this.forms.PaymentList.doc = true;
@@ -191,10 +188,6 @@ const AppClient = parent => class Client extends
       this.spliceMenuItem('Extra fields lists'),
       this.spliceMenuItem('Triggers'),
     );
-    this.menu.unshift({
-      form: 'DealsBoard',
-      title: 'Deals board',
-    });
     this.spliceMenuItem('Extra field values lists'); // temp - remove from menu
 
     this.entitiesWithExtraFields = ['Deal', 'Task', 'Client'];
