@@ -201,6 +201,7 @@ const AppClient = parent => class Client extends
     this.addSubmenu('Products', 'Price lists');
     this.addSubmenu('Products', 'Receipts');
 
+    this.allowCreateInSelect = true;
     this.schemas = {};
   }
   initSubmenu(nameInitial, nameTarget) {
@@ -223,15 +224,16 @@ const AppClient = parent => class Client extends
   spliceMenuItem(itemTitle) {
     return this.menu.splice(this.menu.findIndex(item => item.title === itemTitle), 1)[0];
   }
-  async afterInit() {
-    await super.afterInit();
+  async afterUserInit() {
+    if (super.afterUserInit) {
+      await super.afterUserInit();
+    }
     await this.fetchSchemas();
   }
   async fetchSchemas() {
     const { response: schemas } = await this.SaleSchema.query();
     if (!schemas) return;
     this.schemas = schemas.reduce((acc, val) => ({ ...acc, [val.uuid]: val}), {});
-    console.log(this.schemas);
   }
 };
 AppClient.package = packageName;
