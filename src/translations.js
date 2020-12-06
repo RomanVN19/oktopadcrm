@@ -196,6 +196,8 @@ const translate = {
     'New Deal': 'Новая сделка',
     'List': 'Список',
     'Borad': 'Доска',
+    'Order': 'Продажа',
+    'Orders': 'Продажи',
   },
 };
 
