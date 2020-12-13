@@ -1,6 +1,16 @@
 import { Elements, getElement } from 'katejs/lib/client';
 import { structures } from '../structure';
 
+const kanbanStyles = {
+  container: {},
+  columnContainer: {},
+  column: {},
+  columnDragOver: { background: '#b1dede' },
+  item: { background: '#088596' },
+  itemDragging: { background: '#064C59'},
+};
+
+
 export default Form => class DealList extends  Form {
   constructor(args) {
     super(args);
@@ -54,6 +64,7 @@ export default Form => class DealList extends  Form {
     const board = {
       id: 'board',
       type: 'Kanban',
+      styles: kanbanStyles,
     };
     this.elements.push(topPanel, list, board);
 

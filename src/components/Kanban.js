@@ -69,27 +69,45 @@ export default class Kanban extends Component {
   constructor(props) {
     super(props);
     this.state = { columns: columnsFromBackend };
+    const userStyles = {
+      container: {},
+      columnContainer: {},
+      column: {},
+      columnDragOver: {},
+      item: {},
+      itemDragging: {},
+      ...(this.props.styles || {}),
+    };
+    this.styles = {
+      container: { display: "flex", justifyContent: "center", height: "100%", ...userStyles.container },
+      columnContainer: { display: "flex", flexDirection: "column", alignItems: "center", ...userStyles.columnContainer },
+      column: { background: 'lightgrey', padding: 4, width: 250, minHeight: 500, ...userStyles.column },
+      columnDragOver: { background: 'lightblue', padding: 4, width: 250, minHeight: 500, ...userStyles.columnDragOver },
+      item: { userSelect: "none", padding: 16, margin: "0 0 8px 0", minHeight: "50px", backgroundColor: "#456C86", color: "white", ...userStyles.item },
+      itemDragging: { userSelect: "none", padding: 16, margin: "0 0 8px 0", minHeight: "50px", backgroundColor: "#263B4A", color: "white", ...userStyles.itemDragging },
+    };
+// ...provided.draggableProps.style
+  //snapshot.isDragging ?
   }
   setColumns = (columns) => {
     this.setState({ columns });
   };
+  itemClick(item) {
+    console.log('click', item);
+  }
   render() {
     const setColumns = this.setColumns;
     const columns = this.state.columns;
     return (
-      <div style={{ display: "flex", justifyContent: "center", height: "100%" }}>
+      <div style={this.styles.container}>
   <DragDropContext
     onDragEnd={result => onDragEnd(result, columns, setColumns)}
   >
     {Object.entries(columns).map(([columnId, column], index) => {
       return (
         <div
-      style={{
-        display: "flex",
-          flexDirection: "column",
-          alignItems: "center"
-      }}
-      key={columnId}
+          style={this.styles.columnContainer}
+          key={columnId}
         >
         <h2>{column.name}</h2>
         <div style={{ margin: 8 }}>
@@ -99,14 +117,7 @@ export default class Kanban extends Component {
           <div
         {...provided.droppableProps}
         ref={provided.innerRef}
-        style={{
-          background: snapshot.isDraggingOver
-            ? "lightblue"
-            : "lightgrey",
-            padding: 4,
-            width: 250,
-            minHeight: 500
-        }}
+        style={snapshot.isDraggingOver ? this.styles.columnDragOver : this.styles.column }
       >
         {column.items.map((item, index) => {
           return (
@@ -122,16 +133,10 @@ export default class Kanban extends Component {
             {...provided.draggableProps}
             {...provided.dragHandleProps}
             style={{
-              userSelect: "none",
-                padding: 16,
-                margin: "0 0 8px 0",
-                minHeight: "50px",
-                backgroundColor: snapshot.isDragging
-                ? "#263B4A"
-                : "#456C86",
-                color: "white",
-            ...provided.draggableProps.style
-            }}
+                ...(snapshot.isDragging ? this.styles.itemDragging: this.styles.item),
+                ...provided.draggableProps.style,
+              }}
+              onClick={() => this.itemClick(item)}
           >
             {item.content}
           </div>
