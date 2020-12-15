@@ -1,74 +1,53 @@
 import React, { Component } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 
-const itemsFromBackend = [
-  { id: '11', content: "First task" },
-  { id: '12', content: "Second task" },
-  { id: '13', content: "Third task" },
-  { id: '14', content: "Fourth task" },
-  { id: '15', content: "Fifth task" }
+const testItems = [
+  { id: '11', title: "First task" },
+  { id: '12', title: "Second task" },
+  { id: '13', title: "Third task" },
+  { id: '14', title: "Fourth task" },
+  { id: '15', title: "Fifth task" }
 ];
 
-const columnsFromBackend = {
-  ['1']: {
-    name: "Requested",
-    items: itemsFromBackend
+const testData = [
+  {
+    id: 'id1',
+    title: 'col 1',
+    items: testItems,
   },
-  ['2']: {
-    name: "To do",
-    items: []
+  {
+    id: 'id2',
+    title: 'col 2',
   },
-  ['3']: {
-    name: "In Progress",
-    items: []
-  },
-  ['4']: {
-    name: "Done",
-    items: []
-  }
-};
+];
 
 const onDragEnd = (result, columns, setColumns) => {
   if (!result.destination) return;
   const { source, destination } = result;
 
   if (source.droppableId !== destination.droppableId) {
-    const sourceColumn = columns[source.droppableId];
-    const destColumn = columns[destination.droppableId];
-    const sourceItems = [...sourceColumn.items];
-    const destItems = [...destColumn.items];
+    const sourceColumn = columns.find(item => item.id === source.droppableId);
+    const destColumn = columns.find(item => item.id === destination.droppableId);
+    const sourceItems = sourceColumn.items || [];
+    const destItems = destColumn.items || [];
+    sourceColumn.items = sourceItems;
+    destColumn.items = destItems;
     const [removed] = sourceItems.splice(source.index, 1);
     destItems.splice(destination.index, 0, removed);
-    setColumns({
-      ...columns,
-      [source.droppableId]: {
-        ...sourceColumn,
-        items: sourceItems
-      },
-      [destination.droppableId]: {
-        ...destColumn,
-        items: destItems
-      }
-    });
+    setColumns(columns.slice());
   } else {
-    const column = columns[source.droppableId];
-    const copiedItems = [...column.items];
+    const column = columns.find(item => item.id === source.droppableId);
+    const copiedItems = column.items;
     const [removed] = copiedItems.splice(source.index, 1);
     copiedItems.splice(destination.index, 0, removed);
-    setColumns({
-      ...columns,
-      [source.droppableId]: {
-        ...column,
-        items: copiedItems
-      }
-    });
+    setColumns(columns.slice());
   }
 };
 
 export default class Kanban extends Component {
   constructor(props) {
     super(props);
-    this.state = { columns: columnsFromBackend };
+    this.state = { columns: testData };
     const userStyles = {
       container: {},
       columnContainer: {},
@@ -103,15 +82,15 @@ export default class Kanban extends Component {
   <DragDropContext
     onDragEnd={result => onDragEnd(result, columns, setColumns)}
   >
-    {Object.entries(columns).map(([columnId, column], index) => {
+    {columns.map((column) => {
       return (
         <div
           style={this.styles.columnContainer}
-          key={columnId}
+          key={column.id}
         >
-        <h2>{column.name}</h2>
+        <h2>{column.title}</h2>
         <div style={{ margin: 8 }}>
-    <Droppable droppableId={columnId} key={columnId}>
+    <Droppable droppableId={column.id} key={column.id}>
         {(provided, snapshot) => {
         return (
           <div
@@ -119,7 +98,7 @@ export default class Kanban extends Component {
         ref={provided.innerRef}
         style={snapshot.isDraggingOver ? this.styles.columnDragOver : this.styles.column }
       >
-        {column.items.map((item, index) => {
+        {(column.items || []).map((item, index) => {
           return (
             <Draggable
           key={item.id}
@@ -138,7 +117,7 @@ export default class Kanban extends Component {
               }}
               onClick={() => this.itemClick(item)}
           >
-            {item.content}
+            {item.title}
           </div>
           );
           }}
