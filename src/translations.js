@@ -198,6 +198,8 @@ const translate = {
     'Borad': 'Доска',
     'Order': 'Продажа',
     'Orders': 'Продажи',
+    'Sale schemas': 'Схемы продаж',
+    'Sale schema': 'Схема продаж',
   },
 };
 

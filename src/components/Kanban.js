@@ -47,10 +47,11 @@ const onDragEnd = (result, columns, setColumns) => {
 export default class Kanban extends Component {
   constructor(props) {
     super(props);
-    this.state = { columns: testData };
+    this.state = { columns: this.props.data || [] };
     const userStyles = {
       container: {},
       columnContainer: {},
+      columnHeader: {},
       column: {},
       columnDragOver: {},
       item: {},
@@ -60,20 +61,27 @@ export default class Kanban extends Component {
     this.styles = {
       container: { display: "flex", justifyContent: "center", height: "100%", ...userStyles.container },
       columnContainer: { display: "flex", flexDirection: "column", alignItems: "center", ...userStyles.columnContainer },
+      columnHeader: { ...userStyles.columnHeader },
       column: { background: 'lightgrey', padding: 4, width: 250, minHeight: 500, ...userStyles.column },
       columnDragOver: { background: 'lightblue', padding: 4, width: 250, minHeight: 500, ...userStyles.columnDragOver },
       item: { userSelect: "none", padding: 16, margin: "0 0 8px 0", minHeight: "50px", backgroundColor: "#456C86", color: "white", ...userStyles.item },
       itemDragging: { userSelect: "none", padding: 16, margin: "0 0 8px 0", minHeight: "50px", backgroundColor: "#263B4A", color: "white", ...userStyles.itemDragging },
     };
-// ...provided.draggableProps.style
-  //snapshot.isDragging ?
   }
   setColumns = (columns) => {
     this.setState({ columns });
   };
   itemClick(item) {
-    console.log('click', item);
+    if (this.props.itemClick) {
+      this.props.itemClick(item);
+    }
   }
+  componentWillReceiveProps(nextProps) {
+    if (this.props.data !== nextProps.data) {
+      this.setState({ columns: nextProps.data });
+    }
+  }
+
   render() {
     const setColumns = this.setColumns;
     const columns = this.state.columns;
@@ -88,7 +96,7 @@ export default class Kanban extends Component {
           style={this.styles.columnContainer}
           key={column.id}
         >
-        <h2>{column.title}</h2>
+        <h2 style={this.styles.columnHeader}>{column.title}</h2>
         <div style={{ margin: 8 }}>
     <Droppable droppableId={column.id} key={column.id}>
         {(provided, snapshot) => {

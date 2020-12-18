@@ -2,8 +2,12 @@ import { Elements, getElement } from 'katejs/lib/client';
 import { structures } from '../structure';
 
 const kanbanStyles = {
-  container: {},
+  container: {
+    justifyContent: 'none',
+    overflowX: 'scroll',
+  },
   columnContainer: {},
+  columnHeader: { fontSize: '1.25rem' },
   column: {},
   columnDragOver: { background: '#b1dede' },
   item: { background: '#088596' },
@@ -22,6 +26,7 @@ export default Form => class DealList extends  Form {
       value: schema,
       onChange: () => this.schemaChange(),
     };
+    const isBoard = this.app.vars.isBoardDeals === undefined ? true : this.app.vars.isBoardDeals;
     const topPanel = {
       type: Elements.GRID,
       elements: [
@@ -51,7 +56,7 @@ export default Form => class DealList extends  Form {
         {
           type: Elements.SWITCH,
           id: 'isBoard',
-          value: true,
+          value: isBoard,
           title: 'Board',
           cols: 2,
           onChange: () => this.changeView(),
@@ -60,11 +65,14 @@ export default Form => class DealList extends  Form {
     };
 
     const list = this.elements.cut('list');
-    list.hidden = true;
+    list.hidden = isBoard;
     const board = {
+      hidden: !isBoard,
       id: 'board',
       type: 'Kanban',
       styles: kanbanStyles,
+      itemClick: (item) => this.boardItemClick(item),
+      data: [],
     };
     this.elements.push(topPanel, list, board);
 
@@ -95,5 +103,26 @@ export default Form => class DealList extends  Form {
     const isBoard = this.content.isBoard.value;
     this.content.list.hidden = isBoard;
     this.content.board.hidden = !isBoard;
+    this.app.vars.isBoardDeals = isBoard;
+    if (isBoard) {
+      this.setBoardData(this.content.list.value);
+    }
+  }
+  boardItemClick(item) {
+    this.app.open('DealItem', { id: item.uuid });
+  }
+  async load() {
+    const data = await super.load();
+    if (this.content.isBoard.value) {
+      this.setBoardData(data);
+    }
+    return data;
+  }
+  async setBoardData(data) {
+    const { response: schema } = await this.app.SaleSchema.get({ uuid: this.app.vars.schema.uuid });
+    data = data.map(item => ({ ...item, id: item.uuid }));
+    const columns = schema.steps.map(step => ({ ...step, title: step.name, id: step.uuid }));
+    columns[0].items = data;
+    this.content.board.data = columns;
   }
 }
