@@ -340,8 +340,8 @@ const Deal = {
       entity: 'SaleSchema',
     },
     {
-      name: 'step',
-      type: Fields.STRING,
+      name: 'stepIndex', // index from sale schema
+      type: Fields.INTEGER,
     },
   ],
 };

@@ -99,7 +99,7 @@ export default Form => class DealItem extends Form {
     const title = generatedElements.cut('title');
     const salesman = generatedElements.cut('user');
     const schema = generatedElements.cut('schema');
-    const step = generatedElements.cut('step');
+    const step = generatedElements.cut('stepIndex');
     this.elements = [
       {
         id: 'mainGrid',
@@ -187,6 +187,8 @@ export default Form => class DealItem extends Form {
         ],
       }
     ];
+
+    this.elements.get('client').onChange = (value) => this.clientChange(value);
     //
   }
   async postComment() {
@@ -245,6 +247,11 @@ export default Form => class DealItem extends Form {
   openTask(uuid) {
     this.app.open('TaskItem', { id: uuid });
   }
+  clientChange(value) {
+    if (!this.content.title.value && value && value.uuid) {
+      this.content.title.value = value.title;
+    }
+  }
   async load() {
     await super.load();
     this.fillSteps();
@@ -253,10 +260,10 @@ export default Form => class DealItem extends Form {
     const schema = this.content.schema.value;
     if (!schema || !schema.uuid) return;
     const steps = this.app.schemas[schema.uuid].steps;
-    this.content.step.options = steps.map(step => ({ title: step.name, value: step.name }));
-    const step = this.content.step.value;
-    if (!step) {
-      this.content.step.value = steps[0] && steps[0].name;
+    this.content.stepIndex.options = steps.map((step, index) => ({ title: step.name, value: index }));
+    const stepIndex = this.content.stepIndex.value;
+    if (stepIndex === undefined || stepIndex === null) {
+      this.content.stepIndex.value = 0;
     }
   }
 }

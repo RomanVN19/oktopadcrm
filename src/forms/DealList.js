@@ -124,7 +124,7 @@ export default Form => class DealList extends  Form {
     data = data.map(item => ({ ...item, id: item.uuid }));
     const columns = schema.steps.map(step => ({ ...step, title: step.name, id: step.uuid }));
     data.forEach(deal => {
-      let column = columns.find(column => column.name === deal.step);
+      let column = columns.find((column, index) => index === deal.stepIndex);
       if (!column) {
         column = columns[0];
       }
@@ -134,7 +134,16 @@ export default Form => class DealList extends  Form {
     });
     this.content.board.data = columns;
   }
-  onDragEnd(params) {
+  async onDragEnd(params) {
     console.log('dragend', params);
+    const data = this.content.board.data;
+    if (params.destination.droppableId !== params.source.droppableId) {
+      // change step
+      const targetStepIndex = data.findIndex(col => col.uuid === params.destination.droppableId);
+      await this.app.Deal.put({ uuid: params.draggableId, body: { stepIndex: targetStepIndex }});
+      this.load();
+    } else {
+      // change order
+    }
   }
 }
