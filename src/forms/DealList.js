@@ -73,6 +73,7 @@ export default Form => class DealList extends  Form {
       styles: kanbanStyles,
       itemClick: (item) => this.boardItemClick(item),
       data: [],
+      onDragEnd: (params) => this.onDragEnd(params),
     };
     this.elements.push(topPanel, list, board);
 
@@ -122,7 +123,18 @@ export default Form => class DealList extends  Form {
     const { response: schema } = await this.app.SaleSchema.get({ uuid: this.app.vars.schema.uuid });
     data = data.map(item => ({ ...item, id: item.uuid }));
     const columns = schema.steps.map(step => ({ ...step, title: step.name, id: step.uuid }));
-    columns[0].items = data;
+    data.forEach(deal => {
+      let column = columns.find(column => column.name === deal.step);
+      if (!column) {
+        column = columns[0];
+      }
+      const items = column.items || [];
+      items.push(deal);
+      column.items = items;
+    });
     this.content.board.data = columns;
+  }
+  onDragEnd(params) {
+    console.log('dragend', params);
   }
 }

@@ -21,7 +21,7 @@ const testData = [
   },
 ];
 
-const onDragEnd = (result, columns, setColumns) => {
+const onDragEnd = (result, columns, setColumns, props) => {
   if (!result.destination) return;
   const { source, destination } = result;
 
@@ -41,6 +41,9 @@ const onDragEnd = (result, columns, setColumns) => {
     const [removed] = copiedItems.splice(source.index, 1);
     copiedItems.splice(destination.index, 0, removed);
     setColumns(columns.slice());
+  }
+  if (props.onDragEnd) {
+    props.onDragEnd(result);
   }
 };
 
@@ -88,7 +91,7 @@ export default class Kanban extends Component {
     return (
       <div style={this.styles.container}>
   <DragDropContext
-    onDragEnd={result => onDragEnd(result, columns, setColumns)}
+    onDragEnd={result => onDragEnd(result, columns, setColumns, this.props)}
   >
     {columns.map((column) => {
       return (

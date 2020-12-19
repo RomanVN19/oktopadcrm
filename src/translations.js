@@ -200,6 +200,7 @@ const translate = {
     'Orders': 'Продажи',
     'Sale schemas': 'Схемы продаж',
     'Sale schema': 'Схема продаж',
+    'Default schema': 'Схема по умолчанию',
   },
 };
 

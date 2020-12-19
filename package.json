@@ -20,7 +20,8 @@
     "@babel/polyfill": "^7.12.1",
     "katejs": "^1.1.12",
     "katejs-modules": "^0.0.18",
-    "react-beautiful-dnd": "12.2.0"
+    "react-beautiful-dnd": "12.2.0",
+    "sqlite3": "^5.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.0",
