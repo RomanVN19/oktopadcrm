@@ -14,6 +14,7 @@ const kanbanStyles = {
   itemDragging: { background: '#064C59'},
 };
 
+const BOARD_COL_PREFIX = '$$col_';
 
 export default Form => class DealList extends  Form {
   constructor(args) {
@@ -74,6 +75,7 @@ export default Form => class DealList extends  Form {
       itemClick: (item) => this.boardItemClick(item),
       data: [],
       onDragEnd: (params) => this.onDragEnd(params),
+      orderSaveKey: 'dealsOrder',
     };
     this.elements.push(topPanel, list, board);
 
@@ -122,7 +124,9 @@ export default Form => class DealList extends  Form {
   async setBoardData(data) {
     const { response: schema } = await this.app.SaleSchema.get({ uuid: this.app.vars.schema.uuid });
     data = data.map(item => ({ ...item, id: item.uuid }));
-    const columns = schema.steps.map(step => ({ ...step, title: step.name, id: step.uuid }));
+    // идентификаторы сделаны индексами чтобы при изменении схемы
+    // сохранялся порядок
+    const columns = schema.steps.map((step, index) => ({ ...step, title: step.name, id: `${BOARD_COL_PREFIX}${index}` }));
     data.forEach(deal => {
       let column = columns.find((column, index) => index === deal.stepIndex);
       if (!column) {
@@ -135,15 +139,12 @@ export default Form => class DealList extends  Form {
     this.content.board.data = columns;
   }
   async onDragEnd(params) {
-    console.log('dragend', params);
     const data = this.content.board.data;
     if (params.destination.droppableId !== params.source.droppableId) {
       // change step
-      const targetStepIndex = data.findIndex(col => col.uuid === params.destination.droppableId);
+      const targetStepIndex = +params.destination.droppableId.replace(BOARD_COL_PREFIX, '');
       await this.app.Deal.put({ uuid: params.draggableId, body: { stepIndex: targetStepIndex }});
       this.load();
-    } else {
-      // change order
     }
   }
 }

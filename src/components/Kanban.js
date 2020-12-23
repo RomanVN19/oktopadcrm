@@ -25,6 +25,8 @@ const onDragEnd = (result, columns, setColumns, props) => {
   if (!result.destination) return;
   const { source, destination } = result;
 
+  let newColumns;
+
   if (source.droppableId !== destination.droppableId) {
     const sourceColumn = columns.find(item => item.id === source.droppableId);
     const destColumn = columns.find(item => item.id === destination.droppableId);
@@ -34,17 +36,59 @@ const onDragEnd = (result, columns, setColumns, props) => {
     destColumn.items = destItems;
     const [removed] = sourceItems.splice(source.index, 1);
     destItems.splice(destination.index, 0, removed);
-    setColumns(columns.slice());
+    newColumns = columns.slice();
+    setColumns(newColumns);
+    if (props.onDragEnd) {
+      props.onDragEnd(result);
+    }
   } else {
     const column = columns.find(item => item.id === source.droppableId);
     const copiedItems = column.items;
     const [removed] = copiedItems.splice(source.index, 1);
     copiedItems.splice(destination.index, 0, removed);
-    setColumns(columns.slice());
+    newColumns = columns.slice();
+    setColumns(newColumns);
   }
-  if (props.onDragEnd) {
-    props.onDragEnd(result);
+  if (props.orderSaveKey) {
+    saveOrder(newColumns, props.orderSaveKey);
   }
+};
+
+const saveOrder = (data, key) => {
+  const order = data.reduce((acc, col) => {
+    const colOrder = (col.items || []).reduce((accItems, item, index) => {
+      accItems[item.id] = index;
+      return accItems;
+    }, {});
+    acc[col.id] = colOrder;
+    return acc;
+  }, {});
+  localStorage.setItem(key, JSON.stringify(order));
+};
+
+const restoreOrder = (columns, key) => {
+  let order;
+  try {
+    order = JSON.parse(localStorage.getItem(key));
+  } catch {
+  }
+  if (!order) {
+    return;
+  }
+  columns.forEach((column) => {
+    const colsData = order[column.id];
+    if (colsData) {
+      (column.items || []).forEach((item) => {
+        const itemOrder = colsData[item.id];
+        if (itemOrder !== undefined) {
+          item.order = itemOrder;
+        } else {
+          item.order = Number.MAX_SAFE_INTEGER;
+        }
+      });
+      (column.items || []).sort((a, b) => (a.order - b.order));
+    }
+  });
 };
 
 export default class Kanban extends Component {
@@ -81,6 +125,8 @@ export default class Kanban extends Component {
   }
   componentWillReceiveProps(nextProps) {
     if (this.props.data !== nextProps.data) {
+      const columns = nextProps.data.slice();
+      restoreOrder(columns, nextProps.orderSaveKey);
       this.setState({ columns: nextProps.data });
     }
   }
