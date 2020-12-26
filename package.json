@@ -2,7 +2,7 @@
   "name": "oktopad-crm",
   "author": "Roman Nep <neproman@gmail.com>",
   "version": "1.2.0",
-  "main": "lib/index.js",
+  "main": "main.js",
   "scripts": {
     "dev": "cross-env ENV=local babel-node makeEnv.js && nodemon --watch src --exec babel-node src/platform.js",
     "dev-server": "cross-env ENV=local nodemon --watch src/AppServer.js  --watch src/entities --exec babel-node src/server.js",
@@ -13,11 +13,13 @@
     "dbsync": "babel-node src/server.js dbsync",
     "build": "babel src --out-dir lib --copy-files",
     "server": "babel-node src/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
   },
   "license": "AGPL-3.0",
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
+    "electron": "^11.1.1",
     "katejs": "^1.1.13",
     "katejs-modules": "^0.0.18",
     "react-beautiful-dnd": "12.2.0",
