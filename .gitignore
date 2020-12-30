@@ -6,6 +6,8 @@
 # production
 /build
 /lib
+/dist
+/release
 
 # env
 /src/front.env.json
