@@ -1,11 +1,13 @@
 const { app, BrowserWindow } = require('electron');
-const { getServer } = require('./lib/server-electron');
+const serverLib = require('./lib/server');
 const os = require('os');
 const fs = require('fs');
 const path = require('path');
 
 const dataDirname = 'OktopadCrm';
 const dataFilename = 'oktopad.db';
+
+console.log('imported', serverLib);
 
 function createWindow () {
   const win = new BrowserWindow({
@@ -47,5 +49,5 @@ if (!fs.existsSync(dataDir)) {
   console.log('Using existing database');
 }
 
-const server = getServer(dataFile);
+const server = serverLib.getServer(dataFile);
 server.run();

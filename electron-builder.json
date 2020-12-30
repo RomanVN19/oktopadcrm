@@ -1,0 +1,28 @@
+{
+  "copyright": "Copyright © 2021 Roman Nep <neproman@gmail.com>",
+  "productName": "Oktopad CRM",
+  "directories": {
+    "output": "release/"
+  },
+  "removePackageScripts": true,
+  "files": [
+    "app/**",
+    "lib/**",
+    "main.js"
+  ],
+  "extraFiles": [
+    "build/**",
+    "oktopad.db"
+  ],
+  "win": {
+    "icon": "public/favicon.ico",
+    "target": [
+      {
+        "target": "dir",
+        "arch": [
+          "x64"
+        ]
+      }
+    ]
+  }
+}
