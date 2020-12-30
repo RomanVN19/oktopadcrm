@@ -1,38 +1,46 @@
 {
   "name": "oktopad-crm",
   "author": "Roman Nep <neproman@gmail.com>",
+  "description": "Oktopad CRM",
   "version": "1.2.0",
   "main": "main.js",
+  "sideEffects": false,
   "scripts": {
     "dev": "cross-env ENV=local babel-node makeEnv.js && nodemon --watch src --exec babel-node src/platform.js",
     "dev-server": "cross-env ENV=local nodemon --watch src/AppServer.js  --watch src/entities --exec babel-node src/server.js",
     "dev-client": "cross-env ENV=local babel-node makeEnv.js && react-scripts start",
     "dev-dbsync": "cross-env ENV=local babel-node src/server.js dbsync",
     "build-client": "babel-node makeEnv.js && react-scripts build",
-    "build-server": "babel src --out-dir lib --copy-files",
+    "build-server": "webpack --config webpack.server.js --progress",
     "dbsync": "babel-node src/server.js dbsync",
     "build": "babel src --out-dir lib --copy-files",
     "server": "babel-node src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron .",
+    "build-package": "electron-builder"
   },
   "license": "AGPL-3.0",
   "dependencies": {
-    "@babel/polyfill": "^7.12.1",
-    "electron": "^11.1.1",
-    "katejs": "^1.1.13",
-    "katejs-modules": "^0.0.18",
-    "react-beautiful-dnd": "12.2.0",
     "sqlite3": "^5.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.0",
     "@babel/node": "^7.2.2",
+    "@babel/polyfill": "^7.12.1",
+    "aws-sdk": "^2.818.0",
+    "babel-loader": "^8.0.6",
     "babel-plugin-module-resolver": "^3.1.1",
     "cross-env": "^5.2.0",
+    "electron": "^11.1.1",
+    "electron-builder": "^22.9.1",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-import-resolver-babel-module": "^5.0.1",
-    "nodemon": "^1.18.4"
+    "katejs": "^1.1.14",
+    "katejs-modules": "^0.0.18",
+    "nodemon": "^1.18.4",
+    "pg-hstore": "^2.3.3",
+    "react-beautiful-dnd": "12.2.0",
+    "webpack-cli": "^4.3.0"
   },
   "browserslist": [
     ">0.2%",
