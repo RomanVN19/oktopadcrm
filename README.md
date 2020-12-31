@@ -1,39 +1,6 @@
-# Assistant
+# Oktopad CRM
 
-Приложение для учета на базе фреймворка KateJS
-
-## Использование в качестве модуля
-
-````
-npm install katejs-assistant --save
-```` 
-
-`AppServer`
-````
-import AppAssistant from 'katejs-assistant/lib/AppServer';
-
-...
-
-const AppServer = parent => class Server extends use(parent, AppAssistant) {
-  ...
-}
-````
-`AppClient`
-````
-import AppAssitant from 'katejs-assistant/lib/AppClient';
-
-...
-
-const AppClient = parent => class Client extends use(parent, AppAssitant) {
-  ...
-}
-````
-
-## Установка
-````
-git clone https://github.com/romannep/assistant.git .
-npm install
-````
+Открытая система CRM и управленческого учета.
 
 ## Запуск
 

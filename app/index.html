@@ -2,11 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Oktopad Crm Server</title>
+    <title>Oktopad CRM Server</title>
     <script src="logic.js"></script>
+    <style>
+        .container {
+            width: 400px;
+            margin: 0 auto;
+        }
+        h3, .logo {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-Hello, world!<br/>
-<a href="#" onclick="openApp()">http://localhost:1122/</a>
+<div class="container">
+    <div class="logo"> <img class="logo" src="oktopad.svg"> </div>
+    <h3>Oktopad CRM Server</h3>
+    <p>Ваша система доступна по адресу <a href="#" onclick="openApp()">http://localhost:1122/</a></p>
+    <p>Ваши данные сохраняются в: </p>
+    <p><span id="dataDir"></span> <a href="#" onclick="openDir()">Открыть папку</a></p>
+    <p>Учетные данные по умолчанию:</p>
+    <p>Администратор: admin/admin</p>
+    <p>Пользователь: user/user</p>
+</div>
 </body>
 </html>

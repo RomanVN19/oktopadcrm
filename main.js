@@ -3,22 +3,24 @@ const serverLib = require('./lib/server');
 const os = require('os');
 const fs = require('fs');
 const path = require('path');
+const sharedData = require('./shared');
 
 const dataDirname = 'Oktopad CRM';
 const dataFilename = 'oktopad.db';
 
 function createWindow () {
   const win = new BrowserWindow({
-    width: 800,
+    width: 600,
     height: 600,
     webPreferences: {
-      nodeIntegration: true
+      nodeIntegration: true,
+      enableRemoteModule: true,
     },
     autoHideMenuBar: true,
   });
 
   win.loadFile('app/index.html');
-  win.webContents.openDevTools();
+  // win.webContents.openDevTools();
 }
 
 app.whenReady().then(createWindow);
@@ -46,6 +48,8 @@ if (!fs.existsSync(dataDir)) {
 } else {
   console.log('Using existing database');
 }
+
+sharedData.dataDir = dataDir;
 
 const server = serverLib.getServer(dataFile);
 server.run();
