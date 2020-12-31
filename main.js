@@ -4,10 +4,8 @@ const os = require('os');
 const fs = require('fs');
 const path = require('path');
 
-const dataDirname = 'OktopadCrm';
+const dataDirname = 'Oktopad CRM';
 const dataFilename = 'oktopad.db';
-
-console.log('imported', serverLib);
 
 function createWindow () {
   const win = new BrowserWindow({

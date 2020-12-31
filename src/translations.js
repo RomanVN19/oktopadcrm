@@ -167,6 +167,7 @@ const translate = {
     'Deals': 'Сделки',
     'Deal': 'Сделка',
     'Tasks': 'Задачи',
+    'Task': 'Задачa',
     'Triggers': 'Триггеры',
     'Trigger': 'Триггер',
     'Extra fields lists': 'Дополнительные поля',
