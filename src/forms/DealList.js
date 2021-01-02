@@ -66,7 +66,6 @@ export default Form => class DealList extends  Form {
     };
 
     const list = this.elements.cut('list');
-    console.log('list', list);
     list.columns.splice(list.columns.findIndex(col => col.dataPath === "contact"), 1);
     const stepIndex = list.columns.find(col => col.dataPath === "stepIndex");
     stepIndex.format = (index) => this.stepFormat(index);
@@ -123,6 +122,7 @@ export default Form => class DealList extends  Form {
     const data = await super.load();
     const { response: schema } = await this.app.SaleSchema.get({ uuid: this.app.vars.schema.uuid });
     this.schema = schema;
+    this.content.list.value = data;
     if (this.content.isBoard.value) {
       this.setBoardData(data);
     }
@@ -154,6 +154,6 @@ export default Form => class DealList extends  Form {
     }
   }
   stepFormat(index) {
-    return this.schema.steps[index].name;
+    return this.schema && this.schema.steps[index].name;
   }
 }
