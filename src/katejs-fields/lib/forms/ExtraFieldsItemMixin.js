@@ -16,12 +16,15 @@ export default Form => class FormWithExtraFields extends Form {
   constructor(args) {
     super(args);
     if (this.app.fieldsLists && this.app.fieldsLists[this.constructor.entity]) {
-      const extraElementsCard = {
+      const existingCard = this.elements.get('extraFields');
+      const extraElementsCard = existingCard || {
         id: 'extraFields',
         type: Elements.CARD,
-        elements: this.app.fieldsLists[this.constructor.entity].map(getExtraElement),
       };
-      this.elements.push(extraElementsCard);
+      extraElementsCard.elements = this.app.fieldsLists[this.constructor.entity].map(getExtraElement);
+      if (!existingCard) {
+        this.elements.push(extraElementsCard);
+      }
     }
   }
   async load() {

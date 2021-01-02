@@ -100,6 +100,7 @@ export default Form => class DealItem extends Form {
     const salesman = generatedElements.cut('user');
     const schema = generatedElements.cut('schema');
     const step = generatedElements.cut('stepIndex');
+    generatedElements.cut('contact');
     this.elements = [
       {
         id: 'mainGrid',
@@ -142,6 +143,11 @@ export default Form => class DealItem extends Form {
                   { ...schema, cols: 5 },
                 ],
               },
+              {
+                type: Elements.CARD,
+                id: 'extraFields',
+                elements: [],
+              }
             ]
           },
           {
@@ -171,6 +177,7 @@ export default Form => class DealItem extends Form {
                         title: 'Comment',
                         type: Elements.INPUT,
                         cols: 8,
+                        onKeyPress: (args) => this.keyPress(args),
                       },
                       {
                         type: Elements.BUTTON,
@@ -264,6 +271,11 @@ export default Form => class DealItem extends Form {
     const stepIndex = this.content.stepIndex.value;
     if (stepIndex === undefined || stepIndex === null) {
       this.content.stepIndex.value = 0;
+    }
+  }
+  keyPress(event) {
+    if (event.key === "Enter") {
+      this.postComment();
     }
   }
 }
