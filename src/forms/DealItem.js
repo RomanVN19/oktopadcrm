@@ -75,12 +75,12 @@ const mapHistory = (events) => (data) => {
     element.elements.push({
       type: Elements.LABEL,
       style: userStyle,
-      title: (data.user && data.user.title) || 'unknown',
+      title: `${(data.user && data.user.title) || 'unknown'}:`,
     });
     element.elements.push({
       type: Elements.LABEL,
       style: data.done ? taskDoneStyle : taskStyle,
-      title: `: ${data.title}`,
+      title: data.title,
       onClick: () => events.openTask(data.uuid),
     });
   }
@@ -100,7 +100,7 @@ export default Form => class DealItem extends Form {
     const salesman = generatedElements.cut('user');
     const schema = generatedElements.cut('schema');
     const step = generatedElements.cut('stepIndex');
-    generatedElements.cut('contact');
+    generatedElements.cut('contact'); // temp remove contact
     this.elements = [
       {
         id: 'mainGrid',
@@ -249,6 +249,7 @@ export default Form => class DealItem extends Form {
       uuid: this.uuid,
       title: this.content.title.value,
     };
+    this.app.vars.currentClient = this.content.client.value;
     this.app.open(`TaskItem`, { id: 'new' });
   }
   openTask(uuid) {

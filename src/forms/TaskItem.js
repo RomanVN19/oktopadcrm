@@ -26,6 +26,8 @@ export default Form => class TaskItem extends Form {
     this.elements.unshift(topRow);
     this.actions.find(item => item.id === '__Close').onClick = () => this.close();
     this.actions.find(item => item.id === '__OK').onClick = () => this.ok();
+
+    this.elements.cut('contact'); // temp remove contact
   }
   afterInit() {
     if (super.afterInit) {
@@ -35,6 +37,7 @@ export default Form => class TaskItem extends Form {
       this.content.deal.value = this.app.vars.currentDeal;
       this.content.user.value = this.app.user;
       this.content.date.value = moment();
+      this.content.client.value = this.app.vars.currentClient;
     }
   }
   close() {
