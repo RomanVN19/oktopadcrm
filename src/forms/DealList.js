@@ -1,7 +1,7 @@
 import { Elements, getElement } from 'katejs/lib/client';
 import { structures } from '../structure';
 
-const kanbanStyles = {
+export const kanbanStyles = {
   container: {
     justifyContent: 'none',
     overflowX: 'scroll',

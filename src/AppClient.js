@@ -30,6 +30,7 @@ import DealItem from './forms/DealItem';
 import TaskItem from './forms/TaskItem';
 import DealList from './forms/DealList';
 import SaleSchemaItem from './forms/SaleSchemaItem';
+import TaskList from './forms/TaskList';
 
 import Components from './components';
 
@@ -102,6 +103,7 @@ const AppClient = parent => class Client extends
       TaskItem: TaskItem(this.forms.TaskItem),
       DealList: DealList(this.forms.DealList),
       SaleSchemaItem: SaleSchemaItem(this.forms.SaleSchemaItem),
+      TaskList: TaskList(this.forms.TaskList),
 
       ProductSalesReport,
       OrdersToDeliverReport,
