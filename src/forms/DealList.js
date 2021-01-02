@@ -66,6 +66,11 @@ export default Form => class DealList extends  Form {
     };
 
     const list = this.elements.cut('list');
+    console.log('list', list);
+    list.columns.splice(list.columns.findIndex(col => col.dataPath === "contact"), 1);
+    const stepIndex = list.columns.find(col => col.dataPath === "stepIndex");
+    stepIndex.format = (index) => this.stepFormat(index);
+    stepIndex.title = 'Step';
     list.hidden = isBoard;
     const board = {
       hidden: !isBoard,
@@ -116,17 +121,18 @@ export default Form => class DealList extends  Form {
   }
   async load() {
     const data = await super.load();
+    const { response: schema } = await this.app.SaleSchema.get({ uuid: this.app.vars.schema.uuid });
+    this.schema = schema;
     if (this.content.isBoard.value) {
       this.setBoardData(data);
     }
     return data;
   }
   async setBoardData(data) {
-    const { response: schema } = await this.app.SaleSchema.get({ uuid: this.app.vars.schema.uuid });
     data = data.map(item => ({ ...item, id: item.uuid }));
     // идентификаторы сделаны индексами чтобы при изменении схемы
     // сохранялся порядок
-    const columns = schema.steps.map((step, index) => ({ ...step, title: step.name, id: `${BOARD_COL_PREFIX}${index}` }));
+    const columns = this.schema.steps.map((step, index) => ({ ...step, title: step.name, id: `${BOARD_COL_PREFIX}${index}` }));
     data.forEach(deal => {
       let column = columns.find((column, index) => index === deal.stepIndex);
       if (!column) {
@@ -146,5 +152,8 @@ export default Form => class DealList extends  Form {
       await this.app.Deal.put({ uuid: params.draggableId, body: { stepIndex: targetStepIndex }});
       this.load();
     }
+  }
+  stepFormat(index) {
+    return this.schema.steps[index].name;
   }
 }
