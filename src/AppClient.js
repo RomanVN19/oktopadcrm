@@ -189,7 +189,7 @@ const AppClient = parent => class Client extends
       this.spliceMenuItem('Triggers'),
     );
     this.spliceMenuItem('Extra field values lists'); // temp - remove from menu
-
+    this.spliceMenuItem('Contacts'); // temp - remove from menu
     this.entitiesWithExtraFields = ['Deal', 'Task', 'Client'];
 
     // make submenu
