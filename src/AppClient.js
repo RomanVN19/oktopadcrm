@@ -128,7 +128,7 @@ const AppClient = parent => class Client extends
 
     this.userRegistration = {};
     this.userAuthorization = {
-      usernameTitle: 'E-mail',
+      usernameTitle: 'User',
     };
 
     this.docsAccessFilter = (docsItem) => {
@@ -137,14 +137,15 @@ const AppClient = parent => class Client extends
       return this.allow(docsItem.entity, 'put');
     };
 
-    this.menu.unshift({
-      title: 'Dashboard',
-      form: 'Dashboard',
-      rule: {
-        entity: 'Order',
-        method: 'put',
-      },
-    });
+    // temp no dasboard
+    // this.menu.unshift({
+    //   title: 'Dashboard',
+    //   form: 'Dashboard',
+    //   rule: {
+    //     entity: 'Order',
+    //     method: 'put',
+    //   },
+    // });
 
     this.menu.forEach((item) => {
       if (icons[item.form]) {
@@ -187,11 +188,10 @@ const AppClient = parent => class Client extends
       this.spliceMenuItem('Deals'),
       this.spliceMenuItem('Tasks'),
       this.spliceMenuItem('Clients'),
-      this.spliceMenuItem('Extra fields lists'),
-      this.spliceMenuItem('Triggers'),
     );
     this.spliceMenuItem('Extra field values lists'); // temp - remove from menu
     this.spliceMenuItem('Contacts'); // temp - remove from menu
+    this.spliceMenuItem('What\'s new'); // temp
     this.entitiesWithExtraFields = ['Deal', 'Task', 'Client'];
 
     // make submenu
@@ -202,6 +202,10 @@ const AppClient = parent => class Client extends
     this.addSubmenu('Products', 'Price types');
     this.addSubmenu('Products', 'Price lists');
     this.addSubmenu('Products', 'Receipts');
+    this.initSubmenu('Settings', 'Settings');
+    this.addSubmenu('Settings', 'Extra fields lists');
+    this.addSubmenu('Settings', 'Triggers');
+    this.addSubmenu('Settings', 'Import');
 
     this.allowCreateInSelect = true;
     this.schemas = {};
@@ -220,11 +224,17 @@ const AppClient = parent => class Client extends
   addSubmenu(submenuName, itemName) {
     const itemIndex = this.menu.findIndex(i => i.title === itemName);
     const submenu = this.menu.find(i => i.title === submenuName);
+    if (!this.menu[itemIndex].icon) {
+      this.menu[itemIndex].icon = submenu.icon;
+    }
     submenu.submenu.push(this.menu[itemIndex]);
     this.menu.splice(itemIndex, 1);
   }
   spliceMenuItem(itemTitle) {
-    return this.menu.splice(this.menu.findIndex(item => item.title === itemTitle), 1)[0];
+    const index = this.menu.findIndex(item => item.title === itemTitle);
+    if (index > -1) {
+      return this.menu.splice(index, 1)[0];
+    }
   }
   async afterUserInit() {
     if (super.afterUserInit) {

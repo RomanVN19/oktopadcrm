@@ -135,6 +135,18 @@ const DebtsFlowReport = () => (
   </svg>
 );
 
+const TaskList = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24">
+    <path fill="#ffffff" d="M19,19H5V8H19M19,3H18V1H16V3H8V1H6V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M16.53,11.06L15.47,10L10.59,14.88L8.47,12.76L7.41,13.82L10.59,17L16.53,11.06Z" />
+  </svg>
+);
+
+const DealList = () => (
+  <svg version="1.1"  width="24" height="24" viewBox="0 0 24 24">
+    <path fill="#ffffff" d="M3,6H21V18H3V6M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9M7,8A2,2 0 0,1 5,10V14A2,2 0 0,1 7,16H17A2,2 0 0,1 19,14V10A2,2 0 0,1 17,8H7Z" />
+  </svg>
+);
+
 export default {
   OrderList,
   OrdersMy: OrderList,
@@ -155,4 +167,6 @@ export default {
   PriceTypeList,
   ProductsFlowReport,
   DebtsFlowReport,
+  TaskList,
+  DealList,
 };

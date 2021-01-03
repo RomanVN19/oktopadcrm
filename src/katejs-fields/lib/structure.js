@@ -58,6 +58,7 @@ const ExtraFieldValuesList = {
 };
 
 const EntityFieldsValuesList = {
+  skipForForm: true,
   fields: [
     {
       name: 'entityUuid',
