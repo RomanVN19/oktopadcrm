@@ -205,6 +205,8 @@ const translate = {
     'Expired': 'Просрочено',
     'Day After Tomorrow': 'Послезавтра',
     'Later': 'Позже',
+    'Print templates': 'Шаблоны печати',
+    'Print template': 'Шаблон печати',
   },
 };
 

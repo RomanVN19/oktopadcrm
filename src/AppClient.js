@@ -192,6 +192,9 @@ const AppClient = parent => class Client extends
     this.spliceMenuItem('Extra field values lists'); // temp - remove from menu
     this.spliceMenuItem('Contacts'); // temp - remove from menu
     this.spliceMenuItem('What\'s new'); // temp
+    this.spliceMenuItem('Entity descriptions'); // temp
+    this.spliceMenuItem('Notes'); // temp
+
     this.entitiesWithExtraFields = ['Deal', 'Task', 'Client'];
 
     // make submenu
@@ -206,6 +209,8 @@ const AppClient = parent => class Client extends
     this.addSubmenu('Settings', 'Extra fields lists');
     this.addSubmenu('Settings', 'Triggers');
     this.addSubmenu('Settings', 'Import');
+    this.addSubmenu('Settings', 'Print templates');
+    this.addSubmenu('Settings', 'Sale schemas');
 
     this.allowCreateInSelect = true;
     this.schemas = {};
