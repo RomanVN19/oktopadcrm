@@ -134,6 +134,7 @@ export default class Kanban extends Component {
   render() {
     const setColumns = this.setColumns;
     const columns = this.state.columns;
+    const { t } = this.props;
     return (
       <div style={this.styles.container}>
   <DragDropContext
@@ -145,7 +146,7 @@ export default class Kanban extends Component {
           style={this.styles.columnContainer}
           key={column.id}
         >
-        <h2 style={this.styles.columnHeader}>{column.title}</h2>
+        <h2 style={this.styles.columnHeader}>{t(column.title)}</h2>
         <div style={{ margin: 8 }}>
     <Droppable droppableId={column.id} key={column.id}>
         {(provided, snapshot) => {

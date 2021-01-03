@@ -202,6 +202,9 @@ const translate = {
     'Sale schemas': 'Схемы продаж',
     'Sale schema': 'Схема продаж',
     'Default schema': 'Схема по умолчанию',
+    'Expired': 'Просрочено',
+    'Day After Tomorrow': 'Послезавтра',
+    'Later': 'Позже',
   },
 };
 

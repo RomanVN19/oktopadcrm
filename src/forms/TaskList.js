@@ -108,5 +108,52 @@ export default Form => class TaskList extends Form {
     return data;
   }
   async setBoardData(data) {
+    const columns = [
+      {
+        title: 'Expired',
+        id: 'expired',
+        items: [],
+        edge: moment().startOf('day').toDate().getTime(),
+      },
+      {
+        title: 'Today',
+        id: moment().format('YYYYMMDD'),
+        items: [],
+        edge: moment().endOf('day').toDate().getTime(),
+      },
+      {
+        title: 'Tomorrow',
+        id: moment().add(1, 'day').format('YYYYMMDD'),
+        items: [],
+        edge: moment().add(1, 'day').endOf('day').toDate().getTime(),
+      },
+      {
+        title: 'Day After Tomorrow',
+        id: moment().add(2, 'day').format('YYYYMMDD'),
+        items: [],
+        edge: moment().add(2, 'day').endOf('day').toDate().getTime(),
+      },
+      {
+        title: 'Later',
+        id: 'later',
+        items: [],
+      },
+    ];
+    data.forEach((task) => {
+      const timestamp = moment(task.date).toDate().getTime();
+      let colIndex = 0;
+      for(; colIndex < columns.length - 1; colIndex++) { // except last
+        console.log('for', colIndex);
+        if (timestamp < columns[colIndex].edge) {
+          break;
+        }
+      }
+      if (colIndex === colIndex.length) {
+        colIndex--;
+      }
+      console.log('got index', colIndex);
+      columns[colIndex].items.push({ ...task, id: task.uuid });
+    });
+    this.content.board.data = columns;
   }
 }
