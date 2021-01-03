@@ -206,11 +206,11 @@ const AppClient = parent => class Client extends
     this.addSubmenu('Products', 'Price lists');
     this.addSubmenu('Products', 'Receipts');
     this.initSubmenu('Settings', 'Settings');
-    this.addSubmenu('Settings', 'Extra fields lists');
+    this.addSubmenu('Settings', 'Sale schemas');
+    this.addSubmenu('Settings', 'Extra fields  lists');
     this.addSubmenu('Settings', 'Triggers');
     this.addSubmenu('Settings', 'Import');
     this.addSubmenu('Settings', 'Print templates');
-    this.addSubmenu('Settings', 'Sale schemas');
 
     this.allowCreateInSelect = true;
     this.schemas = {};

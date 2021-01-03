@@ -171,6 +171,7 @@ const translate = {
     'Triggers': 'Триггеры',
     'Trigger': 'Триггер',
     'Extra fields lists': 'Дополнительные поля',
+    'Extra fields  lists': 'Доп. поля',
     'Extra fields list': 'Список дополнительных полей',
     'Entity name': 'Сущность',
     'Fields list': 'Список полей',

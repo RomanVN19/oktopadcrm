@@ -15,6 +15,8 @@ const AppClient = parent => class Client extends use(parent) {
     };
 
     this.entitiesWithExtraFields = [];
+    const extraFieldsList = this.menu.find(item => item.form === 'ExtraFieldsListList');
+    extraFieldsList.title = 'Extra fields  lists'; // двойной пробел для перевода только меню
   }
   async afterInit() {
     if (super.afterInit) await super.afterInit();
