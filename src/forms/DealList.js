@@ -82,6 +82,8 @@ export default Form => class DealList extends  Form {
       orderSaveKey: 'dealsOrder',
     };
     this.elements.push(topPanel, list, board);
+    const userColIndex = list.columns.findIndex(col => col.dataPath === 'user');
+    this.userColumn = list.columns.splice(userColIndex, 1)[0];
 
     this.setFilters(true);
   }
@@ -92,6 +94,18 @@ export default Form => class DealList extends  Form {
   }
   userChange() {
     this.setFilters();
+    const columns = this.content.list.columns;
+    const userColIndex = columns.findIndex(item => item.dataPath === 'user');
+    if (!this.content.user.value) {
+      if (userColIndex === -1) {
+        columns.push(this.userColumn);
+      }
+    } else {
+      if (userColIndex !== -1) {
+        columns.splice(userColIndex, 1);
+      }
+    }
+    this.content.list.columns = columns;
     this.load();
   }
   setFilters(init) {
