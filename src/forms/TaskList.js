@@ -143,7 +143,6 @@ export default Form => class TaskList extends Form {
       const timestamp = moment(task.date).toDate().getTime();
       let colIndex = 0;
       for(; colIndex < columns.length - 1; colIndex++) { // except last
-        console.log('for', colIndex);
         if (timestamp < columns[colIndex].edge) {
           break;
         }
@@ -151,9 +150,26 @@ export default Form => class TaskList extends Form {
       if (colIndex === colIndex.length) {
         colIndex--;
       }
-      console.log('got index', colIndex);
+
       columns[colIndex].items.push({ ...task, id: task.uuid });
     });
     this.content.board.data = columns;
+  }
+  async onDragEnd(params) {
+    const data = this.content.board.data;
+    const task = this.content.list.value.find(item => item.uuid === params.draggableId);
+    if (params.destination.droppableId !== params.source.droppableId) {
+      const targetDate = params.destination.droppableId;
+      let date;
+      if (targetDate === 'expired') {
+        date = moment().subtract(1, 'day').toDate();
+      } else if (targetDate === 'later') {
+        date = moment().add(3, 'days').toDate();
+      } else {
+        date = moment(`${targetDate} ${moment(task.date).format('HH:mm')}`, 'YYYYMMDD HH:mm');
+      }
+      await this.app.Task.put({ uuid: params.draggableId, body: { date }});
+      this.load();
+    }
   }
 }
