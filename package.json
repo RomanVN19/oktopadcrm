@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "cross-env ENV=local babel-node makeEnv.js && nodemon --watch src --exec babel-node src/platform.js",
     "dev-server": "cross-env ENV=local nodemon --watch src/AppServer.js  --watch src/entities --exec babel-node src/server.js",
+    "starter-server": "cross-env ENV=starter nodemon --watch src/AppServer.js  --watch src/entities --exec babel-node src/server.js",
     "dev-client": "cross-env ENV=local babel-node makeEnv.js && react-scripts start",
     "dev-dbsync": "cross-env ENV=local babel-node src/server.js dbsync",
     "build-client": "babel-node makeEnv.js && react-scripts build",

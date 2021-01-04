@@ -42,6 +42,7 @@ export default Form => class DealList extends  Form {
           ...getElement(structures.Deal.fields.find(item => item.name === 'user'), this),
           value: this.app.user,
           onChange: () => this.userChange(),
+          disabled: !this.app.allow('SaleSchema', 'put'),
         },
         {
           type: Elements.LABEL,
