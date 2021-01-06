@@ -127,10 +127,10 @@ const AppClient = parent => class Client extends
     this.saveAuth = true;
     this.docsContent.push(...updates);
 
-    this.userRegistration = {};
     this.userAuthorization = {
       usernameTitle: 'User',
     };
+    this.userHideRecovery = true;
 
     this.docsAccessFilter = (docsItem) => {
       if (docsItem.entity === 'System') return true;
