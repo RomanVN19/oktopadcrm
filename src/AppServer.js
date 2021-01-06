@@ -34,6 +34,8 @@ const AppServer = parent => class Server extends
     this.userRegistrationRoleTitle = 'Manager';
 
     this.settingsParams = Settings;
+
+    this.showUsersList = true;
   }
 };
 AppServer.package = packageName;

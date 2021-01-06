@@ -215,6 +215,8 @@ const AppClient = parent => class Client extends
 
     this.allowCreateInSelect = true;
     this.schemas = {};
+
+    this.showUsersList = true;
   }
   initSubmenu(nameInitial, nameTarget) {
     const item = this.menu.find(i => i.title === nameInitial);

@@ -37,7 +37,7 @@
     "eslint-config-airbnb": "^17.1.0",
     "eslint-import-resolver-babel-module": "^5.0.1",
     "katejs": "^1.1.15",
-    "katejs-modules": "^0.0.18",
+    "katejs-modules": "^0.0.25",
     "nodemon": "^1.18.4",
     "pg-hstore": "^2.3.3",
     "react-beautiful-dnd": "12.2.0",
