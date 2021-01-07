@@ -41,6 +41,13 @@ export default Form => class TaskList extends Form {
           cols: 2,
           onChange: () => this.changeView(),
         },
+        {
+          type: Elements.CHECKBOX,
+          id: 'isHideDone',
+          value: true,
+          cols: 2,
+          title: 'Hide Done',
+        },
       ],
     };
 

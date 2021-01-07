@@ -1,10 +1,6 @@
-import { ListForm, Elements } from 'katejs/lib/client';
-import { structures } from '../structure';
+import { Elements } from 'katejs/lib/client';
 
-const { Order } = structures;
-
-export default class OrderList extends
-  ListForm({ Order }, { addActions: true, addElements: true }) {
+export default Form => class OrderList1 extends Form {
   static entity = 'Order'; // for menu filter
   static doc = true;
   constructor(params) {

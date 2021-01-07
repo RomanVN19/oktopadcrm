@@ -1,10 +1,8 @@
-import { ItemForm, Elements } from 'katejs/lib/client';
+import { Elements } from 'katejs/lib/client';
 
 import ClientSelection from './ClientSelection';
 
 import { structures } from '../structure';
-
-const { Order } = structures;
 
 export class ProductsTable {
   constructor(args) {
@@ -58,7 +56,7 @@ export class ProductsTable {
   }
 }
 
-class OrderItem extends ItemForm({ Order }, { addActions: true, addElements: true }) {
+const OrderItemMixin = Form => class OrderItem extends Form {
   static doc = true;
   constructor(params) {
     super(params);
@@ -116,7 +114,7 @@ class OrderItem extends ItemForm({ Order }, { addActions: true, addElements: tru
   }
 }
 
-export default OrderItem;
+export default OrderItemMixin;
 
 // base print template
 // < !doctype html >
