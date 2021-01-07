@@ -9,6 +9,7 @@
     "dev": "cross-env ENV=local babel-node makeEnv.js && nodemon --watch src --exec babel-node src/platform.js",
     "dev-server": "cross-env ENV=local nodemon --watch src/AppServer.js  --watch src/entities --exec babel-node src/server.js",
     "starter-server": "cross-env ENV=starter nodemon --watch src/AppServer.js  --watch src/entities --exec babel-node src/server.js",
+    "starter-dbsync": "cross-env ENV=starter babel-node src/server.js dbsync",
     "dev-client": "cross-env ENV=local babel-node makeEnv.js && react-scripts start",
     "dev-dbsync": "cross-env ENV=local babel-node src/server.js dbsync",
     "build-client": "babel-node makeEnv.js && react-scripts build",
@@ -22,7 +23,7 @@
   },
   "license": "AGPL-3.0",
   "dependencies": {
-    "sqlite3": "^5.0.0"
+    "sqlite3": "^4.1.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.0",
