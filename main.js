@@ -43,6 +43,8 @@ const dataDir = path.join(homeDir, dataDirname);
 const dataFile = path.join(dataDir, dataFilename);
 if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir);
+}
+if (!fs.existsSync(dataFile)) {
   fs.copyFileSync(dataFilename, dataFile);
   console.log('Created starter db');
 } else {
