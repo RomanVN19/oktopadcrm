@@ -208,6 +208,7 @@ const translate = {
     'Later': 'Позже',
     'Print templates': 'Шаблоны печати',
     'Print template': 'Шаблон печати',
+    'Hide Done': 'Скрыть выполненные'
   },
 };
 

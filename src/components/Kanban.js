@@ -172,6 +172,7 @@ export default class Kanban extends Component {
             style={{
                 ...(snapshot.isDragging ? this.styles.itemDragging: this.styles.item),
                 ...provided.draggableProps.style,
+                ...(item.style || {})
               }}
               onClick={() => this.itemClick(item)}
           >

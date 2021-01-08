@@ -3,6 +3,10 @@ import moment from 'moment';
 import { structures } from '../structure';
 import { kanbanStyles } from './DealList';
 
+const doneStyle = {
+  textDecoration: 'line-through',
+};
+
 export default Form => class TaskList extends Form {
   constructor(args) {
     super(args);
@@ -47,6 +51,7 @@ export default Form => class TaskList extends Form {
           value: true,
           cols: 2,
           title: 'Hide Done',
+          onChange: () => this.hideDoneChange(),
         },
       ],
     };
@@ -101,11 +106,16 @@ export default Form => class TaskList extends Form {
     this.filters = {
     };
     let user = this.app.user;
+    let hideDone = true;
     if (!init) {
       user = this.content.user.value;
+      hideDone = this.content.isHideDone.value;
     }
     if (user) {
       this.filters.userUuid = user.uuid;
+    }
+    if (hideDone) {
+      this.filters.done = false;
     }
   }
 
@@ -172,7 +182,11 @@ export default Form => class TaskList extends Form {
         colIndex--;
       }
 
-      columns[colIndex].items.push({ ...task, id: task.uuid });
+      columns[colIndex].items.push({
+        ...task,
+        id: task.uuid,
+        style: task.done ? doneStyle : undefined,
+      });
     });
     this.content.board.data = columns;
   }
@@ -192,5 +206,9 @@ export default Form => class TaskList extends Form {
       await this.app.Task.put({ uuid: params.draggableId, body: { date }});
       this.load();
     }
+  }
+  hideDoneChange() {
+    this.setFilters();
+    this.load();
   }
 }
