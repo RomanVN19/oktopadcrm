@@ -12,18 +12,18 @@
     "starter-dbsync": "cross-env ENV=starter babel-node src/server.js dbsync",
     "dev-client": "cross-env ENV=local babel-node makeEnv.js && react-scripts start",
     "dev-dbsync": "cross-env ENV=local babel-node src/server.js dbsync",
-    "build-client": "babel-node makeEnv.js && react-scripts build",
-    "build-server": "webpack --config webpack.server.js --progress",
     "dbsync": "babel-node src/server.js dbsync",
-    "build": "babel src --out-dir lib --copy-files",
     "server": "babel-node src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
-    "build-package": "electron-builder"
+    "build-client": "babel-node makeEnv.js && react-scripts build",
+    "build-server": "webpack --config webpack.server.js --progress",
+    "build-package": "electron-builder",
+    "build": "npm run build-client && npm run build-server && npm run build-package"
   },
   "license": "AGPL-3.0",
   "dependencies": {
-    "sqlite3": "^4.1.0"
+    "sqlite3": "^5.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.6.0",

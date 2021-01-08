@@ -26,4 +26,10 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({ "global.GENTLY": false })
   ],
+  resolveLoader: {
+    modules: [
+      'node_modules',
+      path.resolve('node_modules/react-scripts/node_modules')
+    ]
+  }
 };

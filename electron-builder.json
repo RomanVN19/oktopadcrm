@@ -8,11 +8,12 @@
   "files": [
     "app/**",
     "lib/**",
-    "main.js"
+    "main.js",
+    "shared.js"
   ],
   "extraFiles": [
     "build/**",
-    "oktopad.db"
+    "oktopad.db",
   ],
   "win": {
     "icon": "public/favicon.ico",
