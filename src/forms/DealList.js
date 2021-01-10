@@ -50,18 +50,38 @@ export default Form => class DealList extends  Form {
           style: {
             textAlign: 'right',
             fontWeight: 'bolder',
-            marginTop: 12,
+            marginTop: 22,
           },
           tag: 'p',
-          cols: 2,
+          cols: 1,
         },
         {
-          type: Elements.SWITCH,
-          id: 'isBoard',
-          value: isBoard,
-          title: 'Board',
+          type: Elements.GROUP,
+          div: true,
+          style: {
+            marginTop: 10,
+          },
+          cols: 1,
+          elements: [
+            {
+              type: Elements.SWITCH,
+              id: 'isBoard',
+              value: isBoard,
+              title: 'Board',
+              onChange: () => this.changeView(),
+            },
+          ],
+        },
+        {
+          type: Elements.CHECKBOX,
+          id: 'isHideClosed',
+          value: true,
           cols: 2,
-          onChange: () => this.changeView(),
+          title: 'Hide Closed',
+          onChange: () => this.hideClosedChange(),
+          style: {
+            marginLeft: 25,
+          },
         },
       ],
     };
@@ -71,6 +91,9 @@ export default Form => class DealList extends  Form {
     const stepIndex = list.columns.find(col => col.dataPath === "stepIndex");
     stepIndex.format = (index) => this.stepFormat(index);
     stepIndex.title = 'Step';
+    const dealClosed = list.columns.find(col => col.dataPath === "dealClosed");
+    dealClosed.title = 'Closed';
+    dealClosed.format = (val) => val ? '✔' : '';
     list.hidden = isBoard;
     const board = {
       hidden: !isBoard,
@@ -85,7 +108,8 @@ export default Form => class DealList extends  Form {
     this.elements.push(topPanel, list, board);
     const userColIndex = list.columns.findIndex(col => col.dataPath === 'user');
     this.userColumn = list.columns.splice(userColIndex, 1)[0];
-
+    const closedColIndex = list.columns.findIndex(col => col.dataPath === 'dealClosed');
+    this.closedColumn =  list.columns.splice(closedColIndex, 1)[0];
     this.setFilters(true);
   }
   schemaChange() {
@@ -114,11 +138,16 @@ export default Form => class DealList extends  Form {
       schemaUuid: this.app.vars.schema && this.app.vars.schema.uuid,
     };
     let user = this.app.user;
+    let hideClosed = true;
     if (!init) {
       user = this.content.user.value;
+      hideClosed = this.content.isHideClosed.value;
     }
     if (user) {
       this.filters.userUuid = user.uuid;
+    }
+    if (hideClosed) {
+      this.filters.dealClosed = false;
     }
   }
   changeView() {
@@ -170,5 +199,21 @@ export default Form => class DealList extends  Form {
   }
   stepFormat(index) {
     return this.schema && this.schema.steps[index].name;
+  }
+  hideClosedChange() {
+    this.setFilters();
+    const columns = this.content.list.columns;
+    const closedColIndex = columns.findIndex(item => item.dataPath === 'dealClosed');
+    if (!this.content.isHideClosed.value) {
+      if (closedColIndex === -1) {
+        columns.push(this.closedColumn);
+      }
+    } else {
+      if (closedColIndex !== -1) {
+        columns.splice(closedColIndex, 1);
+      }
+    }
+    this.content.list.columns = columns;
+    this.load();
   }
 }

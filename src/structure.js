@@ -343,6 +343,10 @@ const Deal = {
       name: 'stepIndex', // index from sale schema
       type: Fields.INTEGER,
     },
+    {
+      name: 'dealClosed',
+      type: Fields.BOOLEAN,
+    },
   ],
 };
 

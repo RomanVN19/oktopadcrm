@@ -100,6 +100,7 @@ export default Form => class DealItem extends Form {
     const salesman = generatedElements.cut('user');
     const schema = generatedElements.cut('schema');
     const step = generatedElements.cut('stepIndex');
+    const dealClosed = generatedElements.cut('dealClosed');
     generatedElements.cut('contact'); // temp remove contact
     this.elements = [
       {
@@ -143,6 +144,7 @@ export default Form => class DealItem extends Form {
                   { ...schema, cols: 5 },
                 ],
               },
+              dealClosed,
               {
                 type: Elements.CARD,
                 id: 'extraFields',

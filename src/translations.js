@@ -208,7 +208,12 @@ const translate = {
     'Later': 'Позже',
     'Print templates': 'Шаблоны печати',
     'Print template': 'Шаблон печати',
-    'Hide Done': 'Скрыть выполненные'
+    'Hide Done': 'Скрыть выполненные',
+    'Step index': 'Шаг',
+    'Deal closed': 'Сделка закрыта',
+    'Hide Closed': 'Скрыть закрытые',
+    'Board': 'Доска',
+    'Closed': 'Закрыто',
   },
 };
 
