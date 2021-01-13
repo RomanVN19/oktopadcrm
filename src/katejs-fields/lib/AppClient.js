@@ -23,7 +23,6 @@ const AppClient = parent => class Client extends use(parent) {
 
     if (!this.successAuth) {
       await this.updateExtraFieldsLists();
-      this.applyExtraFiledsListsMixins();
     }
   }
   async afterUserInit() {
