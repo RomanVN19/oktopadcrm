@@ -28,6 +28,7 @@ export default Form => class DealList extends  Form {
       onChange: () => this.schemaChange(),
     };
     const isBoard = this.app.vars.isBoardDeals === undefined ? true : this.app.vars.isBoardDeals;
+    const isHideClosed = this.app.vars.isHideClosedDeals === undefined ? true : this.app.vars.isHideClosedDeals;
     const topPanel = {
       type: Elements.GRID,
       elements: [
@@ -75,7 +76,7 @@ export default Form => class DealList extends  Form {
         {
           type: Elements.CHECKBOX,
           id: 'isHideClosed',
-          value: true,
+          value: isHideClosed,
           cols: 2,
           title: 'Hide Closed',
           onChange: () => this.hideClosedChange(),
@@ -138,7 +139,7 @@ export default Form => class DealList extends  Form {
       schemaUuid: this.app.vars.schema && this.app.vars.schema.uuid,
     };
     let user = this.app.user;
-    let hideClosed = true;
+    let hideClosed = this.app.vars.isHideClosedDeals !== undefined ? this.app.vars.isHideClosedDeals : true;
     if (!init) {
       user = this.content.user.value;
       hideClosed = this.content.isHideClosed.value;
@@ -202,6 +203,7 @@ export default Form => class DealList extends  Form {
   }
   hideClosedChange() {
     this.setFilters();
+    this.app.vars.isHideClosedDeals = this.content.isHideClosed.value;
     const columns = this.content.list.columns;
     const closedColIndex = columns.findIndex(item => item.dataPath === 'dealClosed');
     if (!this.content.isHideClosed.value) {

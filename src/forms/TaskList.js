@@ -12,6 +12,7 @@ export default Form => class TaskList extends Form {
     super(args);
     this.actions = undefined;
     const isBoard = this.app.vars.isBoardTasks === undefined ? true : this.app.vars.isBoardTasks;
+    const isHideDone = this.app.vars.isHideDoneTasks === undefined ? true : this.app.vars.isHideDoneTasks;
     const topPanel = {
       type: Elements.GRID,
       elements: [
@@ -48,7 +49,7 @@ export default Form => class TaskList extends Form {
         {
           type: Elements.CHECKBOX,
           id: 'isHideDone',
-          value: true,
+          value: isHideDone,
           cols: 2,
           title: 'Hide Done',
           onChange: () => this.hideDoneChange(),
@@ -106,7 +107,7 @@ export default Form => class TaskList extends Form {
     this.filters = {
     };
     let user = this.app.user;
-    let hideDone = true;
+    let hideDone = this.app.vars.isHideDoneTasks === undefined ? true : this.app.vars.isHideDoneTasks;
     if (!init) {
       user = this.content.user.value;
       hideDone = this.content.isHideDone.value;
@@ -208,6 +209,8 @@ export default Form => class TaskList extends Form {
     }
   }
   hideDoneChange() {
+    this.app.vars.isHideDoneTasks = this.content.isHideDone.value;
+
     this.setFilters();
     this.load();
   }
