@@ -50,8 +50,18 @@ if (!fs.existsSync(dataFile)) {
 } else {
   console.log('Using existing database');
 }
+const allInterfaces = os.networkInterfaces();
+const addresses = [];
+Object.keys(allInterfaces).forEach((ifName) => {
+  const ifAddresses = allInterfaces[ifName].filter(ifc => ifc.family === 'IPv4').map(ifc => ifc.address);
+  addresses.push(...ifAddresses);
+});
+let localAddress = addresses.find(addr => addr.startsWith('192.16'));
+if (!localAddress) {
+  localAddress = 'localhost';
+}
 
 sharedData.dataDir = dataDir;
-
+sharedData.localAddress = localAddress;
 const server = serverLib.getServer(dataFile);
 server.run();

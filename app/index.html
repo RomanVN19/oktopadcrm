@@ -12,19 +12,46 @@
         h3, .logo {
             text-align: center;
         }
+        .logo img {
+            width: 100px;
+            height: 100px;
+        }
+        td, th {
+            border: 1px solid #000000;
+            padding: 10px;
+        }
+        table {
+            border-collapse: collapse;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="logo"> <img class="logo" src="oktopad.svg"> </div>
     <h3>Oktopad CRM Server</h3>
-    <p>Ваша система доступна по адресу <a href="#" onclick="openApp()">http://localhost:1122/</a></p>
+    <p>Ваша система доступна по адресу:
+    <p><a href="#" onclick="openApp()">http://<span id="localAddress"></span>:1122/</a></p>
     <p>Ваши данные сохраняются в: </p>
     <p><span id="dataDir"></span> <a href="#" onclick="openDir()">Открыть папку</a></p>
-    <p>Учетные данные по умолчанию: (Имя пользователя/пароль)</p>
-    <p>Руководитель/1</p>
-    <p>Пользователь/1</p>
-    <p>Бухгалтер/1</p>
+    <p>Учетные данные по умолчанию:</p>
+    <table>
+        <tr>
+            <th>Имя пользователя</th>
+            <th>Пароль</th>
+        </tr>
+        <tr>
+            <td>Руководитель</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>Пользователь</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>Бухгалтер</td>
+            <td>1</td>
+        </tr>
+    </table>
 </div>
 </body>
 </html>
