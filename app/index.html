@@ -30,7 +30,10 @@
     <div class="logo"> <img class="logo" src="oktopad.svg"> </div>
     <h3>Oktopad CRM Server</h3>
     <p>Ваша система доступна по адресу:
-    <p><a href="#" onclick="openApp()">http://<span id="localAddress"></span>:1122/</a></p>
+    <p>
+        <a href="#" onclick="openApp()">http://<span id="localAddress"></span>:1122/</a>
+        <button onclick="copyAddress()">Скопировать в буфер обмена</button>
+    </p>
     <p>Ваши данные сохраняются в: </p>
     <p><span id="dataDir"></span> <a href="#" onclick="openDir()">Открыть папку</a></p>
     <p>Учетные данные по умолчанию:</p>
