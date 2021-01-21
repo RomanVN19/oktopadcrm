@@ -8,6 +8,7 @@
 /lib
 /dist
 /release
+/package
 
 # env
 src/front.env.json
