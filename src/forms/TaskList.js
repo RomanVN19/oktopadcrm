@@ -86,6 +86,8 @@ export default Form => class TaskList extends Form {
     this.setFilters(true);
     const userColIndex = list.columns.findIndex(col => col.dataPath === 'user');
     this.userColumn = list.columns.splice(userColIndex, 1)[0];
+    this.app.vars.currentClient = undefined;
+    this.app.vars.currentDeal = undefined;
   }
   userChange() {
     this.setFilters();
