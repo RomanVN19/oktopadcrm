@@ -48,7 +48,7 @@ class PaymentItem extends ItemForm({ Payment }, { addActions: true, addElements:
         ],
       },
     });
-    return (response || []).map(item => ({ ...item, title: `${item.title} (${item.phone}, ${item.address})` }));
+    return (response || []).map(item => ({ ...item, title: `${item.title} (${item.phone || ''} ${item.address || ''})` }));
   }
 }
 

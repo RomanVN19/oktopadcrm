@@ -32,8 +32,9 @@ export default Form => class OrderList1 extends Form {
         { address: { $like: `%${query}%` } },
       ] },
     });
-    return (response || []).map(item => ({ ...item, title: `${item.title} (${item.phone}, ${item.address})` }));
-  }
+    return (response || []).map(item => ({ ...item, title: `${item.title} (${item.phone || ''} ${item.address || ''})` }));
+  };
+
   clientChange = (val) => {
     this.filters.clientUuid = (val && val.uuid) || undefined;
     this.app.ordersClientFilter = val;
