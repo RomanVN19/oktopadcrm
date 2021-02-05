@@ -15,17 +15,17 @@ export default class ClientSales {
       {
         id: 'clientSalesOrders',
         type: Elements.LABEL,
-        title: 'Orders count',
+        title: 'Sales count',
       },
       {
         id: 'clientSalesOrdersSum',
         type: Elements.LABEL,
-        title: 'Orders sum',
+        title: 'Sales sum',
       },
       {
         id: 'clientSalesOrdersAverage',
         type: Elements.LABEL,
-        title: 'Orders average sum',
+        title: 'Sales average sum',
       },
       {
         id: 'clientSalesData',
@@ -92,9 +92,9 @@ export default class ClientSales {
       ],
       where: { clientUuid },
     });
-    this.content.clientSalesOrders.title = `${this.app.t('Orders count')}: ${totals.amount}`;
-    this.content.clientSalesOrdersSum.title = `${this.app.t('Orders sum')}: ${totals.sum}`;
-    this.content.clientSalesOrdersAverage.title = `${this.app.t('Orders average sum')}: ${totals.amount > 0 ? (totals.sum / totals.amount).toFixed(2) : 0}`;
+    this.content.clientSalesOrders.title = `${this.app.t('Sales count')}: ${totals.amount}`;
+    this.content.clientSalesOrdersSum.title = `${this.app.t('Sales sum')}: ${totals.sum}`;
+    this.content.clientSalesOrdersAverage.title = `${this.app.t('Sales average sum')}: ${totals.amount > 0 ? (totals.sum / totals.amount).toFixed(2) : 0}`;
   }
   showModal = async () => {
     this.content.clientSalesModal.open = true;
