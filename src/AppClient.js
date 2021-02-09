@@ -225,6 +225,7 @@ const AppClient = parent => class Client extends
       title: item.title,
       form: item.form,
       icon: item.icon,
+      role: item.role,
     });
     item.title = nameTarget;
     delete item.form;
