@@ -215,6 +215,13 @@ const translate = {
     'Hide Closed': 'Скрыть закрытые',
     'Board': 'Доска',
     'Closed': 'Закрыто',
+    'Basic': 'Базовые',
+    'Company inn': 'ИНН',
+    'Company kpp': 'КПП',
+    'Company bank name': 'Название банка',
+    'Company bank code': 'БИК',
+    'Company bank corr account': 'Корр. счет',
+    'Company bank account': 'Номер счета',
   },
 };
 

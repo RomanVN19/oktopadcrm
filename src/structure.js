@@ -166,6 +166,21 @@ const Order = {
   ],
 };
 
+
+const Invoice = {
+  fields: [
+    fields.client,
+    fields.total,
+    {
+      name: 'comment',
+      type: Fields.STRING,
+    },
+  ],
+  tables: [
+    tables.products,
+  ],
+};
+
 const Cashbox = {
   fields: [
     {
@@ -412,14 +427,38 @@ const Contact = {
 export const Settings = {
   fields: [
     {
+      name: 'defaultSchema',
+      type: Fields.REFERENCE,
+      entity: 'SaleSchema',
+    },
+    {
       name: 'companyName',
       type: Fields.STRING,
     },
     {
-      name: 'defaultSchema',
-      type: Fields.REFERENCE,
-      entity: 'SaleSchema',
-    }
+      name: 'companyInn',
+      type: Fields.STRING,
+    },
+    {
+      name: 'companyKpp',
+      type: Fields.STRING,
+    },
+    {
+      name: 'companyBankName',
+      type: Fields.STRING,
+    },
+    {
+        name: 'companyBankCode',
+      type: Fields.STRING,
+    },
+    {
+      name: 'companyBankCorrAccount',
+      type: Fields.STRING,
+    },
+    {
+      name: 'companyBankAccount',
+      type: Fields.STRING,
+    },
   ],
 };
 
@@ -443,5 +482,6 @@ export const structures = {
   Expense,
   Payment,
   Client,
+  Invoice,
   Order,
 };

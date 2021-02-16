@@ -31,6 +31,7 @@ import TaskItem from './forms/TaskItem';
 import DealList from './forms/DealList';
 import SaleSchemaItem from './forms/SaleSchemaItem';
 import TaskList from './forms/TaskList';
+import InvoiceItem from './forms/InvoiceItem';
 
 import Components from './components';
 
@@ -105,6 +106,7 @@ const AppClient = parent => class Client extends
       DealList: DealList(this.forms.DealList),
       SaleSchemaItem: SaleSchemaItem(this.forms.SaleSchemaItem),
       TaskList: TaskList(this.forms.TaskList),
+      InvoiceItem: InvoiceItem(this.forms.InvoiceItem),
 
       ProductSalesReport,
       OrdersToDeliverReport,
@@ -123,6 +125,7 @@ const AppClient = parent => class Client extends
     this.forms.PriceListList.doc = true;
     this.forms.PriceListItem.doc = true;
     this.forms.ReceiptList.doc = true;
+    this.forms.InvoiceList.doc = true;
 
     this.saveAuth = true;
     this.docsContent.push(...updates);
@@ -206,7 +209,7 @@ const AppClient = parent => class Client extends
     this.addSubmenu('Products', 'Price types');
     this.addSubmenu('Products', 'Price lists');
     this.addSubmenu('Products', 'Receipts');
-    this.initSubmenu('Settings', 'Settings');
+    this.initSubmenu('Settings', 'Settings', 'Basic');
     this.addSubmenu('Settings', 'Sale schemas');
     this.addSubmenu('Settings', 'Extra fields  lists');
     this.addSubmenu('Settings', 'Triggers');
@@ -218,11 +221,11 @@ const AppClient = parent => class Client extends
 
     this.showUsersList = true;
   }
-  initSubmenu(nameInitial, nameTarget) {
+  initSubmenu(nameInitial, nameTarget, submenuTitle = '') {
     const item = this.menu.find(i => i.title === nameInitial);
     item.submenu = [];
     item.submenu.push({
-      title: item.title,
+      title: submenuTitle || item.title,
       form: item.form,
       icon: item.icon,
       role: item.role,

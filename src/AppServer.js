@@ -29,6 +29,7 @@ const AppServer = parent => class Server extends
     this.entities.MoneyRecord.record = true;
     this.entities.ProductRecord.record = true;
     this.entities.PriceList.doc = true;
+    this.entities.Invoice.doc = true;
     // this.skipAuthorization = true;
     this.setAuthParams({ jwtSecret: this.env.jwtSecret || 'default' });
     this.userRegistrationRoleTitle = 'Manager';
