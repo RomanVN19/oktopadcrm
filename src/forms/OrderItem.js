@@ -104,6 +104,19 @@ const OrderItemMixin = Form => class OrderItem extends Form {
       onClick: this.print,
     });
   }
+  afterInit() {
+    if (super.afterInit) {
+      super.afterInit();
+    }
+    if (!this.uuid && this.app.vars.currentInvoiceData) {
+      const data = this.app.vars.currentInvoiceData;
+      this.content.client.value = data.client;
+      this.content.comment.value = data.comment;
+      this.content.products.value = data.products;
+      this.app.vars.currentInvoiceData = undefined;
+      this.productsTable.sumChange();
+    }
+  }
   print = async () => {
     const { response: doc } = await this.app.Order.get({ uuid: this.uuid });
     const data = {
@@ -112,7 +125,7 @@ const OrderItemMixin = Form => class OrderItem extends Form {
     };
     this.app.print({ template: 'Order', data });
   }
-}
+};
 
 export default OrderItemMixin;
 

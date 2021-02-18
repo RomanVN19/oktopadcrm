@@ -222,6 +222,9 @@ const translate = {
     'Company bank code': 'БИК',
     'Company bank corr account': 'Корр. счет',
     'Company bank account': 'Номер счета',
+    'To Client': 'К Клиенту',
+    'Invoices': 'Счета',
+    'Invoice': 'Счет',
   },
 };
 

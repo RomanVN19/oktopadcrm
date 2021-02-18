@@ -10,10 +10,26 @@ export default Form => class InvoiceItem extends Form {
     this.actions.push({
       type: Elements.BUTTON,
       title: 'Print',
-      onClick: this.print,
+      onClick: () => this.print(),
     });
+    if (this.app.allow('Order', 'put')) {
+      this.actions.push({
+        type: Elements.BUTTON,
+        title: 'Order',
+        onClick: () => this.order(),
+      });
+    }
   }
-  print = async () => {
+  afterInit() {
+    if (super.afterInit) {
+      super.afterInit();
+    }
+    if (!this.uuid) {
+      this.content.client.value = this.app.vars.currentClient;
+      this.app.vars.currentClient = undefined;
+    }
+  }
+  async print() {
     const { response: doc } = await this.app.Invoice.get({ uuid: this.uuid });
     const data = {
       ...doc,
@@ -27,6 +43,14 @@ export default Form => class InvoiceItem extends Form {
       total: doc.total.toFixed(2),
     };
     this.app.print({ template: 'Invoice', data });
+  }
+  close() {
+    window.history.back();
+  }
+  async order() {
+    await this.save();
+    this.app.vars.currentInvoiceData = this.getValues();
+    this.app.open('OrderItem', {});
   }
 }
 

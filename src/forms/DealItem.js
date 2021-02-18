@@ -198,7 +198,12 @@ export default Form => class DealItem extends Form {
     ];
 
     this.elements.get('client').onChange = (value) => this.clientChange(value);
-    //
+
+    this.actions.push({
+      type: Elements.BUTTON,
+      title: 'To Client',
+      onClick: () => this.toClient(),
+    });
   }
   async postComment() {
     const comment = this.content.commentText.value;
@@ -279,6 +284,13 @@ export default Form => class DealItem extends Form {
   keyPress(event) {
     if (event.key === "Enter") {
       this.postComment();
+    }
+  }
+  toClient() {
+    const client = this.content.client.value;
+    if (client && client.uuid) {
+      this.save();
+      this.app.open('ClientItem', { id: client.uuid });
     }
   }
 }

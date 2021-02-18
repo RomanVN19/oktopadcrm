@@ -46,5 +46,21 @@ export default ItemForm => class ClientItem extends ItemForm {
         },
       ],
     });
+    this.actions.push({
+      type: Elements.BUTTON,
+      title: 'Invoice',
+      onClick: () => this.invoice(),
+    });
+  }
+  close() {
+    window.history.back();
+  }
+  async invoice() {
+    await this.save();
+    this.app.vars.currentClient = {
+      uuid: this.uuid,
+      title: this.content.title.value,
+    };
+    this.app.open('InvoiceItem', {});
   }
 };
