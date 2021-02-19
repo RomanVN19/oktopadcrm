@@ -30,6 +30,7 @@ export default Form => class InvoiceItem extends Form {
     }
   }
   async print() {
+    await this.save();
     const { response: doc } = await this.app.Invoice.get({ uuid: this.uuid });
     const data = {
       ...doc,
