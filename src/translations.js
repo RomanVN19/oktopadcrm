@@ -2,7 +2,11 @@ import translations from 'katejs/lib/translations';
 
 /* eslint-disable quote-props */
 const translate = {
-  languages: ['ru'],
+  languages: ['en', 'ru'],
+  en: {
+    'Orders': 'Sales',
+    'Order': 'Sale',
+  },
   ru: {
     ...translations.ru,
     'Assistant': 'Ассистент',
