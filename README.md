@@ -1,67 +1,38 @@
 # Oktopad CRM
 
-Открытая система CRM и управленческого учета.
+Open-source, free CRM and accounting system.
 
-## Функционал
-- Сделки
-- Задачи
-- Расчеты (продажи, оплаты, товары)
-- Роли: Руководитель, Пользователь, Бухгалтер
-- Настройка схемы продаж
-- Дополнительные поля
-- Неограниченное количество пользователей
-- Настройка ролей
+## Functions
+- Deals
+- Tasks
+- Accounting (sales, payments, product)
+- Roles: Chief, Accountant, User
+- Sale schema setup
+- Additional fields
+- Unlimited users
+- Roles setup
 
-## Установка и запуск
+## Try
 
-Windows пользователи могут скачать сборку с СУБД SQLite 
-в [релизах](https://github.com/romannep/oktopadcrm/releases) 
-(файл Oktopad CRM 1.x.y.zip).
+[demo.oktopad.ru](https://demo.oktopad.ru/)
 
-### Запуск на сервере
+Select `user` by click on chevron. Type password: all passwords are `1`
 
-Для ознакомления можно запустить систему в dev режиме. 
-Потребуется Node.JS последней стабильной версии.
-Нужно скачать репозиторий, выполнить:
+## Setup and run
+
+Download and install
 ````
+git clone git@github.com:romannep/oktopadcrm.git .
+git checkout master_eng
 npm install
 ````
-затем запустить одновременно
+Run (at the same time)
 ````
 npm run starter-server
 ````
 ````
 npm run dev-client
 ````
-Настройка сервера с базой данных MySQL описана в инструкции
-["Настройка сервера"](https://github.com/romannep/katejs-boilerplate/blob/master/ServerSetup.md)
 
-## Доработка
-
-Система разработана на фреймворке [KateJS](https://katejs.ru/)
-
-Для доработки рекомендуется использовать существующий код как модуль.
-В этом случае, для последующих обновлений системы достаточно будет 
-увеличивать номер версии модуля в package.json. 
-Используйте [шаблон](https://github.com/romannep/oktopadcrmrework).
- 
-
-## Роли
-
-- Роль Руководитель - возможность смены пользователя в списках - 
-регулируется правом на метод `put` сущности `SaleSchema`.
-
-## История версий
-
-*2021-01-16* **1.2.0** Предварительный релиз для раннего ознакомления
-
-*2021-02-20* **1.2.2**
-- поправлены тексты и локализация
-- создание новой задачи без клиента, сделки
-- исправлена подсказка выбора клиента
-- возможность создавать счета на оплату
-
-
-
-## Лицензия
+## License
 [AGPL-3.0](https://github.com/romannep/assistant/blob/master/LICENSE)
