@@ -14,7 +14,7 @@ Open-source, free CRM and accounting system.
 
 ## Try
 
-[demo.oktopad.ru](https://demo.oktopad.ru/)
+[demo.global.oktopad.ru](https://demo.global.oktopad.ru/)
 
 Select `user` by click on chevron. Type password: all passwords are `1`
 
