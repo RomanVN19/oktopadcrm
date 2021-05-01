@@ -25,7 +25,9 @@
     "build-app-linux": "electron-builder --linux",
     "build": "npm run starter-dbsync && npm run build-client && npm run build-server && npm run build-app",
     "build-linux": "npm run starter-dbsync && npm run build-client && npm run build-server && npm run build-app-linux",
-    "build-package": "babel src --out-dir package --copy-files"
+    "build-package": "babel src --out-dir package --copy-files",
+    "build-server-service": "babel src --out-dir lib --copy-files",
+    "build-service": "npm run build-client && npm run build-server-service"
   },
   "license": "AGPL-3.0",
   "dependencies": {

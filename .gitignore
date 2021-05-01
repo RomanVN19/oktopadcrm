@@ -4,8 +4,8 @@
 /node_modules
 
 # production
-/build
-/lib
+# /build
+# /lib
 /dist
 /release
 /package
