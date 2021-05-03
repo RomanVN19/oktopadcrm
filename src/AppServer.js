@@ -3,6 +3,8 @@ import { AppDoc, AppDocs, AppPrint, AppSettings, AppImport, AppUser } from 'kate
 import AppTrigger from './katejs-trigger/lib/AppServer';
 import AppFields from './katejs-fields/lib/AppServer';
 
+import ModuleSchool from './modules/school/Server';
+
 import { structures, title, packageName, Settings } from './structure';
 
 import Order from './entities/Order';
@@ -10,6 +12,10 @@ import Payment from './entities/Payment';
 import Expense from './entities/Expense';
 import Receipt from './entities/Receipt';
 import DealComment from './entities/DealComment';
+
+const modules = {
+  school: ModuleSchool,
+};
 
 const AppServer = parent => class Server extends
   use(parent, AppUser, AppDoc, AppPrint, AppDocs, AppSettings, AppImport, AppTrigger, AppFields) {
@@ -37,6 +43,10 @@ const AppServer = parent => class Server extends
     this.settingsParams = Settings;
 
     this.showUsersList = true;
+  }
+  beforeInit() {
+    if (super.beforeInit) super.beforeInit();
+    (this.env.modules || []).forEach((module) => modules[module](this));
   }
 };
 AppServer.package = packageName;
