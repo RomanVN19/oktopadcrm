@@ -3,7 +3,7 @@ import { AppDoc, AppDocs, AppPrint, AppSettings, AppImport, AppUser } from 'kate
 import AppTrigger from './katejs-trigger/lib/AppServer';
 import AppFields from './katejs-fields/lib/AppServer';
 
-import ModuleSchool from './modules/school/Server';
+import SchoolModule from './modules/school/Server';
 
 import { structures, title, packageName, Settings } from './structure';
 
@@ -12,9 +12,10 @@ import Payment from './entities/Payment';
 import Expense from './entities/Expense';
 import Receipt from './entities/Receipt';
 import DealComment from './entities/DealComment';
+import SettingsMixin from './entities/SettingsMixin';
 
 const modules = {
-  school: ModuleSchool,
+  school: SchoolModule,
 };
 
 const AppServer = parent => class Server extends
@@ -46,6 +47,8 @@ const AppServer = parent => class Server extends
   }
   beforeInit() {
     if (super.beforeInit) super.beforeInit();
+    this.entities.Settings = SettingsMixin(this.entities.Settings);
+
     (this.env.modules || []).forEach((module) => modules[module](this));
   }
 };

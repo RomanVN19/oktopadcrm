@@ -9,6 +9,8 @@ import 'katejs/lib/client.css';
 
 import { structures, title, packageName, Settings } from './structure';
 
+import SchoolModule from './modules/school/Client';
+
 import NoteItem from './forms/NoteItem';
 import NoteList from './forms/NoteList';
 import ProductSalesReport from './forms/ProductSalesReport';
@@ -220,6 +222,10 @@ const AppClient = parent => class Client extends
     this.schemas = {};
 
     this.showUsersList = true;
+
+    this.modules = {
+      school: SchoolModule,
+    }
   }
   initSubmenu(nameInitial, nameTarget, submenuTitle = '') {
     const item = this.menu.find(i => i.title === nameInitial);
@@ -249,10 +255,16 @@ const AppClient = parent => class Client extends
     }
   }
   async afterUserInit() {
+    if (this.afterUserInitRun) {
+      return;
+    }
     if (super.afterUserInit) {
       await super.afterUserInit();
     }
     await this.fetchSchemas();
+
+    (this.settings.modules || []).forEach(moduleName => this.modules[moduleName](this));
+    this.afterUserInitRun = true;
   }
   async fetchSchemas() {
     const { response: schemas } = await this.SaleSchema.query();
