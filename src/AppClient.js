@@ -255,16 +255,15 @@ const AppClient = parent => class Client extends
     }
   }
   async afterUserInit() {
-    if (this.afterUserInitRun) {
-      return;
-    }
     if (super.afterUserInit) {
       await super.afterUserInit();
     }
     await this.fetchSchemas();
 
-    (this.settings.modules || []).forEach(moduleName => this.modules[moduleName](this));
-    this.afterUserInitRun = true;
+    if (this.settings && !this.modules.processed) {
+      (this.settings.modules || []).forEach(moduleName => this.modules[moduleName](this));
+      this.modules.processed = true;
+    }
   }
   async fetchSchemas() {
     const { response: schemas } = await this.SaleSchema.query();
