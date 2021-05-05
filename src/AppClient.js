@@ -2,6 +2,7 @@ import { use } from 'katejs/lib/client';
 import { AppDoc, AppDocs, AppPrint, AppSettings, AppImport, AppUser } from 'katejs-modules/lib/client';
 import AppTrigger from './katejs-trigger/lib/AppClient';
 import AppFields from './katejs-fields/lib/AppClient'
+import AppModules from './katejs-runtime-modules/lib/AppClient';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'moment/locale/ru';
@@ -44,7 +45,7 @@ import icons from './icons';
 import env from './front.env.json';
 
 const AppClient = parent => class Client extends
-  use(parent, AppUser, AppDoc, AppPrint, AppSettings, AppDocs, AppImport, AppTrigger, AppFields) {
+  use(parent, AppUser, AppDoc, AppPrint, AppSettings, AppDocs, AppImport, AppTrigger, AppFields, AppModules) {
   static title = title;
   static path = '/app';
   static primaryColor = '#088596';
@@ -224,7 +225,7 @@ const AppClient = parent => class Client extends
     this.showUsersList = true;
 
     this.modules = {
-      school: SchoolModule,
+      school: () => import('./modules/school/Client'),
     }
   }
   initSubmenu(nameInitial, nameTarget, submenuTitle = '') {
@@ -259,11 +260,6 @@ const AppClient = parent => class Client extends
       await super.afterUserInit();
     }
     await this.fetchSchemas();
-
-    if (this.settings && !this.modules.processed) {
-      (this.settings.modules || []).forEach(moduleName => this.modules[moduleName](this));
-      this.modules.processed = true;
-    }
   }
   async fetchSchemas() {
     const { response: schemas } = await this.SaleSchema.query();
