@@ -16,4 +16,6 @@ sed \
 -e 's/\(CREATE TABLE.*\)\(PRIMARY KEY\) \(AUTOINCREMENT\)\(.*\)\();\)/\1AUTO_INCREMENT\4, PRIMARY KEY(id)\5/' \
 -e "s/'t'/1/g" \
 -e "s/'f'/0/g" \
+-e "s/ +00:00//g" \
+-e "s/\`uuid\` UUID/\`uuid\` CHAR(36)/g" \
 $1
